@@ -1,0 +1,16 @@
+/* color */
+.g-c-orange {
+  color: #ff4b2d;
+}
+.g-c-white {
+  color: #ffffff;
+}
+.g-c-E6E6E6 {
+  color: #e6e6e6;
+}
+.g-c-blue {
+  color: #4a90e2;
+}
+.g-c-yellow {
+  color: #ff972d;
+}

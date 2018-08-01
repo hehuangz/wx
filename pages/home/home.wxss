@@ -1,0 +1,75 @@
+/**home.wxss**/
+.container {
+    width: 100%;
+    height: calc(100vh - 105px);
+}
+.card {
+    margin-top: 50px;
+    width: 100%;
+    box-sizing: border-box;
+    height: 140px;
+    overflow: visible;
+}
+._swiper-item {
+    margin: auto;
+    width: 90%;
+    box-sizing: border-box;
+	border-radius: 10px;
+    box-shadow: 0 0 8px 0 rgba(127,126,126,0.50);
+	background: #fff;
+    padding: 20px 25px 30px;
+    border-top: 2rpx solid #f0f0f0;
+}
+._swiper-item .__img {
+	background: pink;
+	width: 82px;
+	height: 82px;
+	border-radius: 8px; 
+}
+/* tab */
+.swiper-tab{
+    width: 100%;
+    border-bottom: 2rpx solid #ccc;
+    text-align: center;
+    height: 34px;
+    line-height: 34px;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+}
+.swiper-tab-item{
+    width: 30%; 
+    color:#434343;
+}
+.active{
+    color:#F65959;
+    border-bottom: 4rpx solid #F65959;
+}
+
+/* list */
+.goods-container {
+    width: 100%;
+    height: 1000px;
+    background: #fcfcfc;
+}
+.goods-list {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    display: flex;
+    justify-content: space-around;
+    align-content: flex-start;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+}
+.goods-item {
+    width: 45%;
+    height: 256px;
+    margin-bottom: 15px;
+    background: #fff;
+}
+.goods-item ._img {
+    width: 100%;
+    height: 170px;
+    background: pink;
+}

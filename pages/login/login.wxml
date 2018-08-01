@@ -1,0 +1,20 @@
+<!-- login -->
+<view class="container g-flex">
+	<!-- <lose id="lose"></lose> -->
+	<toast id="toast"></toast>
+	<view class="center g-width g-flex g-jc-c g-fw-w">
+		<view class="_item g-bg-white g-flex g-jc-fs g-ai-c">
+			<text class="icon-shouji g-fs-26 g-m-lr-10"></text>	
+			<input class="__input g-width-80p g-fs-16" type="请输入手机号" bindinput="bindTel"/>
+		</view>
+		<view class="_item g-bg-white g-flex g-jc-fs g-ai-c g-m-t-10">
+			<text class="icon-shouji g-fs-26 g-m-lr-10"></text>	
+			<input class="__input g-width-80p g-fs-16" type="请输入验证码" bindinput="bindCode"/>
+			<view class="g-bt-orange-s g-m-r-10" bindtap="handleCode">发送验证码</view>
+		</view>
+		<view class="g-bt-orange-l g-m-t-30" bindtap="handleLogin">登录</view>
+		<view class="g-m-t-10 g-fs-12">登录即同意
+			<text class="g-c-orange">《吾同用户协议》</text>
+		</view>
+	</view>
+</view>

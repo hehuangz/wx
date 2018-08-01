@@ -1,12 +1,45 @@
 {
   "pages":[
+    "pages/flicker/flicker",
+    "pages/home/home",
+    "pages/login/login",
     "pages/index/index",
     "pages/logs/logs"
   ],
   "window":{
-    "backgroundTextStyle":"light",
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar":{
+    "list":[{
+		"pagePath": "pages/home/home",
+    "text": "店铺",
+    "iconPath": "assets/images/mine.png",
+    "selectedIconPath": "assets/images/mine_active.png"
+	},{
+		"pagePath": "pages/index/index",
+    "text": "分类",
+    "iconPath": "assets/images/mine.png",
+    "selectedIconPath": "assets/images/mine_active.png"
+	},{
+		"pagePath": "pages/index/index",
+    "text": "购物车",
+    "iconPath": "assets/images/mine.png",
+    "selectedIconPath": "assets/images/mine_active.png"
+	},{
+		"pagePath": "pages/index/index",
+    "text": "我的",
+    "iconPath": "assets/images/mine.png",
+    "selectedIconPath": "assets/images/mine_active.png"
+	}],
+	"color": "#333",
+	"selectedColor": "#ff4b2d",
+	"backgroundColor": "#fff"
+},
+  "networkTimeout": {
+    "request": 5000,
+    "downloadFile": 5000
   }
 }

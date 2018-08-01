@@ -1,0 +1,28 @@
+/* flex */
+.g-flex {
+  display: flex;
+}
+.g-fw-w {
+  flex-wrap: wrap;
+}
+.g-jc-sa {
+  justify-content: space-around;
+}
+.g-jc-sb {
+  justify-content: space-between;
+}
+.g-jc-fs {
+  justify-content: flex-start;
+}
+.g-jc-fe {
+  justify-content: flex-end;
+}
+.g-jc-c {
+  justify-content: center;
+}
+.g-ai-c {
+  align-items: center;
+}
+.g-fd-c {
+  flex-direction: column
+}

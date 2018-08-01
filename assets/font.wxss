@@ -1,0 +1,23 @@
+/* font */
+.g-tc {
+	text-align: center;
+}
+.g-tl {
+text-align: left;
+}
+.g-tr {
+text-align: right;
+}
+
+/* font-weight */
+.g-weight-100 {
+font-weight: 100;
+}
+.g-weight-200 {
+font-weight: 200;
+}
+
+/* line-height */
+.g-lh-30 {
+	line-height: 30px; 
+}

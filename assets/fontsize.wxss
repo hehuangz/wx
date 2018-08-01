@@ -1,0 +1,31 @@
+/* fontSize */
+.g-fs-12 {
+	font-size: 12px;
+}
+.g-fs-14 {
+	font-size: 14px;
+}
+.g-fs-16 {
+	font-size: 16px;
+}
+.g-fs-18 {
+	font-size: 18px;
+}
+.g-fs-20 {
+	font-size: 20px;
+}
+.g-fs-22 {
+	font-size: 22px;
+}
+.g-fs-24 {
+	font-size: 24px;
+}
+.g-fs-26 {
+	font-size: 26px;
+}
+.g-fs-28 {
+	font-size: 28px;
+}
+.g-fs-30 {
+	font-size: 30px;
+}

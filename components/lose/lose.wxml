@@ -1,0 +1,9 @@
+<!-- lose -->   
+<view class="c-lose">
+    <view class="center">
+        <text class="icon-shouji" style="font-size:120px"></text>
+        <text class="icon-shouji g-fs-26 g-m-lr-10"></text>	
+        <view>当前网络不稳定，请刷新重试</view>      
+    </view>  
+    <view class="g-bt-orange-m">立即刷新</view>
+</view>

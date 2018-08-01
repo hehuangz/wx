@@ -1,0 +1,26 @@
+.c-toast {
+    position: fixed;
+    top: 0;
+    left: 0;
+    left: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 10000;
+}
+.c-toast ._content {
+    position: fixed;
+    border-radius: 6px;
+    padding: 10px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    font-size: 14px;
+    line-height: 20px;
+    top: 10%;
+    left: 50%;
+    text-align: center;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+.__icon {
+    display: block;
+}
