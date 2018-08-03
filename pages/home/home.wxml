@@ -1,5 +1,14 @@
 <!--home.wxml-->
-<view class="container">
+<view class="container" wx:if="{{show}}">
+	<!-- 获取用户信息和定位 -->
+	<dialog id='dialog' 
+		title='我是标题' 
+		content='是否允许我们使用定位和用户信息' 
+		cancelText='不好' 
+		confirm='可以'
+		bind:cancelEvent="_cancelEvent"  
+		bind:confirmEvent="_confirmEvent">
+    </dialog>
 	<!-- 顶部搜索栏 -->
 	<view 
 		class="top g-width g-bs-bb g-bg-white g-flex g-jc-sb g-height-30 g-lh-30 g-fs-30 g-pd-lr-30 g-pd-t-5 g-pd-b-15 g-fixed"
@@ -44,21 +53,12 @@
 		<view class="swiper-tab-item {{currentTab==2?'active':''}}" data-current="2" bindtap="clickTab">已提现</view>
 	</view>
 
-	<swiper current="{{currentTab}}" duration="300" bindchange="swiperTab" class="goods-container">
+	<swiper current="{{0}}" duration="300" bindchange="swiperTab" class="goods-container">
 		<swiper-item class="goods-list">
 			<block wx:for="{{[1,2,3,4]}}" wx:key="index">
-				<view class="goods-item">
-					<image class="_img" mode="widthFix" ></image>	
-					<text class="g-twoline g-m-tb-5">就是个 v 大好时光的 v 还是德国 v 说吃水果的韩剧上档次上的 v 城市的</text>
-					<view>
-						<text class="g-c-orange g-fs-16">¥ 143</text>
-						<text class="g-c-E6E6E6 g-m-l-15">¥ 143</text>			
-					</view>				
-				</view>
+				<goods id="goods" style="width:45%" price="144" oldPrice="1000" />
 			</block>
 		</swiper-item>
-		<swiper-item><view>提现中</view></swiper-item>
-		<swiper-item><view>已提现</view></swiper-item>
 	</swiper>
-
 </view>
+<lose wx:else id="lose" icon="icon-shouji" title="当前网络不稳定，请刷新重试～" refresh="true"></lose>

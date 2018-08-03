@@ -1,0 +1,25 @@
+<!-- toast -->   
+<view class="c-tab {{classes}}" style="{{styles}}">
+	<!-- 商品列表tab栏 -->
+	<view class="swiper-tab g-m-t-20">
+		<block wx:for="{{tabTitle}}" wx:key="id">
+			<view 
+				class="swiper-tab-item" 
+				style="{{currentTab==item.id?item.selectedStyles:item.defaultStyles}}" 
+				id="{{item.id}}" 
+				data-current="{{item.id}}" 
+				bindtap="clickTab"
+			>
+				<text hidden="{{!item.icon}}" class="iconfont {{item.icon}}" style="font-size:17px;margin-right:3px"/>
+				<text>{{item.name}}</text>
+			</view>
+		</block>
+	</view>
+    <swiper current="0" duration="300" bindchange="swiperTab">
+		<swiper-item class="goods-list">
+			<slot name="content"></slot>
+		</swiper-item>
+		<!-- <swiper-item><view>提现中</view></swiper-item>
+		<swiper-item><view>已提现</view></swiper-item> -->
+	</swiper>
+</view>

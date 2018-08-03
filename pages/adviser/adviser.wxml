@@ -1,0 +1,16 @@
+<!-- adviser -->
+<!-- 未完成当前选中哪个，以及status改变 -->
+<toast id="toast"></toast>
+<view class="container">
+	<block wx:for="{{list}}" wx:key="index">
+		<card id="card" 
+			styles="{{index==0?'border:1px solid red':''}}"
+			img="{{item.nickname || item.img}}"
+			name="{{item.name}}"
+			title="{{item}}" 
+			explain="{{item.sign}}"
+			sex="{{item.sex}}"
+			classes="g-m-t-15"
+		/>
+	</block>
+</view>

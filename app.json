@@ -1,5 +1,8 @@
 {
   "pages":[
+    "pages/adviser/adviser",
+    "pages/search/search",
+    "pages/test/test",    
     "pages/flicker/flicker",
     "pages/home/home",
     "pages/login/login",

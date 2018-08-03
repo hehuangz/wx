@@ -1,0 +1,36 @@
+@import '../../assets/iconfont.wxss';
+/* tab */
+.c-goods {
+    height: 256px;
+    margin-bottom: 15px;
+    background: #fff;
+}
+.c-goods ._title {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.c-goods ._img {
+    width: 100%;
+    height: 170px;
+    background: #f0f0f0;
+}
+.c-goods .g-twoline {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	word-break:break-all;
+}
+.g-c-929292 {
+    color: #929292;
+}
+.g-c-orange {
+    color: #ff4b2d;
+}
+.g-fs-16 {
+    font-size: 16px;
+}
+.g-m-l-20 {
+    margin-left: 20px;
+}

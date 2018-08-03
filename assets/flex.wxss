@@ -26,3 +26,6 @@
 .g-fd-c {
   flex-direction: column
 }
+.g-fs-0 {
+  flex-shrink: 0;
+}

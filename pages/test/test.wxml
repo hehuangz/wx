@@ -1,0 +1,5 @@
+<!-- login -->
+<view class="container">
+ <button bindtap="handleOpenID">获取openId</button>
+ <button bindtap="handlePay">微信支付0.1元</button>
+</view>

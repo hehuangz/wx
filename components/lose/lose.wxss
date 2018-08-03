@@ -1,17 +1,36 @@
+@import '../../assets/iconfont.wxss';
 .c-lose {
 	width: 100%;
+	height: calc(100vh - 200px);
 	display: flex;
 	justify-content: space-around;
 	flex-wrap: wrap;
 	align-content: center;
 }
-.g-bt-orange-m {
-    width: 180px;
-	height: 50px;
+.center {
+	width: 100%;
+	text-align: center;
+	color: #929292;
+	font-size: 14px;
+}
+._title {
+	line-height: 28px;
+	font-size: 14px;
+}
+.iconfont {
+	font-size: 100px;
+	color: #e6e6e6;
+}
+.g-m-t-30 {
+	margin-top: 30px;
+}
+.g-bt-orange-sm {
+    min-width: 130px;
+	height: 40px;
 	background: #ff4b2d;
 	color: #fff;
-	font-size: 20px;
-	line-height: 50px;
+	font-size: 16px;
+	line-height: 40px;
 	text-align: center;
 	border-radius: 100px;
 	font-weight: 200;

@@ -1,7 +1,7 @@
 {
     "navigationBarTitleText": "登录",
 	"usingComponents":{
-		"toast":"/components/toast/toast",
-		"lose":"/components/lose/lose"
+		"toast": "/components/toast/toast",
+		"lose": "/components/lose/lose"
 	}
 }

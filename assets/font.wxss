@@ -3,21 +3,32 @@
 	text-align: center;
 }
 .g-tl {
-text-align: left;
+	text-align: left;
 }
 .g-tr {
-text-align: right;
+	text-align: right;
 }
 
 /* font-weight */
 .g-weight-100 {
-font-weight: 100;
+	font-weight: 100;
 }
 .g-weight-200 {
-font-weight: 200;
+	font-weight: 200;
 }
 
 /* line-height */
 .g-lh-30 {
 	line-height: 30px; 
+}
+
+/* letter-spacing */
+.g-ls-1 {
+	letter-spacing: 1px;
+	text-decoration: line-through;
+}
+
+/* text-decoration */
+.g-td-lh {
+	text-decoration: line-through;
 }

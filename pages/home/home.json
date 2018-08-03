@@ -1,3 +1,8 @@
 {
-  "navigationBarTitleText": "店铺首页"
+  "navigationBarTitleText": "店铺首页",
+  "usingComponents": {
+    "dialog": "/components/dialog/dialog",
+    "goods": "/components/goods/goods",
+    "lose": "/components/lose/lose"
+  }
 }

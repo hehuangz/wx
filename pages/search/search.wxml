@@ -1,0 +1,21 @@
+<!-- login -->
+<view class="container">
+	<view 
+		class="top g-width g-bs-bb g-bg-white g-flex g-jc-sb g-height-30 g-lh-30 g-fs-30 g-pd-lr-20 g-pd-t-5 g-pd-b-15 g-fixed"
+		style="height: 40px"
+	>
+		<input 
+			type="search" 
+			placeholder="查找您想要的" 
+			class="g-fs-12 g-width g-br-oval g-pd-lr-10"
+			placeholder-style="color:#e6e6e6"
+		/>
+		<text class="g-fs-12 g-m-l-10 g-c-929292 g-fs-0 g-ls-1">搜索</text>
+	</view>
+	<tab wx:if="{{show}}" id="tab" styles="margin-top:40px;padding: 0 20px;" tabTitle="{{tabTitle}}" tabContent="{{tabContent}}">
+		<view slot="content" wx:for="{{tabContent}}" wx:key="index">
+			<goods id="goods" style="width:45%" title="{{item.title}}" price="{{item.price}}" oldPrice="{{item.oldPrice}}"/>
+		</view>
+	</tab>
+	<lose wx:else id="lose" icon="icon-shouji" title="神马也没有搜索到哦～" refresh="{{false}}"></lose>
+</view>

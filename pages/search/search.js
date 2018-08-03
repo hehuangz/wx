@@ -8,10 +8,50 @@ const app = getApp()
 Page({
 	data: {
 		tel: '',
-		code: ''
+		code: '',
+		show: false,
+		tabTitle: [{
+			id: 0,
+			name: '销量',
+			icon: 'icon-shouji',
+			defaultStyles:'color:#929292',
+			selectedStyles: 'color:#ff4b2d'
+		},{
+			id: 1,
+			name: '价格从低到高',
+			icon: 'icon-shouji',
+			defaultStyles:'color:#929292',
+			selectedStyles: 'color:#ff4b2d'
+		},{
+			id: 2,
+			name: '价格从高到低',
+			icon:'icon-shouji',
+			defaultStyles:'color:#929292',
+			selectedStyles: 'color:#ff4b2d'
+		}],
+		tabContent:[{
+			id: 1,
+			title: '1111',
+			src: "",
+			price: '100',
+			oldPrice: '199'
+		},{
+			id: 2,
+			title: '222',
+			src: "",
+			price: '100',
+			oldPrice: '199'
+		},{
+			id: 3,
+			title: '333',
+			src: "",
+			price: '100',
+			oldPrice: '199'
+		}]
 	},
 	onReady: function () {
 		this.toast=this.selectComponent("#toast")
+		this.lose=this.selectComponent("#lose")
 	},
 	bindTel: function (e) {
 		this.setData({ tel: e.detail.value })
@@ -78,7 +118,6 @@ Page({
 			header: {
 			},
 			success: function (res) {
-				console.log(res);
 				const {message='',code='',data={}} = res.data	
 				if(code===200){
 					return 	wx.setStorage({

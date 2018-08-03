@@ -5,7 +5,7 @@
 .g-c-white {
   color: #ffffff;
 }
-.g-c-E6E6E6 {
+.g-c-e6e6e6 {
   color: #e6e6e6;
 }
 .g-c-blue {
@@ -13,4 +13,10 @@
 }
 .g-c-yellow {
   color: #ff972d;
+}
+.g-c-929292 {
+  color: #929292;
+}
+.g-c-9b9b9b {
+  color: #9b9b9b;
 }
