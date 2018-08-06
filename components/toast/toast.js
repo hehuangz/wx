@@ -23,6 +23,7 @@ Component({
             this._eventCheck(msg,time,callback)
             this.setData({
                 show:true,
+                showIcon: false,
                 msg
             },()=>{
                 this._eventTimeOut(time,callback)
@@ -33,7 +34,7 @@ Component({
             this.setData({
                 show: true,
                 msg,
-                iconType: 'success',
+                iconType: 'icon-correct',
                 showIcon: true
             },()=>{
                 this._eventTimeOut(time,callback)
@@ -44,7 +45,7 @@ Component({
             this.setData({
                 show: true,
                 msg,
-                iconType: 'warn',
+                iconType: 'icon-abnormal',
                 showIcon: true
             },()=>{
                 this._eventTimeOut(time,callback)
@@ -55,7 +56,7 @@ Component({
             this.setData({
                 show: true,
                 msg,
-                iconType:  'cancle',
+                iconType:  'icon-error',
                 showIcon: true
             },()=>{
                 this._eventTimeOut(time,callback)

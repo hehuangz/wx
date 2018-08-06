@@ -20,3 +20,9 @@
 .g-c-9b9b9b {
   color: #9b9b9b;
 }
+.g-c-green {
+  color: green;
+}
+.g-c-212121 {
+  color: #212121;
+}

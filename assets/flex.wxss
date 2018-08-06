@@ -23,9 +23,27 @@
 .g-ai-c {
   align-items: center;
 }
+.g-ai-fs {
+  align-items: flex-start;
+}
+.g-ai-fe {
+  align-items: flex-end;
+}
 .g-fd-c {
   flex-direction: column
 }
 .g-fs-0 {
   flex-shrink: 0;
+}
+.g-full {
+  flex: 0 0 100%;
+}
+.g-1of2 {
+  flex: 0 0 50%;
+}
+.g-1of3 {
+  flex: 0 0 33.3333%;
+}
+.g-1of4 {
+  flex: 0 0 25%;
 }

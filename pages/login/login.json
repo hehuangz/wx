@@ -1,5 +1,5 @@
 {
-    "navigationBarTitleText": "登录",
+    "navigationBarTitleText": "绑定手机号",
 	"usingComponents":{
 		"toast": "/components/toast/toast",
 		"lose": "/components/lose/lose"

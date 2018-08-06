@@ -1,16 +1,18 @@
 <!-- login -->
-<view class="container g-flex">
+<view class="container ">
 	<!-- <lose id="lose"></lose> -->
 	<toast id="toast"></toast>
+	<view class="top g-flex g-jc-c g-pd-t-15"><image src="{{IMG_OSS_LOGO}}" mode="aspectFit" class="_img"/></view>
 	<view class="center g-width g-flex g-jc-c g-fw-w">
 		<view class="_item g-bg-white g-flex g-jc-fs g-ai-c">
-			<text class="icon-shouji g-fs-26 g-m-lr-10"></text>	
-			<input class="__input g-width-80p g-fs-16" type="请输入手机号" bindinput="bindTel"/>
+			<image src="{{IMG_OSS_PHONE}}" mode="aspectFit" class="_img g-fs-0"/>
+			<input class="__input g-width-80p g-fs-16" type="number" bindinput="bindTel"/>
 		</view>
 		<view class="_item g-bg-white g-flex g-jc-fs g-ai-c g-m-t-10">
-			<text class="icon-shouji g-fs-26 g-m-lr-10"></text>	
-			<input class="__input g-width-80p g-fs-16" type="请输入验证码" bindinput="bindCode"/>
-			<view class="g-bt-orange-s g-m-r-10" bindtap="handleCode">发送验证码</view>
+			<image src="{{IMG_OSS_LOCK}}" mode="aspectFit" class="_img g-fs-0"/>
+			<input class="__input g-width-80p g-fs-16" type="number" bindinput="bindCode"/>
+			<view class="g-bt-orange-s g-m-r-10" bindtap="handleCode" wx:if="{{is_code}}">发送验证码</view>
+			<view class="g-bt-gray-s g-m-r-10" wx:else>重新获取({{time}})</view>
 		</view>
 		<view class="g-bt-orange-l g-m-t-30" bindtap="handleLogin">登录</view>
 		<view class="g-m-t-10 g-fs-12">登录即同意

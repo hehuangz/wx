@@ -1,11 +1,12 @@
-<view class='wx_dialog_container' hidden="{{!isShow}}">
-    <view class='wx-mask'></view>
-    <view class='wx-dialog'>
-        <view class='wx-dialog-title'>{{ title }}</view>
-        <view class='wx-dialog-content'>{{ content }}</view>
-        <view class='wx-dialog-footer'>
-          <view class='wx-dialog-btn' catchtap='_cancelEvent'>{{ cancelText }}</view>
-          <view class='wx-dialog-btn' catchtap='_confirmEvent'>{{ confirmText }}</view>
+<view class='c_dialog' hidden="{{!isShow}}">
+    <view class='mask'></view>
+    <view class='dialog'>
+        <view class='dialog-title'>{{ title }}</view>
+        <view class='dialog-content'>{{ content }}</view>
+        <view class='dialog-footer'>
+            <view class='dialog-btn' catchtap='_cancelEvent'>{{ cancelText }}</view>
+            <view class='dialog-btn' catchtap='_confirmEvent' wx:if="{{!wxAuth}}">{{ confirmText }}</view>
+            <view class='dialog-btn' wx:else><slot name='confirm'></slot></view>
         </view>
     </view>
 </view>

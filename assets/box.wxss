@@ -178,6 +178,12 @@
 .g-pd-b-20 {
   padding-bottom: 20px;
 }
+.g-pd-l-20 {
+  padding-left: 20px;
+}
+.g-pd-r-20 {
+  padding-right: 20px;
+}
 /* 30 */
 .g-pd-30 {
   padding: 30px;

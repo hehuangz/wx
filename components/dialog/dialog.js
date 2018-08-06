@@ -1,4 +1,3 @@
-// components/Dialog/dialog.js
 Component({
     options: {
       multipleSlots: true // 在组件定义时的选项中启用多slot支持
@@ -27,6 +26,11 @@ Component({
       confirmText :{
         type : String ,
         value : '确定'
+      },
+      // 是否说授权弹窗
+      wxAuth: {
+        type: Boolean,
+        vlaue: false
       } 
     },
   

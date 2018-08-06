@@ -1,7 +1,7 @@
 <!-- toast -->   
 <view class="c-toast">
     <view class="_content" hidden="{{!show}}">
-        <icon type="{{iconType}}" size="40" class="__icon" hidden="{{!showIcon}}"/>
+        <text size="40" class="__icon iconfont {{iconType}}" wx:if="{{showIcon}}"/>
         <text>{{msg}}</text>
     </view>    
 </view>

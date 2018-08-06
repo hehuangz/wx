@@ -1,3 +1,4 @@
+@import '../../assets/iconfont.wxss';
 .c-toast {
     position: fixed;
     top: 0;
@@ -15,7 +16,7 @@
     color: #fff;
     font-size: 14px;
     line-height: 20px;
-    top: 10%;
+    top: 30%;
     left: 50%;
     text-align: center;
     -webkit-transform: translate(-50%, -50%);
@@ -23,4 +24,7 @@
 }
 .__icon {
     display: block;
+    color: #fff;
+    font-size: 30px;
+    padding: 10px 10px 13px;
 }

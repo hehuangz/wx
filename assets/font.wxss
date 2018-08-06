@@ -18,6 +18,9 @@
 }
 
 /* line-height */
+.g-lh-24 {
+	line-height: 24px; 
+}
 .g-lh-30 {
 	line-height: 30px; 
 }
@@ -25,7 +28,6 @@
 /* letter-spacing */
 .g-ls-1 {
 	letter-spacing: 1px;
-	text-decoration: line-through;
 }
 
 /* text-decoration */

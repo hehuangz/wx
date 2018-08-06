@@ -36,10 +36,14 @@
     display: flex;
     flex-flow: row;
     justify-content: space-between;
+    overflow-x: scroll;
 }
 .swiper-tab-item{
-    width: 30%; 
+    min-width: 25%;
+    padding-left: 5px;
+    padding-right: 5px;
     color:#434343;
+    flex-shrink: 0;
 }
 .active{
     color:#F65959;

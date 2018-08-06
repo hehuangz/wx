@@ -1,5 +1,7 @@
 const api = {
-    LOGIN_CREATECODE: 'users/createCode',
-    LOGIN_REGISTER: 'users/loginRegister'
+    HOME_NEARLY_SHOP: 'shop/getNearlyShop',
+    HOME_SAOMA: 'shop/getNearlyShop',
+    HOME_ADVISER: 'users/searchAssistantByShopId',
+    HOME_CATEGORY_FIRST: 'goods/getFirstCategoryByShopId', // 根据店铺id获取一级分类
 };
 export default api;

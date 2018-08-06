@@ -1,26 +1,35 @@
 <!--home.wxml-->
+<toast id="toast"></toast>
+
 <view class="container" wx:if="{{show}}">
 	<!-- 获取用户信息和定位 -->
-	<dialog id='dialog' 
+	<dialog 
+		id='dialog' 
 		title='我是标题' 
 		content='是否允许我们使用定位和用户信息' 
 		cancelText='不好' 
 		confirm='可以'
 		bind:cancelEvent="_cancelEvent"  
-		bind:confirmEvent="_confirmEvent">
+		bind:confirmEvent="_confirmEvent"
+		wxAuth="{{true}}"
+	>
+    	<button slot="confirm" open-type="getUserInfo" bindgetuserinfo="getUserInfo" class="g-fs-16 g-bg-white g-c-green">确定</button>		
     </dialog>
 	<!-- 顶部搜索栏 -->
 	<view 
 		class="top g-width g-bs-bb g-bg-white g-flex g-jc-sb g-height-30 g-lh-30 g-fs-30 g-pd-lr-30 g-pd-t-5 g-pd-b-15 g-fixed"
 		style="height: 40px"
 	>
-		<text class="icon-shouji g-c-orange g-fs-24 g-m-r-10"></text>
-		<input 
-			type="search" 
-			placeholder="查找您想要的" 
-			class="g-fs-12 g-width g-br-oval g-pd-lr-10"
-			placeholder-style="color:#e6e6e6" 
-		/>
+		<text class="icon-saoma g-c-orange g-fs-24 g-m-r-20" style="font-size:22px" bindtap="handleSao"></text>
+		<view bindtap="handleSearch" class='g-width'>
+			<input 
+				type="search" 
+				placeholder="查找您想要的" 
+				class="g-fs-12 g-width g-br-oval g-pd-lr-10 g-bs-bb"
+				placeholder-style="color:#e6e6e6"
+				disables
+			/>
+		</view>
 	</view>
 
 	<!-- 顾问切换 -->
@@ -28,19 +37,23 @@
 		class="g-width card"
 		indicator-dots="true"
 		circular="true"
+		duration="200"
 	>
-		<block wx:for="{{imgUrls}}" wx:key="index">
+		<block wx:for="{{adviserList}}" wx:key="index">
 			<swiper-item>
 				<view class="_swiper-item g-flex">
-					<image class="__img g-m-r-10" mode="widthFix" ></image>
+					<image class="__img g-m-r-10 g-fs-0" mode="widthFix" src="{{item.img}}"></image>
 					<view class="__content g-fd-c g-jc-sb">
 						<view class="g-m-b-5"> 
-							<text class="g-fs-16 g-m-r-5">zhangsjhd</text>
-							<text class="icon-shouji g-c-blue g-fs-16 g-m-r-5" />
-							<block wx:for="{{[1,2,3,4,5]}}"><text class="icon-shouji g-c-yellow g-fs-12 g-m-r-5"/></block>
+							<text class="g-fs-16 g-m-r-5">{{item.name}}</text>
+							<text class="icon-shouji g-c-blue g-fs-16 g-m-r-5" wx:if="{{item.sex==1}}"/>
+							<text class="icon-shouji g-c-orange g-fs-16 g-m-r-5" wx:else/>
+							<block wx:for="{{[1,2,3,4,5]}}" wx:for-item="i" wx:key="{{i}}">
+								<text class="icon-shouji g-c-yellow g-fs-12 g-m-r-5"/>
+							</block>
 						</view>
 						<view class="g-c-yellow g-fs-12 g-m-b-10">商品顾问</view>
-						<view class="g-fs-12">sdfdsfgdf</view>
+						<view class="g-fs-12">{{item.sign}}</view>
 					</view>
 				</view>
 			</swiper-item>
@@ -48,12 +61,11 @@
 	</swiper>	
 	<!-- 商品列表tab栏 -->
 	<view class="swiper-tab">
-		<view class="swiper-tab-item {{currentTab==0?'active':''}}" data-current="0" bindtap="clickTab">全部</view>
-		<view class="swiper-tab-item {{currentTab==1?'active':''}}" data-current="1" bindtap="clickTab">提现中</view>
-		<view class="swiper-tab-item {{currentTab==2?'active':''}}" data-current="2" bindtap="clickTab">已提现</view>
+		<block wx:for="{{categoryList}}" wx:key="index">
+			<view class="swiper-tab-item {{currentTab==item.id?'active':''}}" data-current="{{item.id}}" bindtap="handleCategory">{{item.name}}</view>
+		</block>
 	</view>
-
-	<swiper current="{{0}}" duration="300" bindchange="swiperTab" class="goods-container">
+	<swiper current="{{0}}" duration="300" bindchange="handleSwiper" class="goods-container">
 		<swiper-item class="goods-list">
 			<block wx:for="{{[1,2,3,4]}}" wx:key="index">
 				<goods id="goods" style="width:45%" price="144" oldPrice="1000" />

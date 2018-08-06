@@ -1,0 +1,43 @@
+/**home.wxss**/
+.container {
+    /* width: 100%; */
+}
+.center {
+    width: 100%;
+    height: calc(100vh - 50px);
+    overflow-y: scroll;
+    border-top: 1px solid #fcfcfc; 
+}
+.center ._left {
+    width: 94px;
+    opacity: 0.6;
+    background: #f5f4f7;
+}
+.center .first {
+    width: 100%;
+    height: 86px;   
+    opacity: 0.6;
+    background: #f5f4f7;
+    font-size: 14px;
+    color: #212121;
+}
+.center ._right {
+    width: 100%;
+    height: calc(100vh - 50px);
+    overflow-y: scroll;
+}
+.center .third {
+    width: 40%;
+    min-width: 100px;
+    height: auto;
+}
+.center .third .__img{
+    width: 100%;
+    height: 100px;
+    background: #f0f0f0;
+}
+.active {
+    color: #ff4b2d !important;
+    background: #fff !important;
+    opacity: 1 !important;
+}

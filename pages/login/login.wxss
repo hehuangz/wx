@@ -1,8 +1,25 @@
 
+.container {
+	/* height: calc(100vh - 130px); */
+	height: 100vh;
+	background: #f9f9f9;
+}
+.top {
+	width: 100%;
+	height: 130px;
+	background: #fff;
+}
+.top ._img {
+	width: 100px;
+	height: 68px;
+}
 .center {
-	margin-top: 200rpx;
+	height: 200px;
 	padding: 30px 0;
-	background: #f5f5f5;
+}
+.center ._img {
+	width: 48px;
+	height: 48px;
 }
 ._item {
 	width: 295px;

@@ -1,0 +1,49 @@
+<!--home.wxml-->
+<toast id="toast"></toast>
+
+<view class="container">
+	<!-- 顶部搜索栏 -->
+	<view 
+		class="top g-width g-bs-bb g-bg-white g-flex g-jc-sb g-height-30 g-lh-30 g-fs-30 g-pd-lr-30 g-pd-t-5 g-pd-b-15 g-fixed"
+		style="height: 40px"
+	>
+		<text class="icon-saoma g-c-orange g-fs-24 g-m-r-20" style="font-size:22px" bindtap="handleSao"></text>
+		<view bindtap="handleSearch" class='g-width'>
+			<input 
+				type="search" 
+				placeholder="查找您想要的"
+				class="g-fs-12 g-width g-br-oval g-pd-lr-10 g-bs-bb"
+				placeholder-style="color:#e6e6e6"
+				disables
+			/>
+		</view>
+	</view>
+	<view style="margin-top:50px"></view>
+	<view class="center g-flex">
+		<view class="_left g-fs-0">
+			<block wx:for="{{list}}" wx:key="{{item.id}}" >
+				<view 
+					class="first g-tc g-flex g-ai-c g-jc-c {{activeId==item.id?'active':''}}" 
+					bindtap="handleTap"
+					data-current="{{item.id}}" 
+				>{{item.name}}</view>		
+			</block>					
+		</view>
+		<view class="_right g-pd-l-20 g-bs-bb">
+			<!--  -->
+			<view class="second" wx:for="{{list}}" wx:for-item="item_yi" wx:if="{{activeId==item_yi.id}}">
+				<block wx:for="{{item_yi.children}}" wx:for-item="item_er">
+					<text class="g-fs-14 g-c-212121 g-m-t-5">{{item_er.name}}</text>
+					<view class="g-flex g-fw-w g-jc-fs g-m-b-20">
+						<block wx:for="{{item_er.children}}" wx:for-item="item_san">
+							<view class="third g-m-t-10 g-fs-0 g-iof2 g-m-r-20">
+								<image src="{{item_san.img}}" mode="aspectFill" class="__img"></image>
+								<view class="g-tc g-fs-12 g-c-212121 g-m-t-5">{{item_san.name}}</view>
+							</view>
+						</block>
+					</view>
+				</block>
+			</view>
+		</view>	
+	</view>
+</view>
