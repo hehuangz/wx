@@ -31,6 +31,6 @@
 }
 
 /* text-decoration */
-.g-td-lh {
+.g-td-lt {
 	text-decoration: line-through;
 }

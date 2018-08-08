@@ -1,0 +1,4 @@
+<!--logs.wxml-->
+<view class="container log-list">
+	<lose id="lose" icon="icon" buttonText="去逛逛" title="您的购物车里什么都没有喔～"></lose>
+</view>

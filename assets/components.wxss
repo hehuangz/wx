@@ -55,4 +55,23 @@
 	-webkit-box-orient: vertical;
 	word-break:break-all;
 }
-/* 小卡片 */
+/* 标签 */
+.g-label-gray {
+	padding: 2px 15px;
+	background:#f4f4f4;
+	border-radius:100px;
+	height:28px;
+	font-size:14px;
+	color:#929292;
+	line-height: 28px;
+	text-align: center;
+	font-weight: 200;
+}
+/* 头像 */
+.g-avatar {
+	background:#d8d8d8;
+	border-radius:8px;
+	width:78px;
+	height:78px;
+	border: 1rpx solid #f0f0f0;
+}

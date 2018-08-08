@@ -16,10 +16,12 @@
 ._title {
 	line-height: 28px;
 	font-size: 14px;
+	color: #929292;
+	margin-top: 10px;
 }
-.iconfont {
+._icon {
 	font-size: 100px;
-	color: #e6e6e6;
+	color: #929292;
 }
 .g-m-t-30 {
 	margin-top: 30px;

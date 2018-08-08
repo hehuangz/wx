@@ -1,21 +1,72 @@
 <!-- login -->
-<view class="container">
+<toast id="toast"></toast>
+<view class="container" style="background:#fcfcfc">
 	<view 
-		class="top g-width g-bs-bb g-bg-white g-flex g-jc-sb g-height-30 g-lh-30 g-fs-30 g-pd-lr-20 g-pd-t-5 g-pd-b-15 g-fixed"
+		class="top g-width g-bs-bb g-bg-white g-flex g-jc-sb g-height-30 g-lh-30 g-fs-30 g-pd-lr-20 g-pd-t-10 g-pd-b-10"
 		style="height: 40px"
 	>
 		<input 
-			type="search" 
+			value="{{keyWords}}"
+			type="search"
 			placeholder="查找您想要的" 
 			class="g-fs-12 g-width g-br-oval g-pd-lr-10"
 			placeholder-style="color:#e6e6e6"
+			bindinput="bindKeyWords"
 		/>
-		<text class="g-fs-12 g-m-l-10 g-c-929292 g-fs-0 g-ls-1">搜索</text>
+		<text class="g-fs-12 g-m-l-10 g-c-929292 g-fs-0 g-ls-1" bindtap="handleSearch">搜索</text>
 	</view>
-	<tab wx:if="{{show}}" id="tab" styles="margin-top:40px;padding: 0 20px;" tabTitle="{{tabTitle}}" tabContent="{{tabContent}}">
-		<view slot="content" wx:for="{{tabContent}}" wx:key="index">
-			<goods id="goods" style="width:45%" title="{{item.title}}" price="{{item.price}}" oldPrice="{{item.oldPrice}}"/>
+	<!-- 历史记录 -->
+	<view class="history g-pd-tb-10" wx:if="{{showHistory}}">
+		<view class="g-width g-bs-bb g-pd-lr-20 g-c-212121 g-fs-16 g-flex g-jc-sb">
+			<text>历史搜索</text>
+			<text wx:if="{{historyList.length}}" class="icon-delete g-c-929292 g-m-t-5" bindtap="handleClear">
+				<text class="g-fs-12 g-m-l-5">清空</text>
+			</text>
 		</view>
-	</tab>
-	<lose wx:else id="lose" icon="icon-shouji" title="神马也没有搜索到哦～" refresh="{{false}}"></lose>
+		<view class="g-width g-bs-bb g-pd-l-20 g-pd-t-10">
+			<block wx:if="{{historyList.length}}">
+				<text 
+					class="g-label-gray g-m-r-20 g-ib g-m-b-5" 
+					wx:for="{{historyList}}" 
+					wx:key="index" 
+					bindtap="handleLabel"
+					data-value="{{item}}"
+				>{{item}}</text>
+			</block>
+			<block wx:else>
+				<view class="g-fs-14 g-c-929292">暂无历史搜索</view>
+			</block>
+		</view>
+	</view>
+
+	<block wx:if="{{!showHistory}}">
+		<view class="swiper-tab">
+			<block wx:for="{{categoryList}}" wx:key="index">
+				<view class="swiper-tab-item {{searcheCondtion==item.id?'active':''}}" data-current="{{item.id}}" bindtap="handleCategory">
+					<text class="{{item.icon}} g-m-r-5" />
+					<text>{{item.name}}</text>
+				</view>
+			</block>
+		</view>
+		<block wx:if="{{goodsList.length}}">
+			<scroll-view scroll-y style="height: calc(100vh - 74px);" scroll-top="{{0}}" bindscrolltolower="handleScrollLower" scroll-with-animation="{{true}}"		>
+				<view class="goods-list">
+					<block wx:for="{{goodsList}}" wx:key="index">
+						<goods
+							id="goods"
+							style="width:50%" 
+							price="{{item.price}}" 
+							oldPrice="{{item.marketPrice}}"
+							data-id="{{item.goodId}}"
+							src="{{item.img}}"
+							title="{{item.name}}"
+						/>
+					</block>
+				</view>
+			</scroll-view>
+			<view class="g-tc g-c-929292 g-bg-white">{{noMoreData || goodsList.length<10?'没有更多数据了～':'上拉加载更多'}}</view>
+		</block>	
+		<lose wx:if="{{!goodsList.length}}" id="lose" icon="icon-none" title="神马也没有搜索到哦～"></lose>
+	</block>
 </view>
+

@@ -1,8 +1,8 @@
 @import '../../assets/iconfont.wxss';
 /* tab */
 .c-goods {
-    height: 256px;
-    margin-bottom: 15px;
+    min-height: 150px;
+    margin: 10px;
     background: #fff;
 }
 .c-goods ._title {
@@ -11,8 +11,9 @@
 }
 .c-goods ._img {
     width: 100%;
-    height: 170px;
+    height: 163px;
     background: #f0f0f0;
+    border: 1rpx solid #f0f0f0;
 }
 .c-goods .g-twoline {
 	overflow: hidden;
@@ -33,4 +34,7 @@
 }
 .g-m-l-20 {
     margin-left: 20px;
+}
+.g-td-lt {
+    text-decoration: line-through
 }

@@ -8,25 +8,30 @@ Page({
 	data: {
 		list:[],
 		mainActiveIndex: 0,
-		activeId: 15
+		activeId: 0,
+		shop: wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{}
 	},
 	onReady: function () {
 		this.toast=this.selectComponent("#toast")
+		const {id} = this.data.shop
 		const _this = this;
 		wx.request({
 			url: API.CATEGORY_LIST,
 			dataType:'formData',
 			data: {
-				shopId: 26
+				shopId: id
 			},
 			method: 'POST',
 			header: {
 				"Content-Type": "application/x-www-form-urlencoded"
 			},		
 			success: function (res) {
-				const {code='', data={}, message=''}=JSON.parse(res.data)
+				const {code='', data={}, message=''}=JSON.parse(res.data) // 因为发过去的是formData的格式，返回的res.data也是字符串的
 				if(code===200) {
-					return _this.setData({list:data})
+					return _this.setData({
+						list:data,
+						activeId: data && data[0].id // 默认选中第一个
+					})
 				}
 				return _this.toast.warn(message)
 			},
@@ -61,6 +66,9 @@ Page({
 			}
 		})		  
 	},
+	/**
+	 * 点击一级分类
+	 */
 	handleTap: function (e) {
 		if (this.data.activeId === e.currentTarget.dataset.current) {
 			return false;
@@ -69,5 +77,13 @@ Page({
 				activeId: e.currentTarget.dataset.current
 			})
 		}
+	},
+	/**
+	 * 点击三级分类图片跳转到搜索列表
+	 */
+	handleToSearch: function (e) {
+		const thirdId=e.currentTarget.dataset.id;
+		const {id} = this.data.shop;		 
+		wx.navigateTo({url:`/pages/search/search?thirdId=${thirdId}&shopId=${id}`})
 	}
 })

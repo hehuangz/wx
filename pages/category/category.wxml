@@ -31,13 +31,13 @@
 		</view>
 		<view class="_right g-pd-l-20 g-bs-bb">
 			<!--  -->
-			<view class="second" wx:for="{{list}}" wx:for-item="item_yi" wx:if="{{activeId==item_yi.id}}">
-				<block wx:for="{{item_yi.children}}" wx:for-item="item_er">
+			<view class="second" wx:for="{{list}}" wx:for-item="item_yi" wx:if="{{activeId==item_yi.id}}" wx:key="item_yi.id">
+				<block wx:for="{{item_yi.children}}" wx:for-item="item_er" wx:key="item_er.id">
 					<text class="g-fs-14 g-c-212121 g-m-t-5">{{item_er.name}}</text>
 					<view class="g-flex g-fw-w g-jc-fs g-m-b-20">
-						<block wx:for="{{item_er.children}}" wx:for-item="item_san">
-							<view class="third g-m-t-10 g-fs-0 g-iof2 g-m-r-20">
-								<image src="{{item_san.img}}" mode="aspectFill" class="__img"></image>
+						<block wx:for="{{item_er.children}}" wx:for-item="item_san" wx:key="item_san.id">
+							<view class="third g-m-t-10 g-fs-0 g-iof3 g-pd-r-10 g-bs-bb">
+								<image src="{{item_san.img}}" mode="aspectFit" class="__img" bindtap="handleToSearch" data-id="{{item_san.id}}"/>
 								<view class="g-tc g-fs-12 g-c-212121 g-m-t-5">{{item_san.name}}</view>
 							</view>
 						</block>

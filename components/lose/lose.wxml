@@ -4,6 +4,6 @@
         <text class="{{icon}} iconfont _icon"></text>
         <view class="_title">{{title}}</view>    
     </view>    
-    <view class="g-bt-orange-sm g-m-t-30" wx:if="{{refresh}}">立即刷新</view>
-    <view style="height:10px;color:transparent" wx:else="{{refresh}}">立即刷新</view>
+    <view class="g-bt-orange-sm g-m-t-30" wx:if="{{buttonText}}" catchtap='_buttonEvent'>{{buttonText}}</view>
+    <view style="height:10px;color:transparent" wx:else>我是透明的，避免只有一个元素时align-item失效</view>
 </view>

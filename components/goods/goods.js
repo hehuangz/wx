@@ -36,17 +36,6 @@ Component({
     data:{
     },
     methods:{
-        //点击切换
-        clickTab: function (e) {
-            // var that = this;
-            // if (this.data.currentTab === e.currentTarget.dataset.current) {
-            //     return false;
-            // } else {
-            //     that.setData({
-            //         currentTab: e.currentTarget.dataset.current
-            //     })
-            // }
-        }
     },
     relations: {
         '../tab/tab': {

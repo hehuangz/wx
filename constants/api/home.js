@@ -3,5 +3,6 @@ const api = {
     HOME_SAOMA: 'shop/getNearlyShop',
     HOME_ADVISER: 'users/searchAssistantByShopId',
     HOME_CATEGORY_FIRST: 'goods/getFirstCategoryByShopId', // 根据店铺id获取一级分类
+    HOME_COODS:'goods/getGoodsByShopAndFirstId'
 };
 export default api;

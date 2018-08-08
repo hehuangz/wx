@@ -2,13 +2,13 @@
  * toast弹窗
  * @param  {String} icon icon
  * @param  {String} title title
- * @param  {Boolean} refresh  是否可刷新
+ * @param  {Boolean} buttonText  按钮，传入按钮即展示并显示文案，否则不展示
  *  */
 Component({
     properties: {
-        refresh:{
-            type: Boolean,
-            value: 1 
+        buttonText: {
+            type: String,
+            value: ''
         },
         icon: {
             type: String,
@@ -23,5 +23,9 @@ Component({
         
     },
     methods:{
+        _buttonEvent(){
+            //触发立即刷新按钮
+            this.triggerEvent("buttonEvent")
+        },
     }
 })

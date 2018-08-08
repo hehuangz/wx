@@ -1,146 +1,144 @@
 //index.js
-import util from '../../utils/utils';
 import API from '../../constants/apiRoot';
-const { dataValidity } = util;
 
 //获取应用实例
 const app = getApp()
 Page({
 	data: {
-		tel: '',
-		code: '',
-		show: false,
-		tabTitle: [{
-			id: 0,
-			name: '销量',
-			icon: 'icon-shouji',
-			defaultStyles:'color:#929292',
-			selectedStyles: 'color:#ff4b2d'
-		},{
+		keyWords: '',
+		noData: false,// 搜索结果为空
+		searcheCondtion: 1,
+		// 搜索排序状态（1：按照销量 ，2 价格由低到高 3 价格由高到低
+		categoryList:[{
 			id: 1,
-			name: '价格从低到高',
-			icon: 'icon-shouji',
-			defaultStyles:'color:#929292',
-			selectedStyles: 'color:#ff4b2d'
+			name: "销量",
+			icon: "icon-sale",
+			searcheCondtion: 1
 		},{
 			id: 2,
-			name: '价格从高到低',
-			icon:'icon-shouji',
-			defaultStyles:'color:#929292',
-			selectedStyles: 'color:#ff4b2d'
+			name: "价格低到高",
+			icon: "icon-low-to-high",
+			searcheCondtion: 2
+		},{
+			id:  3,
+			name: "价格高到低",
+			icon: "icon-high-to-low",
+			searcheCondtion: 3
 		}],
-		tabContent:[{
-			id: 1,
-			title: '1111',
-			src: "",
-			price: '100',
-			oldPrice: '199'
-		},{
-			id: 2,
-			title: '222',
-			src: "",
-			price: '100',
-			oldPrice: '199'
-		},{
-			id: 3,
-			title: '333',
-			src: "",
-			price: '100',
-			oldPrice: '199'
-		}]
+		goodsList: [],
+		pageSize: 20,
+		pageNum: 1,
+		noMoreData: false,
+		historyList: wx.getStorageSync('wt_history_label')? wx.getStorageSync('wt_history_label'): [], // ['鞋子','裤子','袜子']
+		showHistory: true,
+		shopId: wx.getStorageSync('wt_shop')? wx.getStorageSync('wt_shop').id:null,
+		thirdId: null
 	},
-	onReady: function () {
+	onLoad(options){ // url携带的参数，如果携带参数则是从分类进来的
+		const {thirdId,shopId} = options
+		thirdId && this.setData({
+			showHistory:false,
+			thirdId
+		},()=>{
+			this._onGetList({thirdId:thirdId})
+		})
+	},
+	onReady() {
 		this.toast=this.selectComponent("#toast")
-		this.lose=this.selectComponent("#lose")
+		const {keyWords,searcheCondtion} = this.data;
 	},
-	bindTel: function (e) {
-		this.setData({ tel: e.detail.value })
-	},
-	bindCode: function (e) {
-		this.setData({ code: e.detail.value })
-	},
-	//事件处理函数
-	handleCode: function () {
-		const rules = {
-			tel: {
-				name: "手机号",
-				type: "validMobile",
-				value: this.data.tel,
-				required: !0
-			}
-		};
-		if(!this._onCheck(rules))return;
-		const _this=this;
+	/**
+	 * 获取列表，同时兼顾两几种场景，1.单独搜索 2.从分类点击进入
+	 */
+	_onGetList: function (params={}) {
+		const {toLower=false,thirdId} = params
+		const {keyWords,searcheCondtion,pageSize,pageNum,shopId} = this.data
+		const url=thirdId?API.SEARCH_GOODS_BYSHIRDID:API.SEARCH_GOODS
+		const temp=thirdId?{thirdId}:{keyWords:keyWords && keyWords.trim()}
+		const _this=this
 		wx.request({
-			url: API.LOGIN_CREATECODE,
-			data: {
-				tel: this.data.tel
-			},
+			url,
+			data: {...temp,searcheCondtion,pageSize,pageNum,shopId},
 			method: 'POST',
 			header: {
+				"Content-Type": "application/x-www-form-urlencoded" //如果需要formdata格式的数据，加之
 			},
 			success: function (res) {
-				const {message='',code=''} = res.data
+				const {code='', data=[], message=''} = res.data
 				if( code===200 ){
-					return _this.toast.info("验证码已发送，请注意查收")
+					if(toLower){ // 上拉加载时
+						if(!(data.dataList && data.dataList.length)) return _this.setData({noMoreData:true}) // 无更多数据时
+						return _this.setData({goodsList:[..._this.data.goodsList,...data.dataList]})
+					}
+					return _this.setData({goodsList:data.dataList})
 				}
-				return _this.toast.info(res.data.message)
+				return _this.toast.warning(message)
 			},
 			fail: function (res) {
-				return _this.toast.info('请求失败，请刷新重试')
+				return _this.toast.error('请求失败，请刷新重试')
 			}
 		})
 	},
-	handleLogin: function () {
-		const rules = {
-			tel: {
-				name: "手机号",
-				type: "validMobile",
-				value: this.data.tel,
-				required: !0
-			},
-			code: {
-				name: "验证码",
-				type: "validPostalCode",
-				value: this.data.code,
-				required: !0
-			}
-		};
-		if(!this._onCheck(rules))return;
-		const _this=this;
-		wx.request({
-			url: API.LOGIN_REGISTER,
-			data: {
-				tel: this.data.tel,
-				verifycode: this.data.code
-			},
-			method: 'POST',
-			header: {
-			},
-			success: function (res) {
-				const {message='',code='',data={}} = res.data	
-				if(code===200){
-					return 	wx.setStorage({
-						key:"wx_user",
-						data,
-						success:function () {
-							_this.toast.info("登录成功")
-						}
-					})
-				}			
-				return _this.toast.info(res.data.message)
-			},
-			fail: function (res) {
-				_this.toast.info('请求失败，请刷新重试')
+	bindKeyWords: function (e) {
+		this.setData({keyWords:e.detail.value})
+	},
+	handleCategory: function (e) {
+		this.setData({
+			searcheCondtion: e.currentTarget.dataset.current,
+			pageNum:1
+		},()=>{
+			this._onGetList({thirdId:this.data.thirdId})
+		})
+	},
+	handleSearch: function () {
+		const {keyWords=''} = this.data
+		// 点击搜索，页数归1，隐藏历史搜索，搜索加入缓存
+		this.setData({
+			pageNum:1,
+			showHistory: false,
+			thirdId: null
+		},()=>{
+			this._onGetList()
+			let old=wx.getStorageSync('wt_history_label')? wx.getStorageSync('wt_history_label'): [];
+			if(keyWords.trim() && (old.indexOf(keyWords)==-1)){
+				const data=[keyWords,...old].slice(0,12)
+				wx.setStorage({
+					key: "wt_history_label",
+					data,
+					success:function () {
+					}
+				})
 			}
 		})
 	},
-	_onCheck: function(rules){
-		const resultValidity = dataValidity(rules);
-		if (!resultValidity.status){
-			this.toast.info(resultValidity.error);
-			return false;
-		}
-		return true;
+	/**
+	 * 滑动到底部
+	 */
+	handleScrollLower: function (e) {
+		this.setData({
+			pageNum:this.data.pageNum+1
+		},()=>{
+			this._onGetList({toLower:true})
+		})
+	},
+	/**
+	 * 	清空历史搜索
+	 */
+	handleClear: function () {
+		this.setData({
+			historyList: []
+		},()=>{
+			wx.removeStorage({key: 'wt_history_label'})
+		})
+	},
+	/**
+	 *  点击标签进行搜索
+	 */
+	handleLabel: function (e) {
+		let keyWords=e.currentTarget.dataset.value;
+		this.setData({
+			keyWords,
+			showHistory: false
+		})
 	}
 })

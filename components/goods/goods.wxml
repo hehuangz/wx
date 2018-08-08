@@ -1,7 +1,7 @@
 <!-- toast -->   
 <view class="c-goods {{classes}}" style="{{styles}}">
-	<image class="_img" mode="widthFix" src="{{src}}"></image>	
-	<text class="_title g-twoline">{{title}}就是个 v 大好时光的 v 还是德国 v 说吃水果的韩剧上档次上的 v 城市的</text>
+	<image class="_img" mode="aspectFit" src="{{src}}"></image>	
+	<text class="_title g-twoline">{{title}}</text>
 	<text class="g-c-orange g-fs-16">¥ {{price}}</text>
-	<text class="g-c-929292 g-m-l-20 g-td-lh">¥ {{oldPrice}}</text>	
+	<text class="g-c-929292 g-m-l-20 g-td-lt">¥ {{oldPrice}}</text>	
 </view>

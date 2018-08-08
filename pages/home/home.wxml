@@ -1,7 +1,8 @@
 <!--home.wxml-->
 <toast id="toast"></toast>
+<lose id="lose" icon="icon-none" title="当前网络不稳定，请刷新重试～" buttonText="立即刷新" wx:if="{{noNet}}" bind:buttonEvent="_buttonEvent"/>
 
-<view class="container" wx:if="{{show}}">
+<view class="container" wx:else>
 	<!-- 获取用户信息和定位 -->
 	<dialog 
 		id='dialog' 
@@ -12,6 +13,7 @@
 		bind:cancelEvent="_cancelEvent"  
 		bind:confirmEvent="_confirmEvent"
 		wxAuth="{{true}}"
+		wx:if="{{canIUse}}"
 	>
     	<button slot="confirm" open-type="getUserInfo" bindgetuserinfo="getUserInfo" class="g-fs-16 g-bg-white g-c-green">确定</button>		
     </dialog>
@@ -60,17 +62,22 @@
 		</block>
 	</swiper>	
 	<!-- 商品列表tab栏 -->
-	<view class="swiper-tab">
+	<view class="swiper-tab g-m-t-10">
 		<block wx:for="{{categoryList}}" wx:key="index">
 			<view class="swiper-tab-item {{currentTab==item.id?'active':''}}" data-current="{{item.id}}" bindtap="handleCategory">{{item.name}}</view>
 		</block>
 	</view>
-	<swiper current="{{0}}" duration="300" bindchange="handleSwiper" class="goods-container">
-		<swiper-item class="goods-list">
-			<block wx:for="{{[1,2,3,4]}}" wx:key="index">
-				<goods id="goods" style="width:45%" price="144" oldPrice="1000" />
-			</block>
-		</swiper-item>
-	</swiper>
+	<view class="goods-list">
+		<block wx:for="{{goodsList}}" wx:key="index">
+			<goods 
+				id="goods" 
+				style="width:50%" 
+				price="{{item.price}}" 
+				oldPrice="{{item.marketPrice}}" 
+				data-id="{{item.goodId}}"
+				src="{{item.picture}}"
+				title="{{item.name}}"
+			/>
+		</block>
+	</view>
 </view>
-<lose wx:else id="lose" icon="icon-shouji" title="当前网络不稳定，请刷新重试～" refresh="true"></lose>

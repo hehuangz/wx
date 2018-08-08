@@ -16,6 +16,9 @@ text,view {
 .g-bg-white {
   background-color: white;
 }
+.g-bg-f0f0f0 {
+  background-color: #f0f0f0;
+}
 
 /* box */
 .g-bs-bb {
@@ -35,6 +38,12 @@ text,view {
   left: 0;
   z-index: 10;
 }
+.g-absolute {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
 /* iconfont简写 */
 [class^="icon-"]{
   font-family:"iconfont" !important;
@@ -42,4 +51,15 @@ text,view {
   font-style:normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* display */
+.g-block {
+  display: block
+}
+.g-inline {
+  display: inline-block
+}
+.g-ib {
+  display: inline-block
 }

@@ -94,10 +94,12 @@
 .g-m-20 {
   margin: 20px;
 }
-.g-m-t-20 {
-  margin-top: 20px;
+.g-m-lr-20 {
+  margin-left: 20px;
+  margin-right: 20px;
 }
-.g-m-b-20 {
+.g-m-tb-20 {
+  margin-top: 20px;
   margin-bottom: 20px;
 }
 .g-m-t-20 {

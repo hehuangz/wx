@@ -7,12 +7,16 @@ const app = getApp()
 Page({
 	data: {
 		currentTab: 0,
-		show: true,
+		canIUse: wx.canIUse('button.open-type.getUserInfo'),
 		shop: {},
 		adviserList: [], // 顾问列表
 		categoryList: [], // 分类列表
+		goodsList: [],
+		noNet: false,
+		pageSize: 20,
+		pageNum: 1
 	},
-	onReady: function () {
+	onLoad: function (){
 		this.dialog=this.selectComponent("#dialog")
 		this.toast=this.selectComponent("#toast")
 		/**
@@ -27,18 +31,19 @@ Page({
 		 * 获取一级分类
 		 */
 		this._onGetCategory()
-
 		/**
 		 * 没有授权没有拿到微信头像时打开弹窗
 		 */
 		this._onWxUser()
 	},
+	onReady: function () {
+		
+	},
 	_onLocation: function () {
 		const _this=this;
 		wx.getLocation({
-			type: 'wgs84',
+			type: 'wgs84', // 默认该类型
 			success: function(res) {
-				app.globalData.location={latitude:res.latitude,longitude:res.longitude}
 				wx.request({
 					url: API.HOME_NEARLY_SHOP,
 					data: {
@@ -52,6 +57,12 @@ Page({
 					success: function (res) {
 						const {code, data, message} = res.data
 						if( code===200 ){
+							wx.setStorage({
+								key:"wt_shop",
+								data,
+								success:function () {
+								}
+							})
 							return _this.setData({shop:data})
 						}else{
 							return _this.toast.warning(message)
@@ -95,19 +106,21 @@ Page({
 	},
 	//滑动切换
 	handleSwiper: function (e) {
-		var that = this;
-		that.setData({
+		var _this = this;
+		_this.setData({
 		  	currentTab: e.detail.current
 		});
 	},
 	//点击切换
 	handleCategory: function (e) {
-		var that = this;
-		if (this.data.currentTab === e.target.dataset.current) {
+		var _this = this;
+		if (this.data.currentTab === e.currentTarget.dataset.current) {
 			return false;
 		} else {
-			that.setData({
-				currentTab: e.target.dataset.current
+			_this.setData({
+				currentTab: e.currentTarget.dataset.current
+			},()=>{
+				_this._onGetGoods()
 			})
 		}
 	},
@@ -118,6 +131,7 @@ Page({
 	 * 扫一扫按钮
 	 */
 	handleSao: function () {
+		this.setData({noNet:true})
 		wx.scanCode({
 			success: (res) => {
 				console.log('扫码结果',res)
@@ -181,7 +195,39 @@ Page({
 			success: function (res) {
 				const {code, data=[], message} = res.data
 				if( code===200 ){
-					return _this.setData({categoryList:data,currentTab:data[0] && data[0].id})
+					return _this.setData({categoryList:data,currentTab:data[0] && data[0].id},()=>{
+						_this._onGetGoods()
+					})
+				}
+				return _this.toast.warn(message)
+			},
+			fail: function (res) {
+				return _this.toast.error('请求失败，请刷新重试')
+			}
+		})
+	},
+	/**
+	 * 获取分类下的商品
+	 */
+	_onGetGoods: function () {
+		const {pageSize,pageNum}=this.data
+		const _this = this;
+		wx.request({
+			url: API.HOME_COODS,
+			data: {
+				shopId: (_this.shop && _this.shop.id) || 26, //---TEMP---
+				firstId: _this.data.currentTab || 14, //---TEMP---
+				pageSize,
+				pageNum
+			},
+			method: 'POST',
+			header: {
+				"Content-Type": "application/x-www-form-urlencoded"
+			},
+			success: function (res) {
+				const {code, data={}, message} = res.data
+				if( code===200 ){
+					return _this.setData({goodsList:data.dataList})
 				}
 				return _this.toast.warn(message)
 			},
@@ -197,5 +243,9 @@ Page({
 	//dialog确认事件
 	_confirmEvent(){
 		this.dialog.hideDialog();
+	},
+	// 无网络时，点击立即刷新按钮
+	_buttonEvent() {
+		this.onLoad() //---TEMP---没有刷新成功
 	}
 })

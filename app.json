@@ -1,6 +1,9 @@
 {
   "pages":[
+    "pages/goodsDetail/goodsDetail",
+    "pages/mine/mine",
     "pages/category/category",
+    "pages/cart/cart",
     "pages/adviser/adviser",
     "pages/search/search",
     "pages/test/test",    
@@ -23,17 +26,17 @@
     "iconPath": "assets/images/wutong_store_monocolour@3x.png",
     "selectedIconPath": "assets/images/wutong_store_colour@3x.png"
 	},{
-		"pagePath": "pages/index/index",
+		"pagePath": "pages/category/category",
     "text": "分类",
     "iconPath": "assets/images/wutong_classification_monocolour@3x.png",
     "selectedIconPath": "assets/images/wutong_classification_colour@3x.png"
 	},{
-		"pagePath": "pages/index/index",
+		"pagePath": "pages/cart/cart",
     "text": "购物车",
     "iconPath": "assets/images/wutong_shopping cart_monocolour@3x.png",
     "selectedIconPath": "assets/images/wutong_shopping cart_colour@3x.png"
 	},{
-		"pagePath": "pages/index/index",
+		"pagePath": "pages/mine/mine",
     "text": "我的",
     "iconPath": "assets/images/wutong_my_monocolour@3x.png",
     "selectedIconPath": "assets/images/wutong_my_colour@3x.png"

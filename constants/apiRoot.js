@@ -4,6 +4,7 @@ import home from './api/home';
 import adviser from './api/adviser';
 import pay from './api/pay';
 import category from './api/category';
+import search from './api/search';
 
 const baseUrl = 'https://api.wutonglife.com/life/';
 const API = {
@@ -12,7 +13,8 @@ const API = {
 	...login,
 	...adviser,
 	...pay,
-	...category
+	...category,
+	...search
 };
 
 for (let i in API) {

@@ -51,6 +51,18 @@ Component({
                 this._eventTimeOut(time,callback)
             })
         },
+        // 同上
+        warn: function (msg="", time=2, callback) {
+            this._eventCheck(msg,time,callback)
+            this.setData({
+                show: true,
+                msg,
+                iconType: 'icon-abnormal',
+                showIcon: true
+            },()=>{
+                this._eventTimeOut(time,callback)
+            })
+        },
         error: function (msg="", time=2, callback) {
             this._eventCheck(msg,time,callback)
             this.setData({

@@ -69,11 +69,11 @@ Component({
         */
         _cancelEvent(){
         //触发取消回调
-        this.triggerEvent("cancelEvent")
+          this.triggerEvent("cancelEvent")
         },
         _confirmEvent(){
         //触发成功回调
-        this.triggerEvent("confirmEvent");
+          this.triggerEvent("confirmEvent");
         }
     }
 })

@@ -2,8 +2,9 @@
     "navigationBarTitleText": "搜索",
 	"usingComponents":{
 		"toast": "/components/toast/toast",
-		"tab": "/components/tab/tab",
 		"goods": "/components/goods/goods",
 		"lose": "/components/lose/lose"
-	}
+	},
+	"enablePullDownRefresh": true,
+ 	"onReachBottomDistance": 50
 }
