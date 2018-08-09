@@ -31,11 +31,21 @@ Component({
         oldPrice: {
             type: String,
             value: "100"
+        },
+        goodId: {
+            type: String,
+            value: 0
         }
     },
     data:{
+        goodId: 0
     },
     methods:{
+        handleToDetail: function () {
+            wx.navigateTo({
+                url:`/pages/goodsDetail/goodsDetail?goodId=${this.data.goodId}`
+            })
+        }
     },
     relations: {
         '../tab/tab': {

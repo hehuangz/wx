@@ -30,7 +30,7 @@ Page({
 				if(code===200) {
 					return _this.setData({
 						list:data,
-						activeId: data && data[0].id // 默认选中第一个
+						activeId: (data[0] && data[0].id)?data[0].id:0// 默认选中第一个
 					})
 				}
 				return _this.toast.warn(message)

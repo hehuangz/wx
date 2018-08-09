@@ -21,7 +21,7 @@
     border-top: 2rpx solid #f0f0f0;
 }
 ._swiper-item .__img {
-	background: pink;
+	background: #f0f0f0;
 	width: 82px;
 	height: 82px;
 	border-radius: 8px; 

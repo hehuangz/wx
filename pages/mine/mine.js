@@ -1,6 +1,7 @@
 //logs.js
 import utils from '../../utils/utils.js';
 import {IMG_OSS_MINEBG} from '../../constants/constants'
+import API from '../../constants/apiRoot'
 
 Page({
 	data: {
@@ -9,7 +10,7 @@ Page({
 		tel: '0571-87179826'
 	},
 	onLoad: function () {
-		
+		this.toast=this.selectComponent("#toast")
 	},
 	handleCall: function () {
 		wx.makePhoneCall({
@@ -17,13 +18,52 @@ Page({
 		})		  
 	},
 	handleAddress: function () {
-		// 打开看到的微信地址
+		// 打开微信地址
 		wx.chooseAddress({
 			success: function (res) {}
 		})
 	},
-	launchAppError: function(e) { 
-        console.log(e.detail.errMsg) 
-    } 
-
+	handleDownload: function () {
+		wx.navigateTo({
+			url:'/pages/download/download'
+		})
+	},
+	handleWxTel: function (e) {
+		const _this=this
+		wx.login({
+			success: function(wxres){
+				wx.request({
+					url: API.MINE_WXTEL,// ADVISER_SHOP_LIST
+					// url: API.ADVISER_SHOP_LIST,// 
+					data: {
+						iv: e.detail.iv,
+						encryptedData: e.detail.encryptedData,
+						jscode: wxres.code,
+						img: _this.data.userInfo.avatarUrl,
+						nickname:  _this.data.userInfo.nickName
+					},
+					method: 'POST',
+					header: {
+						"Content-Type": "application/x-www-form-urlencoded"
+					},
+					success: function (res) {
+						console.log(res);
+						const {code='', data={}, message=""} = res.data
+						if( code===200 ){
+							// return 
+						}
+						return _this.toast.warning(message)
+					},
+					fail: function (res) {
+						return _this.toast.error('请求失败，请刷新重试')
+					}
+				})
+			}
+		})
+	},
+	handleMyTel: function () {
+		wx.navigateTo({
+			url:'/pages/login/login'
+		})
+	}
 })

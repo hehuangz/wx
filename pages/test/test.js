@@ -9,12 +9,14 @@ Page({
 	data: {
 		openId:''
 	},
-	getPhoneNumber: function(e) { 
-		console.log();
-		console.log(e.detail.errMsg) 
-		console.log(e.detail.iv) 
-		console.log(e.detail.encryptedData) 
-		
+	getPhoneNumber: function(e) { 	
+		wx.login({
+			success: function(res){
+				console.log('code',res.code);
+				console.log('iv:',e.detail.iv) 
+				console.log('encryptedData:',e.detail.encryptedData) 
+			}
+		})
 	},
 	handleOpenID: function () {
 		const _this = this
@@ -48,6 +50,7 @@ Page({
 		// let nonceStr=String(Math.random())+String(Math.random())
 		// let package='prepay_id=wx'+timeStamp+'_'+Math.random()
 		const _this=this
+		
 		wx.request({
 			url: API.WXPAY_TO_PAY,
 			method: 'POST',

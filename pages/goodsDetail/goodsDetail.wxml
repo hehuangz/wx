@@ -1,12 +1,14 @@
-<!--logs.wxml-->
+<!--goodsdetail.wxml-->
+<toast id="toast"></toast>
 <view class="container">
 	<swiper 
 		indicator-dots="{{true}}"
 		autoplay="{{true}}"
+		class="swiper"
 	>
-	<block wx:for="{{imgUrls}}" wx:key="index">
+	<block wx:for="{{images}}" wx:key="index">
 		<swiper-item>
-		<image src="{{item}}" class="slide-image" width="100%" height="150"/>
+			<image src="{{item}}" class="slide-image" mode="aspectFit"/>
 		</swiper-item>
 	</block>
 	</swiper>

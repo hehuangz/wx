@@ -1,17 +1,20 @@
-<!--logs.wxml-->
+<!--mine.wxml-->
+<toast id="toast"></toast>
 <view class="container">
 	<view class="g-flex g-ai-c g-pd-lr-20 g-pd-10 g-bg-white g-m-tb-10">
 		<image src="{{userInfo.avatarUrl}}" mode="widthFix" class="g-avatar" />
 		<text class="g-fs-16 g-c-212121 g-m-l-20">{{userInfo.nickName}}</text>
+		<button open-type="getPhoneNumber" bindgetphonenumber="handleWxTel">微信tel</button> 
+		<button bindtap="handleMyTel">自绑登录</button>
 	</view>
-	<zan-cell title="我的订单" ></zan-cell>
+	<zan-cell title="我的订单"></zan-cell>
 	<view>
-		<image src="{{IMG_OSS_MINEBG}}" mode="widthFix" class="g-width" />
+		<image src="{{IMG_OSS_MINEBG}}" mode="widthFix" class="g-width" bindtap="handleDownload"/>
 	</view>
 	<zan-cell-group border>
 		<zan-cell title="我的地址" is-link bindtap="handleAddress"></zan-cell>
 		<zan-cell title="关于我们" is-link url="/pages/home/home"></zan-cell>		
-		<zan-cell title="立即反馈（工作日9:30-17:30）" value="{{tel}}" is-link bindtap="handleCall"></zan-cell>
+		<zan-cell title="在线反馈（工作日9:30-17:30）" value="{{tel}}" is-link bindtap="handleCall"></zan-cell>
 	</zan-cell-group>
 	<view style="height:100px"/>
 </view>

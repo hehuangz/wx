@@ -60,6 +60,7 @@
 							data-id="{{item.goodId}}"
 							src="{{item.img}}"
 							title="{{item.name}}"
+							goodId="{{item.goodId}}"
 						/>
 					</block>
 				</view>

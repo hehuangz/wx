@@ -1,18 +1,37 @@
 //logs.js
-import utils from '../../utils/utils.js';
-import {IMG_OSS_MINEBG} from '../../constants/constants'
+import API from '../../constants/apiRoot'
 
 Page({
 	data: {
-		imgUrls: [
-			'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
-			'http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg',
-			'http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg'
-		  ]
-	  
+		images: []
 	},
-	onLoad: function () {
-		
+	onLoad: function (options) {
+		this.toast=this.selectComponent("#toast")
+
+		console.log(options);
+		const {goodId=1} = options
+		const _this=this
+		wx.request({
+			url: API.GOODS_DETAIL,
+			data: {
+				goodId
+			},
+			method: 'POST',
+			header: {
+				"Content-Type": "application/x-www-form-urlencoded"
+			},
+			success: function (res) {
+				console.log(res);
+				const {code='', data={}, message=''} = res.data
+				if( code===200 ){
+					return _this.setData({images:data.images})
+				}
+				return _this.toast.warning(message)
+			},
+			fail: function (res) {
+				return _this.toast.error('请求失败，请刷新重试')
+			}
+		})
 	}
 	
 

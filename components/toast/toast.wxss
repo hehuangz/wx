@@ -16,7 +16,7 @@
     color: #fff;
     font-size: 14px;
     line-height: 20px;
-    top: 30%;
+    top: 20%;
     left: 50%;
     text-align: center;
     -webkit-transform: translate(-50%, -50%);

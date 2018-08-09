@@ -80,33 +80,43 @@ Page({
 		};
 		if(!this._onCheck(rules))return;
 		const _this=this;
-		wx.request({
-			url: API.LOGIN_REGISTER,
-			data: {
-				tel: this.data.tel,
-				verifycode: this.data.code
-			},
-			method: 'POST',
-			header: {
-			},
-			success: function (res) {
-				console.log(res);
-				const {message='',code='',data={}} = res.data	
-				if(code===200){
-					return 	wx.setStorage({
-						key:"wt_user",
-						data,
-						success:function () {
-							_this.toast.success("登录成功")
-						}
-					})
-				}			
-				return _this.toast.warning(res.data.message)
-			},
-			fail: function (res) {
-				_this.toast.error('请求失败，请刷新重试')
+		const userInfo=wx.getStorageSync('wx_user')?wx.getStorageSync('wx_user'):{}
+		wx.login({
+			success: function(wxres){
+				wx.request({
+					url: API.LOGIN_REGISTER,
+					data: {
+						tel: _this.data.tel,
+						verifycode: _this.data.code,
+						jscode: wxres.code,
+						img: userInfo.avatarUrl,
+						nickname: userInfo.nickName
+					},
+					method: 'POST',
+					header: {
+						"Content-Type": "application/x-www-form-urlencoded"
+					},
+					success: function (res) {
+						console.log(res);
+						const {message='',code='',data={}} = res.data	
+						if(code===200){
+							return 	wx.setStorage({
+								key:"wt_user",
+								data,
+								success:function () {
+									_this.toast.success("登录成功")
+								}
+							})
+						}			
+						return _this.toast.warning(res.data.message)
+					},
+					fail: function (res) {
+						_this.toast.error('请求失败，请刷新重试')
+					}
+				})	
 			}
 		})
+		
 	},
 	_onCheck: function(rules){
 		const resultValidity = dataValidity(rules);

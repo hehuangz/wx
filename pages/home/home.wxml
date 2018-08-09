@@ -44,7 +44,7 @@
 		<block wx:for="{{adviserList}}" wx:key="index">
 			<swiper-item>
 				<view class="_swiper-item g-flex">
-					<image class="__img g-m-r-10 g-fs-0" mode="widthFix" src="{{item.img}}"></image>
+					<image class="__img g-m-r-10 g-fs-0" mode="aspectFit" src="{{item.img}}"></image>
 					<view class="__content g-fd-c g-jc-sb">
 						<view class="g-m-b-5"> 
 							<text class="g-fs-16 g-m-r-5">{{item.name}}</text>
@@ -77,6 +77,7 @@
 				data-id="{{item.goodId}}"
 				src="{{item.picture}}"
 				title="{{item.name}}"
+				goodId="{{item.goodId}}"
 			/>
 		</block>
 	</view>
