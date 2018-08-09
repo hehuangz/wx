@@ -6,10 +6,97 @@
 		autoplay="{{true}}"
 		class="swiper"
 	>
-	<block wx:for="{{images}}" wx:key="index">
-		<swiper-item>
-			<image src="{{item}}" class="slide-image" mode="aspectFit"/>
-		</swiper-item>
-	</block>
+		<block wx:for="{{data.images}}" wx:key="index">
+			<swiper-item>
+				<image src="{{item}}" class="slide-image" mode="aspectFit"/>
+			</swiper-item>
+		</block>
 	</swiper>
+	<view class="center g-width g-bs-bb g-pd-15">
+		<view class="">
+			<text class="g-m-r-20 g-fs-20 g-c-orange">¥{{data.marketPrice}}</text>
+			<text class="g-fs-12 g-c-929292">¥{{data.price}}</text>
+		</view>
+		<view class="g-fs-16 g-c-212121 g-ls-0 g-weight-200 g-m-b-5">{{data.name}}</view>
+		<view class="g-fs-14 g-c-929292 g-weight-200" wx:if="{{data.goodDesc}}">{{data.goodDesc}}</view>
+		<view 
+			class="_choose_sku g-m-t-10 g-bs-bb g-border-e5e5e5 g-bg-f9f9f9 g-c-929292 g-fs-16 g-flex g-jc-sb"
+			bindtap="handleChooseSku"
+		>
+			<text class="">选择商品规格</text>
+			<text class="icon-more2"></text>
+		</view>
+	</view>
+	<view class="service"> 
+		<view class="g-fs-12 g-c-afafaf g-tc">————————<text class="g-m-lr-20">吾同特色服务</text>————————</view>
+		<view class="g-flex g-jc-sb g-pd-lr-30 g-pd-tb-20">
+			<view class="_service-item g-m-lr-10" wx:for="{{service}}" wx:key="index" >
+				<view class="g-label-service">{{item}}</view>
+			</view>
+		</view>
+	</view>
+	<view class="details" style="padding-bottom:70px;"> 
+		<view class="g-fs-12 g-c-afafaf g-tc g-m-b-10">————————<text class="g-m-lr-20">商品详情</text>————————</view>
+		<view wx:for="{{data.goodDetails}}" wx:key="index">
+			<image src="{{item}}" class="g-width" mode="widthFix"/>
+		</view>
+		<view class="g-fs-12 g-c-afafaf g-tc g-m-t-10">————————<text class="g-m-lr-20">已经到底了啦</text>————————</view>		
+	</view>
+	<view class="bottom g-flex g-jc-sb">
+		<view class="g-c-929292 g-fs-16" style="width:34%">
+			<text class="icon-user g-fs-22" style="margin-right:2px"/>大河
+			<text class="g-fs-12" style="margin-left:3px">顾问</text>
+		</view>
+		<view class="g-bg-yellow g-c-white g-fs-16 g-ls-0 g-weight-200" style="width:33%">加入购物车</view>
+		<view class="g-bg-orange g-c-white g-fs-16 g-ls-0 g-weight-200" style="width:33%">立即购买</view>
+	</view>
+	<!-- 选择sku之后弹出的内容 -->
+	
+	<zan-popup 
+		type="bottom" 
+		show="{{ showsku }}" 
+		closeOnClickOverlay="{{true}}" 
+		bindclose="togglePopup"
+	>
+		<view style="width:100vw" class="g-bg-white g-pd-20 g-bs-bb">
+			<view class="sku-img g-bg-white g-flex g-jc-fs g-ai-c g-m-b-20">
+				<image src="{{item}}" class="__img g-m-r-20 g-fs-0" mode="widthFix"/>
+				<view>
+					<text class="g-c-orange g-block g-fs-16 g-m-b-5">¥133</text>
+					<text class="g-c-929292 g-block g-fs-12">余量20</text>
+				</view>
+			</view>
+			<view 
+				class="sku-spec g-pd-b-20" 
+				wx:for="{{skuKey}}" 
+				wx:key="index" 
+				wx:for-index='key'
+			>
+				<text class="g-block g-fs-12 g-pd-b-5 g-c-212121">{{key}}</text>
+				<view 
+					class="g-bt-hollow-orange g-m-r-10"
+					wx:for="{{item}}" 
+					wx:for-item="{{skuValue}}"
+					wx:key="skuValue" 
+					wx:for-index='key2'
+				>{{item[key2]}}</view>
+			</view>
+			<view class="sku-spec g-pd-b-20">
+				<text class="g-block g-fs-12 g-pd-b-5 g-c-212121">购买数量</text>
+				<zan-stepper
+					stepper="{{ stepperValue }}"
+					min="{{ 1 }}"
+					max="{{ stepperMax }}"
+					bind:change="handleZanStepperChange"
+				>
+				</zan-stepper>
+			</view>
+		</view>
+		<view class="g-flex g-ai-c g-tc" style="height: 44px;line-height:44px">
+			<view class="g-bg-yellow g-c-white g-fs-16 g-ls-0 g-weight-200" style="width:50%">加入购物车</view>
+			<view class="g-bg-orange g-c-white g-fs-16 g-ls-0 g-weight-200" style="width:50%">立即购买</view>
+		</view>
+	</zan-popup>
+	
+
 </view>

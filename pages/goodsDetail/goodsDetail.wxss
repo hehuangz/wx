@@ -1,11 +1,42 @@
 page {
-    background: #f9f9f9;
+    background: #fff;
 }
 .container .swiper {
     width: 100%;
-    height: 390px;
+    height: 300px;
 }
 .slide-image {
     width: 100%;
     background: #f0f0f0;
+}
+._choose_sku {
+    width: 100%;
+    height: 55px;
+    line-height: 35px;
+    padding: 10px 20px;
+}
+._service-item {
+    border:1rpx solid rgba(255,151,45,0.55);
+}
+.bottom {
+    width: 100%;
+    height: 60px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background: #fff;
+    text-align: center;
+    line-height: 60px;
+    border-top: 1rpx solid #e5e5e5;
+    box-sizing: border-box;
+}
+.sku-img {
+    height: 66px;
+    box-sizing: border-box;
+}
+.sku-img .__img {
+    width: 66px;
+    height: 66px;
+    background: #f0f0f0;
+
 }

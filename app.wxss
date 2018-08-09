@@ -19,6 +19,15 @@ text,view {
 .g-bg-f0f0f0 {
   background-color: #f0f0f0;
 }
+.g-bg-f9f9f9 {
+  background-color: #f9f9f9;
+}
+.g-bg-yellow {
+  background: #ffc425;
+}
+.g-bg-orange {
+  background: #ff4b2e;
+}
 
 /* box */
 .g-bs-bb {

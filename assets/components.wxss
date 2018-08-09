@@ -1,6 +1,6 @@
 /* components */
 
-/* button */
+/* button0-实心的固定宽度的按钮 */
 .g-bt-orange-s {
 	min-width: 102px;
 	height: 32px;
@@ -74,4 +74,32 @@
 	width:78px;
 	height:78px;
 	border: 1rpx solid #f0f0f0;
+}
+/* 商品详情页的特色服务标签 */
+.g-label-service {
+	width: 82px;
+    height: 50px;
+    border:1rpx solid rgba(255,151,45,0.11);
+    text-align: center;
+	line-height: 50px;
+	margin: 2px;
+	box-sizing: border-box;
+	font-family:PingFangSC-Regular;
+	font-size:14px;
+	color:#ff972d;
+	letter-spacing:0;
+}
+/* 空心的，宽度随内容撑开的 */
+.g-bt-hollow-orange {
+	display: inline-block;
+	min-width: 70px;
+	box-sizing: border-box;
+	padding: 0 20px;
+	height: 30px;
+	border: 1px solid #ff4b2d;
+	color: #ff4b2d;
+	font-size: 12px;
+	line-height: 28px;
+	text-align: center;
+	border-radius: 100px;
 }

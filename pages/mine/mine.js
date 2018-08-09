@@ -34,7 +34,6 @@ Page({
 			success: function(wxres){
 				wx.request({
 					url: API.MINE_WXTEL,// ADVISER_SHOP_LIST
-					// url: API.ADVISER_SHOP_LIST,// 
 					data: {
 						iv: e.detail.iv,
 						encryptedData: e.detail.encryptedData,

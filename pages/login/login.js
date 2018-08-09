@@ -87,7 +87,7 @@ Page({
 					url: API.LOGIN_REGISTER,
 					data: {
 						tel: _this.data.tel,
-						verifycode: _this.data.code,
+						code: _this.data.code,
 						jscode: wxres.code,
 						img: userInfo.avatarUrl,
 						nickname: userInfo.nickName
