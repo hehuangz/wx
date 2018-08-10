@@ -5,6 +5,7 @@
  * @param  {String} sex  性别
  * @param  {String} status  状态
  * @param  {String} explain 个人说明
+ * @param  {function} cardEvent 在整个卡片身上绑定事件
  *  */
 Component({
     properties: {
@@ -41,5 +42,8 @@ Component({
         
     },
     methods:{
+        _cardEvent(){
+            this.triggerEvent("cardEvent")
+        }
     }
 })

@@ -68,6 +68,7 @@ Page({
 			}
 		})
 		   
+		
 	},
 	_onPay: function (data) {
 		const {
@@ -77,11 +78,12 @@ Page({
 			paySign=''
 		} = data;
 		wx.requestPayment({
-			package: data.package || '',//package是关键字，不能做类名
-			timeStamp,
-			nonceStr,
-			signType,
-			paySign,
+			"appId": "wx1817eb9b85d97453",
+    "nonceStr": "6db96f4ff8f746378c200b3f5a0cf2f1",
+    "package": "prepay_id=wx1017395070860794be8acc4a1359428164",
+    "paySign": "66C044D756849FE9F7AD64B681E8DCE2",
+    "signType": "MD5",
+    "timeStamp": "1533893990",
 			success: function (res) {
 				console.log(res);
 			},
@@ -89,6 +91,19 @@ Page({
 				console.log('fail:' + JSON.stringify(res));
 			}
 		  })
+		// wx.requestPayment({
+		// 	package: data.package || '',//package是关键字，不能做类名
+		// 	timeStamp,
+		// 	nonceStr,
+		// 	signType,
+		// 	paySign,
+		// 	success: function (res) {
+		// 		console.log(res);
+		// 	},
+		// 	fail: function (res) {
+		// 		console.log('fail:' + JSON.stringify(res));
+		// 	}
+		//   })
 	},
 	handleAddress: function(){
 		wx.chooseAddress({

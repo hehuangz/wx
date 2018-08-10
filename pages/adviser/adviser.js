@@ -5,7 +5,8 @@ import API from '../../constants/apiRoot';
 const app = getApp()
 Page({
 	data: {
-		list: []
+		list: [],
+		uid: 0 // 当前选择的顾问id
 	},
 	onReady: function () {
 		this.toast=this.selectComponent("#toast")
@@ -21,7 +22,7 @@ Page({
 			success: function (res) {
 				const {message='',code='',data} = res.data
 				if( code===200 ){
-					return _this.setData({list:data})
+					return _this.setData({list:data,uid:data[0]?data[0].uid:0})
 				}
 				return _this.toast.info(message)
 			},
@@ -29,5 +30,8 @@ Page({
 				return _this.toast.info('请求失败，请刷新重试')
 			}
 		})
+	},
+	handleChooseAdvise: function(e){
+		console.log(e.currentTarget.dataset);
 	}
 })

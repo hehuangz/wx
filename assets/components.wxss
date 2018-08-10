@@ -103,3 +103,17 @@
 	text-align: center;
 	border-radius: 100px;
 }
+.g-bt-hollow-orange.active {
+	display: inline-block;
+	min-width: 70px;
+	box-sizing: border-box;
+	padding: 0 20px;
+	height: 30px;
+	border: 1px solid #ff4b2d;
+	color: #fff;
+	background: #ff4b2d;
+	font-size: 12px;
+	line-height: 28px;
+	text-align: center;
+	border-radius: 100px;
+}

@@ -18,6 +18,10 @@
 .g-m-t-0half {
   margin-top: -50%;
 }
+/* 0 */
+.g-m-0 {
+  margin: 0;
+}
 /* 5 */
 .g-m-5 {
   margin: 5px;

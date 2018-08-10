@@ -1,5 +1,5 @@
 <!-- card -->   
-<view class="c-card g-flex {{classes}}" style="{{styles}}">
+<view class="c-card g-flex {{classes}}" style="{{styles}}" catchtap='_cardEvent'>
 	<image class="__img g-m-r-10 g-fs-0" mode="aspectFill" src="{{img}}"></image>
 	<view class="__content g-fd-c g-jc-sb g-width">
 		<view class="g-m-b-5"> 
