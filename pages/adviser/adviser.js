@@ -32,6 +32,22 @@ Page({
 		})
 	},
 	handleChooseAdvise: function(e){
-		console.log(e.currentTarget.dataset);
+		const {uid}=this.data;
+		const current=e.currentTarget.dataset.current
+		/**
+		 * 重复点击无效
+		 * 点击后附上颜色，返回上一页
+		 * 把选择的顾问存本地，返回
+		 */
+		current.uid!=uid && this.setData({uid:current.uid},()=>{
+			setTimeout(() => {
+				const pages=getCurrentPages()
+				let prevPage=pages[pages.length-2] // 上个页面
+				prevPage.setData({
+					adviser: {uid:current.uid,username:current.username}
+				})
+				wx.navigateBack()
+			}, 200);
+		})
 	}
 })

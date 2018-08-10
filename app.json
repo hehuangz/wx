@@ -1,5 +1,6 @@
 {
   "pages":[
+    "pages/buy/buy",
     "pages/download/download",
     "pages/goodsDetail/goodsDetail",
     "pages/mine/mine",

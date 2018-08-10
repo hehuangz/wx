@@ -10,16 +10,31 @@ Page({
 		skuArr: [], // 后端返回的skuArr
 		skuData: {}, // {'hh':{value:['red','yellow'],active:'red'}}
 		skuSelect: {}, // 当前选中的sku组合
-		skuInfo: {}
+		skuInfo: {}, // 当前选中的整条商品信息，包括价格图片库存
+		adviser: {uid:0,username:'大大回复会户'}
 	},
 	onLoad: function (options) {
 		this.toast=this.selectComponent("#toast")
-		const {goodId=1} = options
+		const {goodId=null} = options
+		this._onGetData(goodId)
+	},
+	// 生命周期-页面显示即调用，因为ready和load方法在返回路由时不调用
+	onShow: function(){
+		const pages=getCurrentPages()
+		let currentPage=pages[pages.length-1]
+		let adviser = currentPage.data.adviser
+		// console.log(currentPage.data.adviser);
+		adviser && this.setData({
+			adviser:currentPage.data.adviser
+		})
+	},
+	// 获取数据
+	_onGetData: function(goodId){
 		const _this=this
 		wx.request({
 			url: API.GOODS_DETAIL,
 			data: {
-				goodId: 68 // --TEMP--
+				goodId: goodId || 68 // --TEMP--
 			},
 			method: 'POST',
 			header: {
@@ -110,6 +125,14 @@ Page({
 	handleChangeAdviser: function(){
 		wx.navigateTo({
 			url: '/pages/adviser/adviser'
+		})
+	},
+	// 立即购买
+	handleBuy: function () {
+		const {skuInfo={}} = this.data
+		if(!skuInfo.stock)return this.toast.warn('请先选择商品规格')
+		wx.navigateTo({
+			url:'/pages/buy/buy'
 		})
 	}
 })

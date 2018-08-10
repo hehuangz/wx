@@ -1,9 +1,15 @@
 /* fontSize */
+.g-fs-10 {
+	font-size: 10px;
+}
 .g-fs-12 {
 	font-size: 12px;
 }
 .g-fs-14 {
 	font-size: 14px;
+}
+.g-fs-15{
+	font-size: 15px;
 }
 .g-fs-16 {
 	font-size: 16px;

@@ -53,11 +53,21 @@
 	</view>
 	<view class="bottom g-flex g-jc-sb">
 		<view class="g-c-929292 g-fs-16" style="width:34%" bindtap="handleChangeAdviser">
-			<text class="icon-user g-fs-22" style="margin-right:2px"/>大河
-			<text class="g-fs-12" style="margin-left:3px">顾问</text>
+			<block wx:if="{{adviser.username.length<7}}">
+				<text class="icon-user g-fs-22" style="margin-right:1px"/>
+				<text class="g-fs-14">{{adviser.username}}</text>
+			</block>
+			<block wx:else>
+				<text class="g-fs-12">{{adviser.username}}</text>
+			</block>
+			<text class="g-fs-12 g-c-afafaf" style="margin-left:2px">顾问</text>
 		</view>
 		<view class="g-bg-yellow g-c-white g-fs-16 g-ls-0 g-weight-200" style="width:33%">加入购物车</view>
-		<view class="g-bg-orange g-c-white g-fs-16 g-ls-0 g-weight-200" style="width:33%">立即购买</view>
+		<view 
+			class="g-bg-orange g-c-white g-fs-16 g-ls-0 g-weight-200" 
+			style="width:33%"
+			bindtap="handleBuy"
+		>立即购买</view>
 	</view>
 
 	<!-- 选择sku之后弹出的内容 -->
