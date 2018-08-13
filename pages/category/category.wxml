@@ -1,7 +1,7 @@
 <!--home.wxml-->
 <toast id="toast"></toast>
-
-<view class="container">
+<lose id="lose" icon="icon-none" title="店铺分类待上传中，敬请期待～" wx:if="{{!list.length}}"></lose>
+<view class="container" >
 	<!-- 顶部搜索栏 -->
 	<view 
 		class="top g-width g-bs-bb g-bg-white g-flex g-jc-sb g-height-30 g-lh-30 g-fs-30 g-pd-lr-30 g-pd-t-5 g-pd-b-15 g-fixed"
@@ -19,7 +19,7 @@
 		</view>
 	</view>
 	<view style="margin-top:50px"></view>
-	<view class="center g-flex">
+	<view class="center g-flex" wx:if="{{list.length}}">
 		<view class="_left g-fs-0">
 			<block wx:for="{{list}}" wx:key="{{item.id}}" >
 				<view 

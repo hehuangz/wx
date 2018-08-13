@@ -54,7 +54,7 @@
 	<view class="bottom g-flex g-jc-sb">
 		<view class="g-c-929292 g-fs-16" style="width:34%" bindtap="handleChangeAdviser">
 			<block wx:if="{{adviser.username.length<7}}">
-				<text class="icon-user g-fs-22" style="margin-right:1px"/>
+				<text class="icon-user g-fs-18" style="margin-right:1px"/>
 				<text class="g-fs-14">{{adviser.username}}</text>
 			</block>
 			<block wx:else>
@@ -62,7 +62,11 @@
 			</block>
 			<text class="g-fs-12 g-c-afafaf" style="margin-left:2px">顾问</text>
 		</view>
-		<view class="g-bg-yellow g-c-white g-fs-16 g-ls-0 g-weight-200" style="width:33%">加入购物车</view>
+		<view 
+			class="g-bg-yellow g-c-white g-fs-16 g-ls-0 g-weight-200" 
+			style="width:33%"
+			bindtap="handleToCart"
+		>加入购物车</view>
 		<view 
 			class="g-bg-orange g-c-white g-fs-16 g-ls-0 g-weight-200" 
 			style="width:33%"
@@ -79,7 +83,7 @@
 	>
 		<view style="width:100vw" class="g-bg-white g-pd-20 g-bs-bb">
 			<view class="sku-img g-bg-white g-flex g-jc-fs g-ai-c g-m-b-20">
-				<image src="{{skuInfo.image}}" class="__img g-m-r-20 g-fs-0 g-border-e5e5e5" mode="widthFix"/>
+				<image src="{{skuInfo.image}}" class="__img g-m-r-20 g-fs-0 g-border-e5e5e5" mode="aspectFit"/>
 				<view>
 					<text class="g-c-orange g-block g-fs-16 g-m-b-5">¥{{skuInfo.price}}</text>
 					<text class="g-c-929292 g-block g-fs-12">余量{{skuInfo.stock}}</text>
@@ -87,7 +91,7 @@
 			</view>
 			<view>
 				<view 
-					class="sku-spec g-pd-b-20" 
+					class="sku-spec g-pd-b-10" 
 					wx:for="{{skuData}}" 
 					wx:key="index"
 					wx:for-index='key'
@@ -96,7 +100,7 @@
 					<text class="g-block g-fs-12 g-pd-b-5 g-c-212121">{{key}}</text>
 					<block wx:for="{{itemPar.value}}" wx:key="item">
 						<view 
-						class="g-bt-hollow-orange g-m-r-10 {{itemPar.active==item?'active':''}}"
+						class="g-bt-hollow-orange g-m-r-10 g-m-b-10 {{itemPar.active==item?'active':''}}"
 						 bindtap="handleTabLabel" 
 						 data-active="{{item}}"
 						 data-name="{{key}}"
@@ -116,8 +120,16 @@
 			</view>
 		</view>
 		<view class="g-flex g-ai-c g-tc" style="height: 44px;line-height:44px">
-			<view class="g-bg-yellow g-c-white g-fs-16 g-ls-0 g-weight-200" style="width:50%">加入购物车</view>
-			<view class="g-bg-orange g-c-white g-fs-16 g-ls-0 g-weight-200" style="width:50%">立即购买</view>
+			<view 
+				class="g-bg-yellow g-c-white g-fs-16 g-ls-0 g-weight-200" 
+				style="width:50%"
+				bindtap="handleToCart"
+			>加入购物车</view>
+			<view 
+				class="g-bg-orange g-c-white g-fs-16 g-ls-0 g-weight-200" 
+				style="width:50%"
+				bindtap="handleBuy"
+			>立即购买</view>
 		</view>
 	</zan-popup>
 

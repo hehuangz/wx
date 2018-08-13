@@ -43,7 +43,7 @@ Page({
 			setTimeout(() => {
 				const pages=getCurrentPages()
 				let prevPage=pages[pages.length-2] // 上个页面
-				prevPage.setData({
+				prevPage && prevPage.setData({
 					adviser: {uid:current.uid,username:current.username}
 				})
 				wx.navigateBack()

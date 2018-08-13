@@ -8,6 +8,10 @@
 .g-width-80p {
   width: 80%;
 }
+.g-width-50 {
+  width: 50px;
+}
+
 .g-height {
   height: 100vh;
 }
@@ -182,6 +186,14 @@
 .g-pd-15 {
   padding: 15px;
 }
+.g-pd-lr-15 {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.g-pd-tb-15 {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
 .g-pd-t-15 {
   padding-top: 15px;
 }
@@ -252,4 +264,7 @@
 /* border */
 .g-border-e5e5e5 {
   border: 1rpx solid #e5e5e5;
+}
+.g-border-b-gray {
+  border-bottom: 1rpx solid #e5e5e5;
 }

@@ -1,9 +1,10 @@
 //logs.js
 import utils from '../../utils/utils.js';
+import {IMG_OSS_TIAO} from "../../constants/constants"
 
 Page({
   data: {
-    logs: []
+    IMG_OSS_TIAO,
   },
   onLoad: function () {
     this.setData({

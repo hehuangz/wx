@@ -1,8 +1,14 @@
-.log-list {
-  display: flex;
-  flex-direction: column;
-  padding: 40rpx;
+
+.bottom {
+    width: 100vw;
+    height: 117px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
 }
-.log-item {
-  margin: 10rpx;
+.sku-goods .sku-goods-img {
+    width: 86px;
+    height: 86px;
+    background: #f0f0f0;
+    border: 1rpx solid #f0f0f0;
 }

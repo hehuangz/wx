@@ -4,7 +4,7 @@
 	<view class="g-flex g-ai-c g-pd-lr-20 g-pd-10 g-bg-white g-m-tb-10">
 		<image src="{{userInfo.avatarUrl}}" mode="widthFix" class="g-avatar" />
 		<text class="g-fs-16 g-c-212121 g-m-l-20">{{userInfo.nickName}}</text>
-		<button open-type="getPhoneNumber" bindgetphonenumber="handleWxTel">微信tel</button> 
+		<button open-type="getPhoneNumber" bindgetphonenumber="handleWxTel">登录</button> 
 		<button bindtap="handleMyTel">自绑登录</button>
 	</view>
 	<zan-cell title="我的订单"></zan-cell>

@@ -1,4 +1,166 @@
-<!--logs.wxml-->
-<view class="container log-list">
-	<lose id="lose" icon="icon" buttonText="去逛逛" title="您的购物车里什么都没有喔～" bind:buttonEvent="_buttonEvent"></lose>
+<!--cart.wxml-->
+<toast id="toast"/>
+<!-- <lose id="lose" icon="icon" buttonText="去逛逛" title="您的购物车里什么都没有喔～" bind:buttonEvent="_buttonEvent"/> -->
+
+<view class="container">
+	<!-- 有效区 -->
+	<!-- 顶头 -->
+	<view class="g-pd-15 g-flex g-jc-sb g-bg-f0f0f0">
+		<view>共有{{3}}件商品</view>
+		<view bindtap="handleEdit" wx:if="{{!is_edit}}">编辑</view>
+		<view bindtap="handleEdit" wx:if="{{is_edit}}" class="g-c-orange">完成</view>
+	</view>
+	<block wx:for="{{cartVos}}" wx:key="index" wx:for-item="itemPar">
+		<!-- 店铺名称 -->
+		<view class="g-flex g-height-30 g-lh-30 g-pd-r-15 g-width g-bs-bb">
+			<text 
+				class="{{itemPar.checked?'icon-checkbox-after g-c-orange':'icon-checkbox-before g-c-c4c4c4'}} g-fs-0 g-tc g-m-lr-15 g-fs-20"
+				bindtap="handleChecked"
+				data-shopid="{{itemPar.shopId}}"
+			/>
+			<view class="g-flex g-jc-sb g-width">
+				<view>{{itemPar.shopName}}</view>
+				<view>商品顾问：{{itemPar.counselorName}}
+					<!--变更顾问按钮 -->
+					<text wx:if="{{is_edit}}" class="icon-change" bindtap="handleChangeAdviser"/>
+				</view>
+			</view>
+		</view>
+		<!-- 店铺下商品 -->
+		<view class="g-flex g-ai-c g-pd-r-15 g-width g-bs-bb" wx:for="{{itemPar.cartVoList}}" wx:key="item.cartId">
+			<text 
+				class="{{item.checked?'icon-checkbox-after g-c-orange':'icon-checkbox-before g-c-c4c4c4'}} g-fs-0 g-tc g-m-lr-15 g-fs-20"
+				bindtap="handleChecked"
+				data-cartid="{{item.cartId}}"
+			/>			
+			<view class="sku-goods g-flex g-width g-bs-bb g-pd-tb-10">
+				<image mode="aspectFill" src="{{item.goodsImg}}" class="sku-goods-img g-fs-0 g-m-r-5" />
+				<view class="g-flex g-ai-sb g-fw-w g-width">
+					<view>{{item.goodsName}}</view>
+					<!-- 编辑状态时 sku 可选 -->					
+					<!-- <view class="g-width g-fs-12" wx:if="{{!is_edit}}">{{item.skuDesc}}</view> -->
+					<block wx:if="{{!is_edit}}">
+						<view 
+							class="g-width g-bg-f9f9f9 g-flex g-jc-sb g-pd-5" 
+							bindtap="handleShowSku" 
+							data-cartid="{{item.cartId}}"
+							data-shopid="{{itemPar.shopId}}"
+							data-skuid="{{item.skuId}}"
+							data-number="{{item.number}}"
+							data-goodsid="{{item.goodsId}}"
+						>
+							<text class="g-c-929292 g-fs-12">{{item.skuDesc}}</text>
+							<text class="icon-arrow-down g-c-929292"/>
+						</view>
+					</block>
+					<view class="g-width g-flex g-jc-sb">
+						<view class="g-c-orange">¥{{item.goodsPrice}} 
+							<text class="g-m-l-5 g-c-929292">¥{{item.goodsMarketprice}}</text>
+						</view>
+						<text class="g-c-929292">X {{item.number}}</text>
+					</view>
+				</view>
+			</view>
+		</view>
+	</block>
+	<!-- 失效区 -->
+	<!-- 商品 -->
+	<view class="g-pd-15 g-bg-f0f0f0">失效商品</view>
+	<!-- 店铺名称 -->
+	<block wx:for="{{disCartVos}}" wx:key="index" wx:for-item="itemPar">
+		<view class="g-flex g-height-30 g-lh-30 g-pd-r-15 g-width g-bs-bb g-c-929292">
+			<text class="icon-checkbox-before g-fs-0 g-tc g-m-lr-15 g-c-c4c4c4 g-fs-20"/>			
+			<view class="g-flex g-jc-sb g-width g-m-l-15">
+				<view>{{itemPar.shopName}}</view>
+				<view class="g-c-929292">商品顾问：{{itemPar.counselorName}}</view>
+			</view>
+		</view>
+		<!-- 店铺下商品 -->
+		<view class="g-flex g-ai-c g-pd-r-15 g-width g-bs-bb" wx:for="{{itemPar.cartVoList}}" wx:key="item.cartId">
+			<text class="icon-checkbox-before g-fs-0 g-tc g-m-lr-15 g-c-c4c4c4 g-fs-20"/>
+			<view class="sku-goods g-flex g-width g-bs-bb g-pd-tb-10">
+				<image mode="aspectFill" src="{{item.goodsImg}}" class="sku-goods-img g-fs-0 g-m-r-5" />
+				<view class="g-flex g-ai-sb g-fw-w g-width">
+					<view class="g-c-929292">{{item.goodsName}}</view>
+					<view class="g-width g-fs-12 g-c-929292">{{item.skuDesc}}</view>
+					<view class="g-width g-flex g-jc-sb">
+						<view class="g-c-orange">¥{{item.goodsPrice}} 
+							<text class="g-m-l-5 g-c-929292">¥{{item.goodsMarketprice}}</text>
+						</view>
+						<text class="g-c-929292">{{item.goodStatus==1?'卖完啦！':'已下架啦！'}}</text>
+					</view>
+				</view>
+			</view>
+		</view>
+	</block>
+	<view style="height: 50px"/>
+	<!-- 底部合计 -->
+	<view class="bottom g-flex g-jc-sb">
+		<view class="g-fs-0 g-tc">
+			<text 
+				class="{{is_checkedAll?'icon-checkbox-after g-c-orange':'icon-checkbox-before g-c-c4c4c4'}} g-fs-0 g-tc g-m-lr-15 g-fs-20"
+				bindtap="handleCheckedAll"
+			/>
+			<text class="g-fs-12 g-c-929292">全选</text>
+		</view>
+		<view class="g-flex g-jc-fe">
+			<view class="g-m-lr-10">总计：<text class="g-c-orange">¥1209</text></view>
+			<view class="g-bt-orange-Settlement">结算(11)</view>
+		</view>
+	</view>
+
+	<!-- 选择sku之后弹出的内容 -->
+	<zan-popup 
+		type="bottom" 
+		show="{{ showsku }}" 
+		closeOnClickOverlay="{{true}}" 
+		bindclose="togglePopup"
+	>
+		<view style="width:100vw" class="g-bg-white g-pd-20 g-bs-bb">
+			<view class="sku-img g-bg-white g-flex g-jc-fs g-ai-c g-m-b-20">
+				<image src="{{skuInfo.image}}" class="__img g-m-r-20 g-fs-0 g-border-e5e5e5" mode="aspectFit"/>
+				<view>
+					<text class="g-c-orange g-block g-fs-16 g-m-b-5">¥{{skuInfo.price}}</text>
+					<text class="g-c-929292 g-block g-fs-12">余量{{skuInfo.stock}}</text>
+				</view>
+			</view>
+			<view>
+				<view 
+					class="sku-spec g-pd-b-10" 
+					wx:for="{{skuData}}" 
+					wx:key="index"
+					wx:for-index='key'
+					wx:for-item='itemPar'
+				>
+					<text class="g-block g-fs-12 g-pd-b-5 g-c-212121">{{key}}</text>
+					<block wx:for="{{itemPar.value}}" wx:key="item">
+						<view
+							class="g-bt-hollow-orange g-m-r-10 g-m-b-5 {{itemPar.active==item?'active':''}}"
+							bindtap="handleTabLabel" 
+							data-active="{{item}}"
+							data-name="{{key}}"
+						>{{item}}</view>
+					</block>
+				</view>
+			</view>
+			<view class="sku-spec g-pd-b-20">
+				<text class="g-block g-fs-12 g-pd-b-5 g-c-212121">购买数量</text>
+				<zan-stepper
+					stepper="{{ stepperValue }}"
+					min="{{ 1 }}"
+					max="{{ skuInfo.stock }}"
+					bind:change="handleZanStepperChange"
+				>
+				</zan-stepper>
+				<text wx:if="{{stepperValue==skuInfo.stock}}" class="g-c-orange g-fs-12">仅剩库存：{{skuInfo.stock}}</text>
+			</view>
+		</view>
+		<view 
+			class="g-bt-orange-square" 
+			bindtap="handleSureSku"
+		>确定</view>
+	</zan-popup>
+
+
 </view>
+

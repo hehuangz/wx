@@ -1,6 +1,59 @@
 <!--logs.wxml-->
-<view class="container log-list">
-  <block wx:for="{{logs}}" wx:for-item="log">
-    <text class="log-item">{{index + 1}}. {{log}}</text>
-  </block>
+<view class="container">
+	<!-- 配送方式 -->
+	<view class="way g-flex g-jc-fs g-width g-m-t-20 g-pd-lr-10 g-bs-bb" style="height:50px;line-height:50px">
+		<text class="icon-courier g-fs-0 g-tc g-fs-22 g-c-orange" style="width:40px;font-size:22px" />
+		<view class="g-flex g-ai-c g-width">
+			<text class="g-m-r-20 g-fs-3e3e3e">配送方式</text>
+			<text class="g-bt-hollow-black g-m-r-20">到店取货</text>
+			<text class="g-bt-hollow-orange g-m-r-20">送货上门</text>
+		</view>
+	</view>
+
+	<!-- 地址 -->
+	<view class="address g-flex g-jc-fs g-width g-pd-lr-10 g-bs-bb g-ai-c">
+		<text class="icon-location g-fs-0 g-tc g-fs-22 g-c-orange" style="width:40px;font-size:22px" />
+		<view>
+			<view class="g-flex g-jc-sb g-width g-m-b-5"><text>公共</text><text>1997827873</text></view>
+			<view>浙江省杭州市吧哈工具说的话说上的讲话吧回归到</view>
+		</view>
+		<text class="icon-more2 g-fs-0 g-fs-20 g-c-929292"/>
+	</view>
+	<image mode="widthFix" src="{{IMG_OSS_TIAO}}" class="g-width" />
+	<!--  -->
+	<zan-cell title="某某店铺" value="商品顾问：长相"></zan-cell>
+	<view class="g-line-gray"/>
+
+	<!-- 商品卡片 -->
+	<view class="sku-goods g-flex g-pd-10 g-width g-bs-bb">
+		<image mode="aspectFill" src="{{}}" class="sku-goods-img g-fs-0 g-m-r-5" />
+		<view class="g-flex g-ai-sb g-fw-w">
+			<view class="">WMF 硅胶铲子锅铲Hello Functionals不粘锅专用铲</view>
+			<view class="g-width g-fs-12 g-fs-929292">sdf</view>
+			<view class="g-width g-flex g-jc-sb">
+				<text class="g-c-orange">¥{{123}}</text>
+				<text class="g-c-929292">X {{3}}</text>
+			</view>
+		</view>
+	</view>
+
+
+	<view class="g-line-gray"/>
+	<zan-cell title="商品总金额">
+		<view slot="footer" class="g-c-orange">¥{{123}}</view>
+	</zan-cell>
+	<view class="g-line-gray"/>
+	<zan-cell title="实付总金额">
+		<view slot="footer" class="g-c-orange">¥{{123}}</view>
+	</zan-cell>
+	<view class="g-line-gray"/>
+	<!-- 底部付款 -->
+	<view class="bottom">
+		<view class="g-line-gray"/>
+		<view class="g-width g-tc g-pd-tb-10">
+			<view class="g-fs-12 g-c-929292">实付款</view>
+			<view class="g-fs-24 g-c-orange">¥{{123}}</view>
+		</view>
+		<view class="g-bt-wechat">微信支付</view>
+	</view>
 </view>

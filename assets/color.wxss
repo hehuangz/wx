@@ -26,6 +26,12 @@
 .g-c-212121 {
   color: #212121;
 }
+.g-c-3e3e3e {
+  color: #3e3e3e;
+}
+.g-c-c4c4c4 {
+  color: #c4c4c4;
+}
 .g-c-afafaf {
   color: #afafaf;
 }

@@ -1,37 +1,37 @@
 /* fontSize */
 .g-fs-10 {
-	font-size: 10px;
+	font-size: 10px!important;
 }
 .g-fs-12 {
-	font-size: 12px;
+	font-size: 12px!important;
 }
 .g-fs-14 {
-	font-size: 14px;
+	font-size: 14px!important;
 }
 .g-fs-15{
-	font-size: 15px;
+	font-size: 15px!important;
 }
 .g-fs-16 {
-	font-size: 16px;
+	font-size: 16px!important;
 }
 .g-fs-18 {
-	font-size: 18px;
+	font-size: 18px!important;
 }
 .g-fs-20 {
-	font-size: 20px;
+	font-size: 20px!important;
 }
 .g-fs-22 {
-	font-size: 22px;
+	font-size: 22px!important;
 }
 .g-fs-24 {
-	font-size: 24px;
+	font-size: 24px!important;
 }
 .g-fs-26 {
-	font-size: 26px;
+	font-size: 26px!important;
 }
 .g-fs-28 {
-	font-size: 28px;
+	font-size: 28px!important;
 }
 .g-fs-30 {
-	font-size: 30px;
+	font-size: 30px!important;
 }

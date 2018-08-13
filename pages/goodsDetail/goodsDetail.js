@@ -5,17 +5,21 @@ Page({
 	data: {
 		data:{},
 		showsku: false, // 显示sku层
-		stepperValue: 1,  
-		stepperMax: 10,  
+		stepperValue: 1,
 		skuArr: [], // 后端返回的skuArr
 		skuData: {}, // {'hh':{value:['red','yellow'],active:'red'}}
-		skuSelect: {}, // 当前选中的sku组合
-		skuInfo: {}, // 当前选中的整条商品信息，包括价格图片库存
-		adviser: {uid:0,username:'大大回复会户'}
+		skuSelect: {}, // 当前选中的sku组合{"color":"red","weight":"300g"}
+		skuInfo: {}, // 当前选中的整条商品信息，包括价格图片库存，skuArr中的一条
+		adviser: {uid:0,username:'大大'},
+		// 下面的数据只是加入购物车或立即购买时使用
+		userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{},
+		goodId:null,
+		shopInfo:wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{},
 	},
 	onLoad: function (options) {
 		this.toast=this.selectComponent("#toast")
 		const {goodId=null} = options
+		this.setData({goodId})
 		this._onGetData(goodId)
 	},
 	// 生命周期-页面显示即调用，因为ready和load方法在返回路由时不调用
@@ -23,7 +27,6 @@ Page({
 		const pages=getCurrentPages()
 		let currentPage=pages[pages.length-1]
 		let adviser = currentPage.data.adviser
-		// console.log(currentPage.data.adviser);
 		adviser && this.setData({
 			adviser:currentPage.data.adviser
 		})
@@ -52,16 +55,19 @@ Page({
 			}
 		})
 	},
+	// 点击出来sku-popup
 	handleChooseSku: function() {
 		this.setData({showsku:true},()=>{
 			this._onGetSkuKey()
 		})
 	},
+	// 控制popup
 	togglePopup() {
 		this.setData({
 			showsku: !this.data.showsku
 		});
 	},
+	// 控制计数器
 	handleZanStepperChange({detail: stepperValue}) {
 		// stepper 代表操作后，应该要展示的数字，需要设置到数据对象里，才会更新页面展示
 		this.setData({
@@ -134,5 +140,41 @@ Page({
 		wx.navigateTo({
 			url:'/pages/buy/buy'
 		})
+	},
+	// 加入购物车
+	handleToCart: function () {
+		const {data={},adviser={},userInfo={},skuInfo={},goodId,stepperValue,shopInfo}=this.data
+		if(!skuInfo.stock)return this.toast.warn('请先选择商品规格')
+ 		const _this=this
+		wx.request({
+			url: API.CART_INSERT,
+			data:{
+				"counselorId": adviser.uid || 1,//--TEMP--
+				"goodsId": goodId || 68,//--TEMP--
+				"number": stepperValue,
+				"shopId": shopInfo.id,
+				"skuDesc": skuInfo.value,
+				"skuId": skuInfo.skuId,
+				"uid": userInfo.uid
+			},
+			method: 'POST',
+			header: {
+				"token":userInfo.token
+			},
+			success: function (res) {
+				console.log(res);
+				const {code='', data={}, message=''} = res.data
+				if( code===200 ){
+					return wx.switchTab({
+						url:'/pages/cart/cart'
+					})
+				}
+				return _this.toast.warning(message)
+			},
+			fail: function (res) {
+				return _this.toast.error('请求失败，请刷新重试')
+			}
+		})
+
 	}
 })

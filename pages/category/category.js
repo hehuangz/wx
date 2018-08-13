@@ -19,7 +19,7 @@ Page({
 			url: API.CATEGORY_LIST,
 			dataType:'formData',
 			data: {
-				shopId: id
+				shopId: 26
 			},
 			method: 'POST',
 			header: {

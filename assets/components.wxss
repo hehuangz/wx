@@ -103,6 +103,19 @@
 	text-align: center;
 	border-radius: 100px;
 }
+.g-bt-hollow-black {
+	display: inline-block;
+	min-width: 70px;
+	box-sizing: border-box;
+	padding: 0 20px;
+	height: 30px;
+	border: 1px solid #3e3e3e;
+	color: #3e3e3e;
+	font-size: 12px;
+	line-height: 28px;
+	text-align: center;
+	border-radius: 100px;
+}
 .g-bt-hollow-orange.active {
 	display: inline-block;
 	min-width: 70px;
@@ -116,4 +129,45 @@
 	line-height: 28px;
 	text-align: center;
 	border-radius: 100px;
+}
+/* 微信支付按钮 */
+.g-bt-wechat {
+	width: 100vw;
+	height: 46px;
+	line-height: 46px;
+	background: #42ad31;
+	font-size: 14px;
+	color: #ffffff;
+	letter-spacing: 0;
+	text-align: center;
+	font-weight: 200;
+}
+.g-bt-orange-square {
+	width: 100vw;
+	height: 46px;
+	line-height: 46px;
+	background: #ff4b2d;
+	font-size: 14px;
+	color: #ffffff;
+	letter-spacing: 0;
+	text-align: center;
+	font-weight: 200;
+}
+/* 一个细线当边框 */
+.g-line-gray {
+	width: 100vw;
+	height: 1rpx;
+	background: #e5e5e5;
+}
+
+/* 购物车结算按钮 */
+.g-bt-orange-Settlement {
+	min-width: 104px;
+	height: 44px;
+	background: #ff4b2d;
+	color: #fff;
+	font-size: 14px;
+	line-height: 44px;
+	text-align: center;
+	font-weight: 200;
 }
