@@ -1,12 +1,12 @@
 <!--cart.wxml-->
 <toast id="toast"/>
-<!-- <lose id="lose" icon="icon" buttonText="去逛逛" title="您的购物车里什么都没有喔～" bind:buttonEvent="_buttonEvent"/> -->
+<lose wx:if="{{!cartVos.length && !disCartVos.length}}" id="lose" icon="icon" buttonText="去逛逛" title="您的购物车里什么都没有喔～" bind:buttonEvent="_buttonEvent"/>
 
 <view class="container">
 	<!-- 有效区 -->
 	<!-- 顶头 -->
-	<view class="g-pd-15 g-flex g-jc-sb g-bg-f0f0f0">
-		<view>共有{{3}}件商品</view>
+	<view class="g-pd-15 g-flex g-jc-sb g-bg-f0f0f0" wx:if="{{cartVos.length}}">
+		<view>共有{{total}}件商品</view>
 		<view bindtap="handleEdit" wx:if="{{!is_edit}}">编辑</view>
 		<view bindtap="handleEdit" wx:if="{{is_edit}}" class="g-c-orange">完成</view>
 	</view>
@@ -22,7 +22,13 @@
 				<view>{{itemPar.shopName}}</view>
 				<view>商品顾问：{{itemPar.counselorName}}
 					<!--变更顾问按钮 -->
-					<text wx:if="{{is_edit}}" class="icon-change" bindtap="handleChangeAdviser"/>
+					<text 
+						wx:if="{{is_edit}}" 
+						class="icon-change" 
+						bindtap="handleChangeAdviser"
+						data-shopid="{{itemPar.shopId}}" 
+						data-cid="{{itemPar.counselorId}}"
+					 />
 				</view>
 			</view>
 		</view>
@@ -35,11 +41,11 @@
 			/>			
 			<view class="sku-goods g-flex g-width g-bs-bb g-pd-tb-10">
 				<image mode="aspectFill" src="{{item.goodsImg}}" class="sku-goods-img g-fs-0 g-m-r-5" />
-				<view class="g-flex g-ai-sb g-fw-w g-width">
+				<view class="g-flex g-ai-fs g-fw-w g-width">
 					<view>{{item.goodsName}}</view>
 					<!-- 编辑状态时 sku 可选 -->					
-					<!-- <view class="g-width g-fs-12" wx:if="{{!is_edit}}">{{item.skuDesc}}</view> -->
-					<block wx:if="{{!is_edit}}">
+					<view class="g-width g-fs-12 g-c-929292" wx:if="{{!is_edit}}">{{item.skuDesc}}</view>
+					<block wx:if="{{is_edit}}">
 						<view 
 							class="g-width g-bg-f9f9f9 g-flex g-jc-sb g-pd-5" 
 							bindtap="handleShowSku" 
@@ -49,12 +55,12 @@
 							data-number="{{item.number}}"
 							data-goodsid="{{item.goodsId}}"
 						>
-							<text class="g-c-929292 g-fs-12">{{item.skuDesc}}</text>
-							<text class="icon-arrow-down g-c-929292"/>
+							<text class="g-c-3e3e3e g-fs-12">{{item.skuDesc}}</text>
+							<text class="icon-arrow-down g-c-929292 g-pd-l-10"/>
 						</view>
 					</block>
-					<view class="g-width g-flex g-jc-sb">
-						<view class="g-c-orange">¥{{item.goodsPrice}} 
+					<view class="g-width g-flex g-jc-sb g-ai-c">
+						<view class="g-c-orange g-fs-14">¥{{item.goodsPrice}} 
 							<text class="g-m-l-5 g-c-929292">¥{{item.goodsMarketprice}}</text>
 						</view>
 						<text class="g-c-929292">X {{item.number}}</text>
@@ -65,7 +71,7 @@
 	</block>
 	<!-- 失效区 -->
 	<!-- 商品 -->
-	<view class="g-pd-15 g-bg-f0f0f0">失效商品</view>
+	<view class="g-pd-15 g-bg-f0f0f0" wx:if="{{disCartVos.length}}">失效商品</view>
 	<!-- 店铺名称 -->
 	<block wx:for="{{disCartVos}}" wx:key="index" wx:for-item="itemPar">
 		<view class="g-flex g-height-30 g-lh-30 g-pd-r-15 g-width g-bs-bb g-c-929292">
@@ -95,17 +101,20 @@
 	</block>
 	<view style="height: 50px"/>
 	<!-- 底部合计 -->
-	<view class="bottom g-flex g-jc-sb">
-		<view class="g-fs-0 g-tc">
+	<view class="bottom g-flex g-jc-sb" wx:if="{{cartVos.length}}">
+		<view class="g-fs-0 g-tc g-flex g-ai-c g-lh-44">
 			<text 
-				class="{{is_checkedAll?'icon-checkbox-after g-c-orange':'icon-checkbox-before g-c-c4c4c4'}} g-fs-0 g-tc g-m-lr-15 g-fs-20"
+				class="{{is_checkedAll?'icon-checkbox-after g-c-orange':'icon-checkbox-before g-c-c4c4c4'}} g-fs-0 g-tc g-m-l-15 g-fs-20"
 				bindtap="handleCheckedAll"
 			/>
-			<text class="g-fs-12 g-c-929292">全选</text>
+			<text class="g-fs-14 g-c-929292 g-m-l-5">全选</text>
 		</view>
-		<view class="g-flex g-jc-fe">
-			<view class="g-m-lr-10">总计：<text class="g-c-orange">¥1209</text></view>
-			<view class="g-bt-orange-Settlement">结算(11)</view>
+		<view class="g-flex g-jc-fe" wx:if="{{!is_edit}}">
+			<view class="g-m-lr-10">总计：<text class="g-c-orange">¥{{totalPrice}}</text></view>
+			<view class="g-bt-orange-Settlement" bindtap="handleSettlement">结算({{settlementTotal}})</view>
+		</view>
+		<view class="g-flex g-jc-fe" wx:else>
+			<view class="g-bt-orange-Settlement" bindtap="handleDel">删除({{settlementTotal}})</view>
 		</view>
 	</view>
 
@@ -161,6 +170,14 @@
 		>确定</view>
 	</zan-popup>
 
-
+	<!-- 删除购物车的二次确认弹窗 -->
+	<dialog id='dialog' 
+		title='温馨提示' 
+		content='确认将宝贝从购物车中删除吗？' 
+		cancelText='取消' 
+		confirm='确定'
+		bind:cancelEvent="_cancelEvent"  
+		bind:confirmEvent="_confirmEvent">
+	</dialog>
 </view>
 

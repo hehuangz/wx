@@ -138,5 +138,10 @@ Page({
 			}
 		},1000)
 		
+	},
+	handleToAgreement: function () {
+		wx.navigateTo({
+			url:'/pages/agreement/agreement'
+		})
 	}
 })

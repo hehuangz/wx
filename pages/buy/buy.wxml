@@ -21,18 +21,20 @@
 	</view>
 	<image mode="widthFix" src="{{IMG_OSS_TIAO}}" class="g-width" />
 	<!--  -->
-	<zan-cell title="某某店铺" value="商品顾问：长相"></zan-cell>
+	<zan-cell title="{{local_toBuy.show.shopName}}" value="商品顾问：{{local_toBuy.show.counselorName}}"></zan-cell>
 	<view class="g-line-gray"/>
 
 	<!-- 商品卡片 -->
 	<view class="sku-goods g-flex g-pd-10 g-width g-bs-bb">
-		<image mode="aspectFill" src="{{}}" class="sku-goods-img g-fs-0 g-m-r-5" />
+		<image mode="aspectFill" src="{{local_toBuy.show.image}}" class="sku-goods-img g-fs-0 g-m-r-5" />
 		<view class="g-flex g-ai-sb g-fw-w">
-			<view class="">WMF 硅胶铲子锅铲Hello Functionals不粘锅专用铲</view>
-			<view class="g-width g-fs-12 g-fs-929292">sdf</view>
+			<view class="">{{local_toBuy.show.name}}</view>
+			<view class="g-width g-fs-12 g-fs-929292">{{local_toBuy.show.skuDesc}}</view>
 			<view class="g-width g-flex g-jc-sb">
-				<text class="g-c-orange">¥{{123}}</text>
-				<text class="g-c-929292">X {{3}}</text>
+				<view class="g-c-orange g-fs-14">¥{{local_toBuy.show.price}} 
+					<text class="g-m-l-5 g-c-929292">¥{{local_toBuy.show.marketPrice}}</text>
+				</view>
+				<text class="g-c-929292">X {{local_toBuy.show.number}}</text>
 			</view>
 		</view>
 	</view>
@@ -40,11 +42,11 @@
 
 	<view class="g-line-gray"/>
 	<zan-cell title="商品总金额">
-		<view slot="footer" class="g-c-orange">¥{{123}}</view>
+		<view slot="footer" class="g-c-orange">¥{{local_toBuy.marketPriceTotal}}</view>
 	</zan-cell>
 	<view class="g-line-gray"/>
 	<zan-cell title="实付总金额">
-		<view slot="footer" class="g-c-orange">¥{{123}}</view>
+		<view slot="footer" class="g-c-orange">¥{{local_toBuy.priceTotal}}</view>
 	</zan-cell>
 	<view class="g-line-gray"/>
 	<!-- 底部付款 -->
@@ -52,8 +54,8 @@
 		<view class="g-line-gray"/>
 		<view class="g-width g-tc g-pd-tb-10">
 			<view class="g-fs-12 g-c-929292">实付款</view>
-			<view class="g-fs-24 g-c-orange">¥{{123}}</view>
+			<view class="g-fs-24 g-c-orange">¥{{local_toBuy.priceTotal}}</view>
 		</view>
-		<view class="g-bt-wechat">微信支付</view>
+		<button class="g-bt-wechat" bindtap="handlePay">微信支付</button>
 	</view>
 </view>

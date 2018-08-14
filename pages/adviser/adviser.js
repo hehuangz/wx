@@ -6,15 +6,24 @@ const app = getApp()
 Page({
 	data: {
 		list: [],
-		uid: 0 // 当前选择的顾问id
+		uid: null, // 当前选择的顾问id
+		shopId: null
 	},
-	onReady: function () {
+	onLoad: function (options) {
+		console.log(options);
 		this.toast=this.selectComponent("#toast")
+		const {shopId='',cid=''} = options
+		shopId && this.setData({shopId,uid:cid},()=>{
+			this._onGetData()
+		})
+	},
+	_onGetData: function () {
+		const {shopId} = this.data
 		const _this=this;
 		wx.request({
 			url: API.ADVISER_SHOP_LIST,
 			data: {
-				shopId: 26
+				shopId
 			},
 			method: 'POST',
 			header: {
@@ -22,7 +31,7 @@ Page({
 			success: function (res) {
 				const {message='',code='',data} = res.data
 				if( code===200 ){
-					return _this.setData({list:data,uid:data[0]?data[0].uid:0})
+					return _this.setData({list:data})
 				}
 				return _this.toast.info(message)
 			},
@@ -44,7 +53,7 @@ Page({
 				const pages=getCurrentPages()
 				let prevPage=pages[pages.length-2] // 上个页面
 				prevPage && prevPage.setData({
-					adviser: {uid:current.uid,username:current.username}
+					adviser: {uid:current.uid,name:current.name}
 				})
 				wx.navigateBack()
 			}, 200);

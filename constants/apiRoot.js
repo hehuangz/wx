@@ -8,6 +8,7 @@ import search from './api/search';
 import mine from './api/mine';
 import goodsDetail from './api/goodsDetail';
 import cart from './api/cart';
+import buy from './api/buy';
 
 const baseUrl = 'https://api.wutonglife.com/life/';
 const API = {
@@ -20,7 +21,8 @@ const API = {
 	...search,
 	...mine,
 	...goodsDetail,
-	...cart
+	...cart,
+	...buy
 };
 
 for (let i in API) {

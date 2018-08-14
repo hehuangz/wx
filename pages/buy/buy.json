@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "查看启动日志",
+  "navigationBarTitleText": "下单",
   "usingComponents": {
     "dialog": "/components/dialog/dialog",
     "toast": "/components/toast/toast",

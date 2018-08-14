@@ -28,3 +28,6 @@
     font-size: 30px;
     padding: 10px 10px 13px;
 }
+.g-c-white {
+    color: #ffffff!important;
+}

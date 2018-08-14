@@ -57,12 +57,7 @@ Page({
 					success: function (res) {
 						const {code, data, message} = res.data
 						if( code===200 ){
-							wx.setStorage({
-								key:"wt_shop",
-								data,
-								success:function () {
-								}
-							})
+							_this._onGetShopAddress(data)
 							return _this.setData({shop:data})
 						}else{
 							return _this.toast.warning(message)
@@ -235,6 +230,41 @@ Page({
 				return _this.toast.error('请求失败，请刷新重试')
 			}
 		})
+	},
+	/**
+	 * 获取店铺地址
+	 */
+	_onGetShopAddress: function (opts) {
+		const {id,shopName} = opts;
+		const _this=this
+		wx.request({
+			url: API.HOME_SHOP_ADDRESS,
+			data: {
+				shopId:id
+			},
+			method: 'POST',
+			header: {
+			},
+			success: function (res) {
+				const {code='', data={}, message=''} = res.data
+				if( code===200 ){
+					let address=data.address || ''
+					return 	wx.setStorage({
+						key:"wt_shop",
+						data:{
+							id,shopName,address
+						},
+						success:function () {
+						}
+					})
+				}
+				return _this.toast.warning(message)
+			},
+			fail: function (res) {
+				return _this.toast.error('请求失败，请刷新重试')
+			}
+		})
+		
 	},
 	//dialog取消事件
 	_cancelEvent(){

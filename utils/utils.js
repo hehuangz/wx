@@ -113,10 +113,9 @@ const dataValidity = (rules)  => {
 	}
 	return state;
 };
-
 // --over--
 
 module.exports = {
   formatTime: formatTime,
-  dataValidity: dataValidity
+  dataValidity: dataValidity,
 }

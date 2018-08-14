@@ -10,11 +10,12 @@ Page({
 		skuData: {}, // {'hh':{value:['red','yellow'],active:'red'}}
 		skuSelect: {}, // 当前选中的sku组合{"color":"red","weight":"300g"}
 		skuInfo: {}, // 当前选中的整条商品信息，包括价格图片库存，skuArr中的一条
-		adviser: {uid:0,username:'大大'},
+		adviser: {uid:0,name:'大大'},
 		// 下面的数据只是加入购物车或立即购买时使用
 		userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{},
-		goodId:null,
-		shopInfo:wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{},
+		goodId: null,
+		shopInfo: wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{},
+		skuDesc: ''
 	},
 	onLoad: function (options) {
 		this.toast=this.selectComponent("#toast")
@@ -124,49 +125,59 @@ Page({
 			}
 			if(flag) return true
 		})
-		if(skuInfo[0].stock && skuInfo[0].stock<=0)return this.toast.warn('库存不足')
-		this.setData({skuInfo:skuInfo[0]})
+		if(skuInfo[0] && skuInfo[0].stock && skuInfo[0].stock<=0)return this.toast.warn('库存不足')
+		this.setData({skuInfo:skuInfo[0]},()=>{
+			this._onGetSkuDesc()
+		})
+	},
+	// 获取选择sku之后显示skuDesc
+	_onGetSkuDesc: function () {
+		let {skuDesc='',skuInfo={}} = this.data
+		skuDesc=''
+		const skuDesc_obj=skuInfo.value?JSON.parse(skuInfo.value):{}
+		for (const key in skuDesc_obj) {
+			skuDesc+=skuDesc_obj[key]+' '
+		}
+		this.setData({skuDesc})
 	},
 	// 更换顾问
 	handleChangeAdviser: function(){
+		const {shopInfo} = this.data
+		const {id} = shopInfo
 		wx.navigateTo({
-			url: '/pages/adviser/adviser'
-		})
-	},
-	// 立即购买
-	handleBuy: function () {
-		const {skuInfo={}} = this.data
-		if(!skuInfo.stock)return this.toast.warn('请先选择商品规格')
-		wx.navigateTo({
-			url:'/pages/buy/buy'
+			url: `/pages/adviser/adviser?shopId=${id}`
 		})
 	},
 	// 加入购物车
 	handleToCart: function () {
-		const {data={},adviser={},userInfo={},skuInfo={},goodId,stepperValue,shopInfo}=this.data
-		if(!skuInfo.stock)return this.toast.warn('请先选择商品规格')
+		const {adviser={},userInfo={},skuInfo={},goodId,stepperValue,shopInfo,skuDesc}=this.data
+		if(!skuInfo.stock)return this.handleChooseSku() //未选择规格，让它去选
  		const _this=this
 		wx.request({
 			url: API.CART_INSERT,
 			data:{
-				"counselorId": adviser.uid || 1,//--TEMP--
-				"goodsId": goodId || 68,//--TEMP--
-				"number": stepperValue,
-				"shopId": shopInfo.id,
-				"skuDesc": skuInfo.value,
-				"skuId": skuInfo.skuId,
-				"uid": userInfo.uid
+				counselorId: adviser.uid || 8,//--TEMP--
+				goodsId: goodId || 68,//--TEMP--
+				number: stepperValue,
+				shopId: shopInfo.id,
+				skuDesc: skuDesc,
+				skuId: skuInfo.skuId,
+				uid: userInfo.uid
 			},
 			method: 'POST',
 			header: {
 				"token":userInfo.token
 			},
 			success: function (res) {
-				console.log(res);
 				const {code='', data={}, message=''} = res.data
 				if( code===200 ){
 					return wx.switchTab({
-						url:'/pages/cart/cart'
+						url:'/pages/cart/cart',
+						success: function(){
+							let page=getCurrentPages().pop()
+							if(!page)return
+							page.onLoad()
+						}
 					})
 				}
 				return _this.toast.warning(message)
@@ -176,5 +187,62 @@ Page({
 			}
 		})
 
+	},
+	// 立即购买
+	handleBuy: function () {
+		const {skuInfo={}} = this.data
+		if(!skuInfo.stock)return this.handleChooseSku()//未选择规格，让它去选
+		// setBuyGoods()
+		// 商品详情点立即购买或者购物车结算，将下单页面的所有商品数据存入本地
+// "ordersGoods": [
+//     {
+//       "cartId": 0,//--TEMP--应该是在立即支付时不要传的
+//       "counselorId": 0,
+//       "goodsId": 0,
+//       "number": 0,
+//       "shopAddress": "string",
+//       "shopId": 0,
+//       "skuDesc": "string",
+//       "skuId": 0
+//     }
+//   ],
+		// 订单数据
+		const {data,adviser,userInfo,goodId,stepperValue,shopInfo,skuDesc}=this.data
+		let ordersGoods=[{
+			counselorId:adviser.uid || 8,
+			goodsId: goodId || 68,
+			number: stepperValue,
+			shopAddress: userInfo.address,
+			shopId: shopInfo.id,
+			skuDesc: skuDesc,
+			skuId: skuInfo.skuId
+		}]
+		// 显示数据
+		
+		let toBuyData={
+			ordersGoods,
+			show:{
+				shopName: shopInfo.shopName,
+				counselorName:adviser.name,
+				image:skuInfo.image,
+				name:data.name,
+				skuDesc,
+				price:skuInfo.price,
+				marketPrice:data.marketPrice,
+				number:stepperValue
+			},
+			priceTotal:skuInfo.price,
+			marketPriceTotal:data.marketPrice
+		}
+		wx.setStorage({
+			key:"wt_toBuy",
+			data: toBuyData,
+			success:function () {
+				wx.navigateTo({
+					url:'/pages/buy/buy'
+				})
+			}
+		})
+		
 	}
 })

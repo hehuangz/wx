@@ -2,6 +2,6 @@
 <view class="c-toast">
     <view class="_content" hidden="{{!show}}">
         <text size="40" class="__icon iconfont {{iconType}}" wx:if="{{showIcon}}"/>
-        <text>{{msg}}</text>
+        <text class="g-c-white">{{msg}}</text>
     </view>    
 </view>

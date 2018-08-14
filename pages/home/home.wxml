@@ -6,7 +6,7 @@
 	<!-- 获取用户信息和定位 -->
 	<dialog 
 		id='dialog' 
-		title='我是标题' 
+		title='温馨提示'
 		content='是否允许我们使用定位和用户信息' 
 		cancelText='不好' 
 		confirm='可以'

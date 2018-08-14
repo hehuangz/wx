@@ -27,10 +27,7 @@
 				<text 
 					class="g-c-orange g-fs-14" 
 					style="margin-right:3px"
-					wx:for="{{skuSelect}}" 
-					wx:key="index" 
-					wx:for-index="key"
-				>'{{item}}'</text>
+				>{{skuDesc}}</text>
 			</view>
 			<text wx:if="{{!skuInfo.stock}}">选择商品规格</text>
 			<text class="icon-more2 g-tr"></text>
@@ -55,10 +52,10 @@
 		<view class="g-c-929292 g-fs-16" style="width:34%" bindtap="handleChangeAdviser">
 			<block wx:if="{{adviser.username.length<7}}">
 				<text class="icon-user g-fs-18" style="margin-right:1px"/>
-				<text class="g-fs-14">{{adviser.username}}</text>
+				<text class="g-fs-14">{{adviser.name}}</text>
 			</block>
 			<block wx:else>
-				<text class="g-fs-12">{{adviser.username}}</text>
+				<text class="g-fs-12">{{adviser.name}}</text>
 			</block>
 			<text class="g-fs-12 g-c-afafaf" style="margin-left:2px">顾问</text>
 		</view>

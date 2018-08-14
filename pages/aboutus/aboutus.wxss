@@ -1,0 +1,12 @@
+text {
+    font-size: 14px;
+    color: #303030;
+    font-weight: 300;
+    text-justify: newspaper
+}
+.__img {
+    width: 100px;
+    height: 78px;
+    display: block;
+    margin:10px auto;
+}

@@ -1,5 +1,6 @@
 //logs.js
 import API from '../../constants/apiRoot';
+import Debounce from '../../utils/debounce.js';
 
 Page({
 	data: {
@@ -14,20 +15,36 @@ Page({
 		skuInfo: {},
 		skuArr: [],
 		selectInfo: {},//选择sku点确定按钮需要传递的数据
-		userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{},
+		total: 0, // 左上角数字：购物车共有多少件有效商品
+		settlementTotal: 0, //右下角结算数字：选中多少商品去结算
+		totalPrice: 0,
+		adviser_shopId: null // 重改店铺顾问时的店铺ID
 	},
 	onLoad: function () {
-		this.toast=this.selectComponent("#toast")		
-		this._onData()
+		console.log('onLoad');
+		this.toast=this.selectComponent("#toast")	
+		this.dialog = this.selectComponent("#dialog");
+		this._onGetData()
 	},
-	_onData:function () {
+	// 生命周期-页面显示即调用，因为ready和load方法在返回路由时不调用
+	onShow: function(){
+		console.log('onShow');
+		const pages=getCurrentPages()
+		let currentPage=pages[pages.length-1]
+		let adviser = currentPage.data.adviser
+		adviser && this._onSetAdviser(adviser)
+	},
+	onReady: function () {
+		console.log('onReady');
+	},
+	_onGetData:function () {
 		const {userInfo} = this.data;
 		const {token,uid=1} = userInfo
 		const _this=this
 		wx.request({
 			url: API.CART_LIST,
 			data: {
-				uid: 53 //--TEMP--
+				uid: userInfo.uid
 			},
 			method: 'POST',
 			header: {
@@ -42,6 +59,7 @@ Page({
 						cartVos: data.cartVos //--TEMP--
 					},()=>{
 						_this._onHandleCartVos()
+						_this._onGetTotal()
 					})
 				}
 				return _this.toast.warning(message)
@@ -50,6 +68,17 @@ Page({
 				return _this.toast.error('请求失败，请刷新重试')
 			}
 		})
+	},
+	// 计算商品共有多少件
+	_onGetTotal: function() {
+		const {cartVos} = this.data
+		let {total} = this.data
+		cartVos.map((itemPar)=>{
+			itemPar.cartVoList.map(()=>{
+				total++
+			})
+		})
+		this.setData({total})
 	},
 	// 购物车为空时点击“去逛逛”
 	_buttonEvent: function () {
@@ -70,6 +99,9 @@ Page({
 	handleEdit: function () {
 		this.setData({is_edit: !this.data.is_edit})
 	},
+	/**
+	 * 建议优化，将单个checkbox变更与全选何在一起，可以避免很多问题 //--TEMP--
+	 */
 	// 变更checkbox
 	handleChecked: function (e) {
 		let cartVos = this.data.cartVos
@@ -83,7 +115,10 @@ Page({
 					itemPar.cartVoList.map((item)=>{
 						item.checked=itemPar.checked
 					})
-					return this.setData({cartVos})
+					return this.setData({cartVos},()=>{
+						this._onGetSettlement()
+						this._onGetTotalPrice()
+					})
 				}
 			}
 		}else if(cartId){
@@ -96,7 +131,10 @@ Page({
 						itemPar.checked=itemPar.cartVoList.every((item)=>{
 							return item.checked
 						})
-						return this.setData({cartVos})
+						return this.setData({cartVos},()=>{
+							this._onGetSettlement()
+							this._onGetTotalPrice()
+						})
 					}
 				}
 			}
@@ -112,13 +150,51 @@ Page({
 					item.checked=this.data.is_checkedAll
 				}
 			}
-			this.setData({cartVos})
+			this.setData({cartVos},()=>{
+				this._onGetSettlement()
+				this._onGetTotalPrice()
+			})
 		})
 	},
 	// 变更顾问按钮
-	handleChangeAdviser: function () {
-		wx.navigateTo({
-			url:'/pages/adviser/adviser'
+	handleChangeAdviser: function (e) {
+		const shopId = e.currentTarget.dataset.shopid
+		const cid = e.currentTarget.dataset.cid // 顾问id
+		this.setData({
+			adviser_shopId:shopId
+		},()=>{
+			wx.navigateTo({
+				url:`/pages/adviser/adviser?shopId=${shopId}&cid=${cid}`
+			})
+		})
+	},
+	// 选择顾问后重新发送更改请求
+	_onSetAdviser: function (adviser) {
+		const {adviser_shopId,userInfo} = this.data
+		const _this = this
+		wx.request({
+			url: API.CART_CHANGE_ADVISER,
+			data: {
+				shopId: adviser_shopId,
+				counselorId: adviser.uid
+			},
+			method: 'POST',
+			header: {
+				"Content-Type": "application/x-www-form-urlencoded",
+				"token": userInfo.token
+			},
+			success: function (res) {
+				const {code='', data={}, message=''} = res.data
+				if( code===200 ){
+					return _this.toast.warning('变更顾问成功',2,()=>{
+						_this._onGetData()
+					})
+				}
+				return _this.toast.warning(message)
+			},
+			fail: function (res) {
+				return _this.toast.error('请求失败，请刷新重试')
+			}
 		})
 	},
 	// 点击选择sku按钮
@@ -130,20 +206,20 @@ Page({
 		const number = e.currentTarget.dataset.number
 		const goodsId = e.currentTarget.dataset.goodsid
 		this.setData({
-			showsku:true,
+			showsku: true,
 			skuArr: [],
 			skuData: {},
-			selectInfo:{shopId,cartId,skuId,goodsId}
+			selectInfo:{shopId,cartId,goodsId}
 		},()=>{
 			this._onGetSkuKey({cartId,shopId,skuId,number})
 		})
 	},
 	// 控制popup
-	togglePopup() {
+	togglePopup: function () {
 		this.setData({showsku: !this.data.showsku});
 	},
 	// 控制计数器
-	handleZanStepperChange({detail: stepperValue}) {
+	handleZanStepperChange: function ({detail: stepperValue}) {
 		// stepper 代表操作后，应该要展示的数字，需要设置到数据对象里，才会更新页面展示
 		this.setData({
 			'stepperValue': stepperValue
@@ -154,7 +230,6 @@ Page({
 		const {shopId,cartId,skuId,number} = opts
 		const {skuData,cartVos} = this.data;
 		let skuArr=this.data.skuArr
-		// const skuArr=cartVos.filter
 		for(let itemPar of cartVos){
 			if(itemPar.shopId==shopId){
 				for(let item of itemPar.cartVoList){
@@ -166,6 +241,17 @@ Page({
 				break
 			}
 		}
+		// // 拿到当前默认选中的值
+		for (const item of skuArr) {
+			if(item.skuId==skuId){
+				let value=JSON.parse(item.value)
+				for (const key in value) {
+					skuData[key]={value:[],active:value[key]}
+				}
+				break;
+			}
+		}
+
 		skuArr.map((item)=>{
 			let value=JSON.parse(item.value)
 			for (const key in value) {
@@ -178,26 +264,28 @@ Page({
 			}
 		})
 		this.setData({skuData,skuArr},()=>{
-			this._onGetSkuInfo({skuId,number})// skuId 默认值
+			this._onGetSkuInfo({init:true,number,skuId})// skuId 默认值
 		})
 	},
 	// 拿到当前选中的sku对应的商品信息,即设置默认选中与默认数量
 	_onGetSkuInfo: function (opts) {
-		const {skuId,number} = opts
-		/**
-		 * 设置默认数量
-		 */
-		this.handleZanStepperChange({detail:number})
-
+		let {skuInfo} = this.data
 		const {skuArr,skuData} = this.data
-		let skuSelect={}
-		for (const item of skuArr) {
-			if(item.skuId==skuId){
-				skuSelect=item.value
-				break
-			}	
+		const {skuId,number} = opts
+
+		if(opts.init){
+			/**
+			 * 设置默认数量
+			 */
+			this.handleZanStepperChange({detail:number})
+			// 默认选中现有的值
+			
 		}
-		let skuInfo = this.data.skuInfo
+		let skuSelect={}
+		// console.log(skuData);
+		for (const key in skuData) {
+			skuSelect[key]=skuData[key].active
+		}
 		// 赋值当前sku对应的产品
 		skuInfo=skuArr.filter((item)=>{
 			let value=JSON.parse(item.value)
@@ -224,35 +312,151 @@ Page({
 		}
 		this.handleZanStepperChange({detail:1}) //label切换计数器归1 
 		this.setData({skuData},()=>{
-			this._onGetSkuInfo()
+			this._onGetSkuInfo({init:false})
 		})
 	},
+	// 点sku中确定编辑购物车
 	handleSureSku: function () {
 		const _this = this
-		const {stepperValue,selectInfo,userInfo}=this.data
-		const {shopId,cartId,skuId,goodsId} = selectInfo
-		wx.request({
-			url: API.CART_UPDATE,
-			data: {
-				carts: [{
+		const {stepperValue,selectInfo,userInfo,skuData,skuInfo} = this.data
+		const {shopId,cartId,goodsId} = selectInfo
+		/**
+		 * 组织skuDesc
+		 */
+		let skuDesc=''
+		for (const key in skuData) {
+			skuDesc+=skuData[key].active+' '
+		}
+		/**
+		 * 发送请求成功后重新获取数据
+		 */
+		Debounce(()=>{
+			wx.request({
+				url: API.CART_UPDATE,
+				data: [{
 					shopId,
 					cartId,
-					skuId,
-					number:stepperValue,
+					skuId: skuInfo.skuId,
+					number: stepperValue,
 					goodsId,
-					counselorId:8,
+					counselorId: 8,//--TEMP--
 					uid: userInfo.uid,
-					skuDesc: "就离开第三方-sad解放路 啊多少发-撒打飞机了看",
-				}]
-			},
+					skuDesc
+				}],
+				method: 'POST',
+				header: {
+					"token":userInfo.token
+				},
+				success: function (res) {
+					const {code='', data={}, message=''} = res.data
+					if( code===200 ){
+						return _this.setData({showsku:false,is_checkedAll:false},()=>{
+							_this._onGetData()
+						})
+					}
+					return _this.toast.warning(message)
+				},
+				fail: function (res) {
+					return _this.toast.error('请求失败，请刷新重试')
+				}
+			})
+		})
+	},
+	// 结算旁边的数字：当前选中结算大数量
+	_onGetSettlement: function () {
+		const {cartVos} = this.data
+		let {settlementTotal} = this.data
+		settlementTotal=0
+		cartVos.map((itemPar)=>{
+			itemPar.cartVoList.map((item)=>{
+				if(item.checked)settlementTotal++;
+			})
+		})
+		this.setData({settlementTotal})
+	},
+	// 显示总计价格
+	_onGetTotalPrice: function () {
+		let {cartVos} = this.data
+		let price=0
+		cartVos.map((itemPar)=>{
+			itemPar.cartVoList.map((item)=>{
+				if(item.checked){
+					price=price+Number(item.goodsPrice)
+				}
+			})
+		})
+		this.setData({totalPrice:price.toFixed(2)})
+	},
+	// 删除购物车商品
+	handleDel: function () {
+		Debounce(()=>{
+			this.dialog.showDialog();
+		})
+	},
+	// 	去结算按钮
+	handleSettlement: function () {
+		const {cartVos=[],userInfo={}} = this.data
+		let param=[]
+		cartVos.map((itemPar)=>{
+			itemPar.cartVoList.map((item)=>{
+				if(item.checked){
+					param.push(item.cartId)
+				}
+			})
+		})
+		const _this = this
+		Debounce(()=>{
+			wx.request({
+				url: API.CART_TOSETTLEMENT,
+				data: param,
+				method: 'POST',
+				header: {
+					"token": userInfo.token
+				},
+				success: function (res) {
+					console.log(res);
+					const {code='', data={}, message=''} = res.data
+					if( code===200 ){
+						return wx.navigateTo({url:'/pages/buy/buy'})
+					}
+					return _this.toast.warning(message)
+				},
+				fail: function (res) {
+					return _this.toast.error('请求失败，请刷新重试')
+				}
+			})
+		})
+	},
+	// 删除购物车时的取消事件
+	_cancelEvent(){
+		_this.dialog.hideDialog();
+	},
+	// 删除购物车时的确认事件
+	_confirmEvent(){
+		const {cartVos,userInfo} = this.data
+		let param=[]
+		cartVos.map((itemPar)=>{
+			itemPar.cartVoList.map((item)=>{
+				if(item.checked){
+					param.push(item.cartId)
+				}
+			})
+		})
+		const _this = this
+		wx.request({
+			url: API.CART_DEL,
+			data: param,
 			method: 'POST',
 			header: {
-				"token":userInfo.token
+				"token": userInfo.token
 			},
 			success: function (res) {
 				const {code='', data={}, message=''} = res.data
 				if( code===200 ){
-					return 
+					return _this.toast.success(message,2,()=>{
+						_this._onGetData()
+						_this.dialog.hideDialog();
+					})
 				}
 				return _this.toast.warning(message)
 			},
