@@ -1,8 +1,8 @@
 <!--home.wxml-->
 <toast id="toast"></toast>
-<lose id="lose" icon="icon-none" title="当前网络不稳定，请刷新重试～" buttonText="立即刷新" wx:if="{{noNet}}" bind:buttonEvent="_buttonEvent"/>
+<!-- <lose id="lose" icon="icon-none" title="当前网络不稳定，请刷新重试～" buttonText="立即刷新" wx:if="{{noNet}}" bind:buttonEvent="_buttonEvent"/> -->
 
-<view class="container" wx:else>
+<view class="container">
 	<!-- 获取用户信息和定位 -->
 	<dialog 
 		id='dialog' 

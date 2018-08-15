@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 10,
+			"current": 12,
 			"list": [
 				{
 					"id": -1,
@@ -105,6 +105,12 @@
 					"id": -1,
 					"name": "buy",
 					"pathName": "pages/buy/buy",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "payResult",
+					"pathName": "pages/payResult/payResult",
 					"query": ""
 				}
 			]

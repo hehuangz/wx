@@ -16,6 +16,9 @@
 .g-weight-200 {
 	font-weight: 200;
 }
+.g-weight-300 {
+	font-weight: 300;
+}
 
 /* line-height */
 .g-lh-24 {
@@ -34,5 +37,8 @@
 
 /* text-decoration */
 .g-td-lt {
+	text-decoration: line-through;
+}
+.g-del {
 	text-decoration: line-through;
 }

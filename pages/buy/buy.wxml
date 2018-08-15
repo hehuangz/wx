@@ -1,61 +1,108 @@
-<!--logs.wxml-->
+<!--buy.wxml-->
+<toast id="toast"></toast>
 <view class="container">
-	<!-- 配送方式 -->
-	<view class="way g-flex g-jc-fs g-width g-m-t-20 g-pd-lr-10 g-bs-bb" style="height:50px;line-height:50px">
-		<text class="icon-courier g-fs-0 g-tc g-fs-22 g-c-orange" style="width:40px;font-size:22px" />
-		<view class="g-flex g-ai-c g-width">
-			<text class="g-m-r-20 g-fs-3e3e3e">配送方式</text>
-			<text class="g-bt-hollow-black g-m-r-20">到店取货</text>
-			<text class="g-bt-hollow-orange g-m-r-20">送货上门</text>
-		</view>
-	</view>
-
-	<!-- 地址 -->
-	<view class="address g-flex g-jc-fs g-width g-pd-lr-10 g-bs-bb g-ai-c">
-		<text class="icon-location g-fs-0 g-tc g-fs-22 g-c-orange" style="width:40px;font-size:22px" />
-		<view>
-			<view class="g-flex g-jc-sb g-width g-m-b-5"><text>公共</text><text>1997827873</text></view>
-			<view>浙江省杭州市吧哈工具说的话说上的讲话吧回归到</view>
-		</view>
-		<text class="icon-more2 g-fs-0 g-fs-20 g-c-929292"/>
-	</view>
-	<image mode="widthFix" src="{{IMG_OSS_TIAO}}" class="g-width" />
-	<!--  -->
-	<zan-cell title="{{local_toBuy.show.shopName}}" value="商品顾问：{{local_toBuy.show.counselorName}}"></zan-cell>
-	<view class="g-line-gray"/>
-
-	<!-- 商品卡片 -->
-	<view class="sku-goods g-flex g-pd-10 g-width g-bs-bb">
-		<image mode="aspectFill" src="{{local_toBuy.show.image}}" class="sku-goods-img g-fs-0 g-m-r-5" />
-		<view class="g-flex g-ai-sb g-fw-w">
-			<view class="">{{local_toBuy.show.name}}</view>
-			<view class="g-width g-fs-12 g-fs-929292">{{local_toBuy.show.skuDesc}}</view>
-			<view class="g-width g-flex g-jc-sb">
-				<view class="g-c-orange g-fs-14">¥{{local_toBuy.show.price}} 
-					<text class="g-m-l-5 g-c-929292">¥{{local_toBuy.show.marketPrice}}</text>
-				</view>
-				<text class="g-c-929292">X {{local_toBuy.show.number}}</text>
+	<scroll-view scroll-y style="height: 100vh;" >
+		<!-- 配送方式 -->
+		<view class="way g-flex g-jc-fs g-width g-m-t-20 g-pd-lr-10 g-bs-bb" style="height:50px;line-height:50px">
+			<text class="icon-courier g-fs-0 g-tc g-fs-22 g-c-orange" style="width:40px;font-size:22px" />
+			<view class="g-flex g-ai-c g-width">
+				<text class="g-m-r-20 g-c-3e3e3e">配送方式</text>
+				<block wx:for="{{delivery}}" wx:key="index">
+					<text 
+						class="{{deliveryType==item.type?'g-bt-hollow-orange':'g-bt-hollow-black'}} g-m-r-20"
+						bindtap="handleDeliveryType"
+						data-type="{{item.type}}"
+					>{{item.name}}</text>
+				</block>
 			</view>
 		</view>
-	</view>
+
+		<!-- 地址 -->
+		<view wx:if="{{deliveryType==2}}" class="address g-flex g-jc-fs g-width g-pd-lr-10 g-bs-bb g-ai-c">
+			<text class="icon-location g-fs-0 g-tc g-fs-22 g-c-orange" style="width:40px;font-size:22px" />
+			<view wx:if="{{address && address.addressId}}" class="g-width g-pd-r-10">
+				<view class="g-flex g-jc-sb g-width g-m-b-5">
+					<text>{{address.username}}</text>
+					<text>{{address.mobile}}</text>
+				</view>
+				<view>{{address.provinceName}}{{address.cityName}}{{address.districtName}}{{address.detailAddress}}</view>
+			</view>
+			<view wx:else class="g-width g-pd-r-10">
+				<view class="g-c-3e3e3e g-pd-tb-10">请填写收获地址</view>
+			</view>
+			<text class="icon-more2 g-fs-0 g-fs-16 g-c-929292" bindtap="handleGetAddress"/>
+		</view>
+
+		<image mode="widthFix" src="{{IMG_OSS_TIAO}}" class="g-width" />
+		
+		<!-- 商品卡片 -->
+		<!-- 直接购买，只一个商品时 -->
+		<block wx:if="{{local_toBuy.type==1}}">
+			<zan-cell title="{{local_toBuy.show.shopName}}" value="商品顾问：{{local_toBuy.show.counselorName}}"></zan-cell>
+			<view class="g-line-gray"/>
+			<view class="sku-goods g-flex g-pd-tb-10 g-pd-lr-15 g-width g-bs-bb">
+				<image mode="aspectFill" src="{{local_toBuy.show.image}}" class="sku-goods-img g-fs-0 g-m-r-5" />
+				<view class="g-flex g-ai-sb g-fw-w g-width">
+					<view class="">{{local_toBuy.show.name}}</view>
+					<view class="g-width g-fs-12 g-c-929292">{{local_toBuy.show.skuDesc}}</view>
+					<view class="g-width g-flex g-jc-sb">
+						<view class="g-c-orange g-fs-14">¥{{local_toBuy.show.price}} 
+							<text class="g-m-l-5 g-c-929292 g-fs-12 g-del">¥{{local_toBuy.show.marketPrice}}</text>
+						</view>
+						<text class="g-c-929292 g-fs-12">X {{local_toBuy.show.number}}</text>
+					</view>
+				</view>
+			</view>
+		</block>
+
+		<!-- 购物车下单购买时，存在多个商品多个店铺 -->
+		<block wx:elseif="{{local_toBuy.type==2}}" wx:for="{{local_toBuy.showArr}}" wx:key="index" wx:for-item="itemPar">
+			<!-- 店铺名称 -->
+			<view class="g-flex g-height-30 g-lh-30 g-pd-lr-15 g-width g-bs-bb">
+				<view class="g-flex g-jc-sb g-width">
+					<view class="g-fs-12">{{itemPar.shopName}}</view>
+					<view class="g-fs-12">商品顾问：{{itemPar.counselorName}}</view>
+				</view>
+			</view>
+			<!-- 店铺下商品 -->
+			<view class="g-flex g-ai-c g-pd-lr-15 g-width g-bs-bb" wx:for="{{itemPar.cartVoList}}" wx:key="item.cartId">		
+				<view class="sku-goods g-flex g-width g-bs-bb g-pd-tb-10">
+					<image mode="aspectFill" src="{{item.goodsImg}}" class="sku-goods-img g-fs-0 g-m-r-5" />
+					<view class="g-flex g-ai-fs g-fw-w g-width">
+						<view class="g-fs-12">{{item.goodsName}}</view>
+						<!-- 编辑状态时 sku 可选 -->					
+						<view class="g-width g-fs-12 g-c-929292">{{item.skuDesc}}</view>
+						<view class="g-width g-flex g-jc-sb g-ai-c">
+							<view class="g-c-orange g-fs-14">¥{{item.goodsPrice}} 
+								<text class="g-m-l-5 g-c-929292 g-fs-12 g-del">¥{{item.goodsMarketprice}}</text>
+							</view>
+							<text class="g-c-929292 g-fs-12">X {{item.number}}</text>
+						</view>
+					</view>
+				</view>
+			</view>
+		</block>
 
 
-	<view class="g-line-gray"/>
-	<zan-cell title="商品总金额">
-		<view slot="footer" class="g-c-orange">¥{{local_toBuy.marketPriceTotal}}</view>
-	</zan-cell>
-	<view class="g-line-gray"/>
-	<zan-cell title="实付总金额">
-		<view slot="footer" class="g-c-orange">¥{{local_toBuy.priceTotal}}</view>
-	</zan-cell>
-	<view class="g-line-gray"/>
+		<view class="g-line-gray"/>
+		<zan-cell title="商品总金额">
+			<view slot="footer" class="g-c-orange">¥{{local_toBuy.marketPriceTotal}}</view>
+		</zan-cell>
+		<view class="g-line-gray"/>
+		<zan-cell title="实付总金额">
+			<view slot="footer" class="g-c-orange">¥{{local_toBuy.priceTotal}}</view>
+		</zan-cell>
+		<view class="g-line-gray"/>
+		<view style="height: 200px"/>
+	</scroll-view>
 	<!-- 底部付款 -->
-	<view class="bottom">
+	<view class="bottom g-bg-white">
 		<view class="g-line-gray"/>
 		<view class="g-width g-tc g-pd-tb-10">
 			<view class="g-fs-12 g-c-929292">实付款</view>
 			<view class="g-fs-24 g-c-orange">¥{{local_toBuy.priceTotal}}</view>
 		</view>
-		<button class="g-bt-wechat" bindtap="handlePay">微信支付</button>
+		<view class="g-bt-orange-dark" wx:if="{{deliveryType==2 && !address.addressId}}">生成订单</view>
+		<view class="g-bt-orange-square" bindtap="handleCreatOrder" wx:else>生成订单</view>
 	</view>
 </view>

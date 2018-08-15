@@ -4,7 +4,7 @@ import Debounce from '../../utils/debounce.js';
 
 Page({
 	data: {
-		userInfo:wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{},
+		userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{},
 		disCartVos: [],
 		cartVos: [],
 		is_edit: false,
@@ -18,17 +18,27 @@ Page({
 		total: 0, // 左上角数字：购物车共有多少件有效商品
 		settlementTotal: 0, //右下角结算数字：选中多少商品去结算
 		totalPrice: 0,
+		tolalMarketPrice: 0,
 		adviser_shopId: null // 重改店铺顾问时的店铺ID
 	},
 	onLoad: function () {
-		console.log('onLoad');
 		this.toast=this.selectComponent("#toast")	
-		this.dialog = this.selectComponent("#dialog");
-		this._onGetData()
+		this.dialog = this.selectComponent("#dialog")
+		let {userInfo} = this.data
+		this.setData({
+			userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{}
+		},()=>{
+			userInfo.token && this._onGetData()
+		})
 	},
 	// 生命周期-页面显示即调用，因为ready和load方法在返回路由时不调用
 	onShow: function(){
-		console.log('onShow');
+		let {userInfo} = this.data
+		this.setData({
+			userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{}
+		},()=>{
+			userInfo.token && this._onGetData()
+		})
 		const pages=getCurrentPages()
 		let currentPage=pages[pages.length-1]
 		let adviser = currentPage.data.adviser
@@ -56,7 +66,8 @@ Page({
 				if( code===200 ){
 					return _this.setData({
 						disCartVos: data.disCartVos,
-						cartVos: data.cartVos //--TEMP--
+						cartVos: data.cartVos,
+						is_checkedAll: false //避免页面切换，重新获取数据后，子checkbox未选中，全选却选中的尴尬
 					},()=>{
 						_this._onHandleCartVos()
 						_this._onGetTotal()
@@ -378,14 +389,19 @@ Page({
 	_onGetTotalPrice: function () {
 		let {cartVos} = this.data
 		let price=0
+		let marketPrice=0
 		cartVos.map((itemPar)=>{
 			itemPar.cartVoList.map((item)=>{
 				if(item.checked){
-					price=price+Number(item.goodsPrice)
+					price=price+Number(item.goodsPrice)*Number(item.number)
+					marketPrice=marketPrice+Number(item.goodsMarketprice)*Number(item.number)
 				}
 			})
 		})
-		this.setData({totalPrice:price.toFixed(2)})
+		this.setData({
+			totalPrice:price.toFixed(2),
+			tolalMarketPrice:marketPrice.toFixed(2)
+		})
 	},
 	// 删除购物车商品
 	handleDel: function () {
@@ -395,36 +411,54 @@ Page({
 	},
 	// 	去结算按钮
 	handleSettlement: function () {
-		const {cartVos=[],userInfo={}} = this.data
-		let param=[]
+		const {cartVos=[],userInfo={},settlementTotal,totalPrice,tolalMarketPrice} = this.data
+		if(!settlementTotal)return;
+		// 组装ordersGoods,// 组装showArr
+		let ordersGoods=[]
+		let showArr=[]
 		cartVos.map((itemPar)=>{
+			let showSonList=[]
 			itemPar.cartVoList.map((item)=>{
 				if(item.checked){
-					param.push(item.cartId)
-				}
-			})
-		})
-		const _this = this
-		Debounce(()=>{
-			wx.request({
-				url: API.CART_TOSETTLEMENT,
-				data: param,
-				method: 'POST',
-				header: {
-					"token": userInfo.token
-				},
-				success: function (res) {
-					console.log(res);
-					const {code='', data={}, message=''} = res.data
-					if( code===200 ){
-						return wx.navigateTo({url:'/pages/buy/buy'})
+					showSonList.push(item)
+					let obj={
+						counselorId: item.counselorId,
+						goodsId: item.goodsId,
+						number: item.number,
+						shopAddress: itemPar.shopAddress,
+						shopId:  item.shopId,
+						skuDesc: item.skuDesc,
+						skuId: item.skuId
 					}
-					return _this.toast.warning(message)
-				},
-				fail: function (res) {
-					return _this.toast.error('请求失败，请刷新重试')
+					ordersGoods.push(obj)
 				}
 			})
+			if(showSonList.length){
+				showArr.push(itemPar)
+				for (let itemShow of showArr){
+					if(itemShow.cartVoList[0].shopId==showSonList[0].shopId){
+						itemShow.cartVoList=showSonList
+						break
+					}
+				}
+			}
+		})
+		let toBuyData={
+			type: 2, //1:直接购买 2:购物车到购买
+			ordersGoods,
+			show: {},
+			showArr, // 整个购物车，没有过滤
+			priceTotal: totalPrice,
+			marketPriceTotal: tolalMarketPrice,
+		}
+		wx.setStorage({
+			key: "wt_toBuy",
+			data: toBuyData,
+			success:function () {
+				wx.navigateTo({
+					url:'/pages/buy/buy'
+				})
+			}
 		})
 	},
 	// 删除购物车时的取消事件

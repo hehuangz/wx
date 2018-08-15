@@ -1,4 +1,6 @@
-
+.container {
+    overflow-y: scroll;
+}
 .bottom {
     width: 100vw;
     height: 117px;

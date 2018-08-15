@@ -3,9 +3,12 @@
 <view class="container">
 	<view class="g-flex g-ai-c g-pd-lr-20 g-pd-10 g-bg-white g-m-tb-10">
 		<image src="{{userInfo.avatarUrl}}" mode="widthFix" class="g-avatar" />
-		<text class="g-fs-16 g-c-212121 g-m-l-20">{{userInfo.nickName}}</text>
-		<button open-type="getPhoneNumber" bindgetphonenumber="handleWxTel">登录</button> 
-		<button bindtap="handleMyTel">自绑登录</button>
+		<text class="g-fs-16 g-c-212121 g-m-l-20 g-m-r-20 g-weight-300">{{userInfo.nickName || '无名小吾'}}</text>
+		<view 
+			class="g-bt-hollow-orange g-tr" 
+			bindtap="handleDialog"
+			wx:if="{{!userInfo.tel}}"
+		>绑定手机号</view>
 	</view>
 	<zan-cell title="我的订单"></zan-cell>
 	<view>
@@ -18,3 +21,20 @@
 	</zan-cell-group>
 	<view style="height:100px"/>
 </view>
+<!-- 绑定手机号弹窗 -->
+<dialog 
+	id='dialog' 
+	content='使用微信手机号or自行绑定手机号？' 
+	cancelText='自己绑' 
+	confirm='微信'
+	bind:cancelEvent="_cancelEvent"  
+	bind:confirmEvent="_confirmEvent"
+	wxAuth="{{true}}"
+>
+	<button 
+		slot="confirm" 
+		open-type="getPhoneNumber"
+		bindgetphonenumber="handleWxTel" 
+		class="g-fs-16 g-bg-white g-c-wxgreen"
+	>微信</button>
+</dialog>

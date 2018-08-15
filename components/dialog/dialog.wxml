@@ -1,8 +1,8 @@
 <view class='c_dialog' hidden="{{!isShow}}">
     <view class='mask'></view>
     <view class='dialog'>
-        <view class='dialog-title'>{{ title }}</view>
-        <view class='dialog-content'>{{ content }}</view>
+        <!-- <view class='dialog-title'>{{ title }}</view> -->
+        <view class='dialog-content' style="padding-top:30px">{{ content }}</view>
         <view class='dialog-footer'>
             <view class='dialog-btn' catchtap='_cancelEvent'>{{ cancelText }}</view>
             <view class='dialog-btn' catchtap='_confirmEvent' wx:if="{{!wxAuth}}">{{ confirmText }}</view>

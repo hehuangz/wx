@@ -1,5 +1,5 @@
 const api = {
-    WXPAY_GET_OPENID: '/users/searchAssistantByShopId',
-    WXPAY_TO_PAY: '/users/searchAssistantByShopId'
+    PAY_TOWXPAY: 'wxprogram/weixinpay',
+    PAY_RESULT: 'orders/payback'
 };
 export default api;

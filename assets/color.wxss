@@ -23,6 +23,9 @@
 .g-c-green {
   color: green;
 }
+.g-c-wxgreen {
+  color: #42ad31;
+}
 .g-c-212121 {
   color: #212121;
 }

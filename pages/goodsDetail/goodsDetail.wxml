@@ -78,7 +78,7 @@
 		closeOnClickOverlay="{{true}}" 
 		bindclose="togglePopup"
 	>
-		<view style="width:100vw" class="g-bg-white g-pd-20 g-bs-bb">
+		<view style="width:100vw;padding:20px 10px 20px 20px" class="g-bg-white g-pd-20 g-bs-bb">
 			<view class="sku-img g-bg-white g-flex g-jc-fs g-ai-c g-m-b-20">
 				<image src="{{skuInfo.image}}" class="__img g-m-r-20 g-fs-0 g-border-e5e5e5" mode="aspectFit"/>
 				<view>
@@ -97,10 +97,10 @@
 					<text class="g-block g-fs-12 g-pd-b-5 g-c-212121">{{key}}</text>
 					<block wx:for="{{itemPar.value}}" wx:key="item">
 						<view 
-						class="g-bt-hollow-orange g-m-r-10 g-m-b-10 {{itemPar.active==item?'active':''}}"
-						 bindtap="handleTabLabel" 
-						 data-active="{{item}}"
-						 data-name="{{key}}"
+							class="g-bt-hollow-orange g-m-r-10 g-m-b-10 {{itemPar.active==item?'active':''}}"
+							bindtap="handleTabLabel" 
+							data-active="{{item}}"
+							data-name="{{key}}"
 						>{{item}}</view>
 					</block>
 				</view>

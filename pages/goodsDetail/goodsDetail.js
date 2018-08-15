@@ -20,7 +20,10 @@ Page({
 	onLoad: function (options) {
 		this.toast=this.selectComponent("#toast")
 		const {goodId=null} = options
-		this.setData({goodId})
+		this.setData({
+			goodId,
+			shopInfo: wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{},
+		})
 		this._onGetData(goodId)
 	},
 	// 生命周期-页面显示即调用，因为ready和load方法在返回路由时不调用
@@ -192,24 +195,10 @@ Page({
 	handleBuy: function () {
 		const {skuInfo={}} = this.data
 		if(!skuInfo.stock)return this.handleChooseSku()//未选择规格，让它去选
-		// setBuyGoods()
-		// 商品详情点立即购买或者购物车结算，将下单页面的所有商品数据存入本地
-// "ordersGoods": [
-//     {
-//       "cartId": 0,//--TEMP--应该是在立即支付时不要传的
-//       "counselorId": 0,
-//       "goodsId": 0,
-//       "number": 0,
-//       "shopAddress": "string",
-//       "shopId": 0,
-//       "skuDesc": "string",
-//       "skuId": 0
-//     }
-//   ],
 		// 订单数据
 		const {data,adviser,userInfo,goodId,stepperValue,shopInfo,skuDesc}=this.data
 		let ordersGoods=[{
-			counselorId:adviser.uid || 8,
+			counselorId: adviser.uid || 8,
 			goodsId: goodId || 68,
 			number: stepperValue,
 			shopAddress: userInfo.address,
@@ -220,6 +209,7 @@ Page({
 		// 显示数据
 		
 		let toBuyData={
+			type: 1,// 1:直接购买 2:购物车到购买
 			ordersGoods,
 			show:{
 				shopName: shopInfo.shopName,
@@ -231,11 +221,11 @@ Page({
 				marketPrice:data.marketPrice,
 				number:stepperValue
 			},
-			priceTotal:skuInfo.price,
-			marketPriceTotal:data.marketPrice
+			priceTotal:Number(skuInfo.price)*stepperValue,
+			marketPriceTotal:Number(data.marketPrice)*stepperValue
 		}
 		wx.setStorage({
-			key:"wt_toBuy",
+			key: "wt_toBuy",
 			data: toBuyData,
 			success:function () {
 				wx.navigateTo({
@@ -243,6 +233,5 @@ Page({
 				})
 			}
 		})
-		
 	}
 })

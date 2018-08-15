@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "支付结果",
+  "usingComponents": {
+    "dialog": "/components/dialog/dialog",
+    "toast": "/components/toast/toast",
+    "goods": "/components/goods/goods",
+    "lose": "/components/lose/lose",
+    "zan-cell": "/bower_components/zanui-weapp/dist/cell/index"
+  }
+}

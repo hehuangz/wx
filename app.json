@@ -1,5 +1,7 @@
 {
   "pages":[
+    "pages/payResult/payResult",
+    "pages/pay/pay",
     "pages/aboutus/aboutus",
     "pages/agreement/agreement",
     "pages/buy/buy",

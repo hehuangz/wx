@@ -1,5 +1,5 @@
 //logs.js
-import utils from '../../utils/utils.js';
+import Debounce from '../../utils/debounce.js';
 import {IMG_OSS_MINEBG} from '../../constants/constants'
 import API from '../../constants/apiRoot'
 
@@ -7,10 +7,19 @@ Page({
 	data: {
 		IMG_OSS_MINEBG,
 		userInfo: wx.getStorageSync('wx_user')?wx.getStorageSync('wx_user'):{},
-		tel: '0571-87179826'
+		tel: '0571-87179826',//客服电话
+		is_toLogin: false
 	},
 	onLoad: function () {
 		this.toast=this.selectComponent("#toast")
+		this.dialog = this.selectComponent("#dialog");
+		let {userInfo} = this.data
+		if(wx.getStorageSync('wt_user') || wx.getStorageSync('wx_user')){
+			userInfo=wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):wx.getStorageSync('wx_user')
+		}else {
+			userInfo={}
+		}
+		this.setData({userInfo})
 	},
 	handleCall: function () {
 		wx.makePhoneCall({
@@ -29,6 +38,7 @@ Page({
 		})
 	},
 	handleWxTel: function (e) {
+		const {userInfo} = this.data
 		const _this=this
 		wx.login({
 			success: function(wxres){
@@ -38,8 +48,8 @@ Page({
 						iv: e.detail.iv,
 						encryptedData: e.detail.encryptedData,
 						jscode: wxres.code,
-						img: _this.data.userInfo.avatarUrl,
-						nickname:  _this.data.userInfo.nickName
+						img: userInfo.avatarUrl,
+						nickname:  userInfo.nickName
 					},
 					method: 'POST',
 					header: {
@@ -48,8 +58,20 @@ Page({
 					success: function (res) {
 						console.log(res);
 						const {code='', data={}, message=""} = res.data
-						if( code===200 ){
-							// return 
+						if( code===200 && data){
+							return  _this.setData({
+								userInfo: data
+							},()=>{
+								wx.setStorage({
+									key:"wt_user",
+									data,
+									success:function () {
+										_this.toast.success("绑定成功")
+										_this.dialog.hideDialog()
+									}
+								})
+							})
+							
 						}
 						return _this.toast.warning(message)
 					},
@@ -64,5 +86,20 @@ Page({
 		wx.navigateTo({
 			url:'/pages/login/login'
 		})
-	}
+	},
+	handleDialog: function () {
+		Debounce(()=>{
+			this.dialog.showDialog();
+		})
+	},
+	//dialog取消事件
+	_cancelEvent(){
+		wx.navigateTo({
+			url: '/pages/login/login'
+		})
+	},
+	//dialog确认事件
+	_confirmEvent(){
+		// this.dialog.hideDialog();
+	},
 })
