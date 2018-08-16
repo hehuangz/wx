@@ -104,7 +104,9 @@ Page({
 								key:"wt_user",
 								data,
 								success:function () {
-									_this.toast.success("登录成功")
+									_this.toast.success("登录成功",2,()=>{
+										_this._onGoBack()
+									})
 								}
 							})
 						}			
@@ -143,5 +145,12 @@ Page({
 		wx.navigateTo({
 			url:'/pages/agreement/agreement'
 		})
+	},
+	_onGoBack: function () {
+		setTimeout(() => {
+			const pages=getCurrentPages()
+			let prevPage=pages[pages.length-2] // 上个页面
+			prevPage && wx.navigateBack()
+		}, 2000);
 	}
 })

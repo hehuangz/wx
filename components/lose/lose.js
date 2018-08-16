@@ -12,7 +12,7 @@ Component({
         },
         icon: {
             type: String,
-            value: 'icon-shouji'
+            value: 'icon-none'
         },
         title:{
             type: String,

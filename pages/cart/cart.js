@@ -23,7 +23,6 @@ Page({
 	},
 	onLoad: function () {
 		this.toast=this.selectComponent("#toast")	
-		this.dialog = this.selectComponent("#dialog")
 		let {userInfo} = this.data
 		this.setData({
 			userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{}
@@ -405,8 +404,17 @@ Page({
 	},
 	// 删除购物车商品
 	handleDel: function () {
-		Debounce(()=>{
-			this.dialog.showDialog();
+		const _this = this
+		wx.showModal({
+			title: '提示',
+			content: '确定从购物车中删除这些商品吗？',
+			success: function(res) {
+				if (res.confirm) {
+					_this._onDeleteCart()
+				} else if (res.cancel) {
+					console.log('用户点击取消')
+				}
+			}			
 		})
 	},
 	// 	去结算按钮
@@ -428,7 +436,8 @@ Page({
 						shopAddress: itemPar.shopAddress,
 						shopId:  item.shopId,
 						skuDesc: item.skuDesc,
-						skuId: item.skuId
+						skuId: item.skuId,
+						source: item.source
 					}
 					ordersGoods.push(obj)
 				}
@@ -461,12 +470,8 @@ Page({
 			}
 		})
 	},
-	// 删除购物车时的取消事件
-	_cancelEvent(){
-		_this.dialog.hideDialog();
-	},
 	// 删除购物车时的确认事件
-	_confirmEvent(){
+	_onDeleteCart(){
 		const {cartVos,userInfo} = this.data
 		let param=[]
 		cartVos.map((itemPar)=>{
@@ -487,10 +492,9 @@ Page({
 			success: function (res) {
 				const {code='', data={}, message=''} = res.data
 				if( code===200 ){
-					return _this.toast.success(message,2,()=>{
-						_this._onGetData()
-						_this.dialog.hideDialog();
-					})
+					_this.toast.success(message)
+					_this._onGetData()
+					return 
 				}
 				return _this.toast.warning(message)
 			},

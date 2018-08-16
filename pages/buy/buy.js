@@ -22,6 +22,7 @@ Page({
 		this.setData({
 			local_toBuy: wx.getStorageSync('wt_toBuy')?wx.getStorageSync('wt_toBuy'):{},
 			address: wx.getStorageSync('wt_wxAddress')?wx.getStorageSync('wt_wxAddress'):{},
+			userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{}
 		})
 		!this.data.address.addressId && this._onGetAddress()
 	},
@@ -35,7 +36,7 @@ Page({
 	_onGetAddress: function(){
 		const {userInfo} = this.data;
 		const _this=this
-		wx.request({
+		userInfo.uid && wx.request({
 			url: API.BUY_DEFAULT_ADDRESS,
 			data: {
 				"uid": userInfo.uid

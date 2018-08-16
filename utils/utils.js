@@ -115,7 +115,26 @@ const dataValidity = (rules)  => {
 };
 // --over--
 
+/**
+ * 处理字符串中携带的参数
+ * @param {string} name 参数
+ * @param {string} url 整个字符串地址
+ * @return {string}  返回value
+ * @example getQuery('id','http://xx.com?id=1')  => 1
+ */
+const getQuery = (name='',url='') => {
+	var match = /^[hH][tT][tT][pP]([sS]?):\/\/(\S+\.)+\S{2,}$/; //匹配中文
+	// var match = /^((ht|f)tps?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-\.,@?^=%&:\/~\+#]*[\w\-\@?^=%&\/~\+#])?$/; //不匹配中文
+	if(!match.test(url) || (url.indexOf('?')==-1)) return console.error('url格式不正确')
+	let search=url.split('?')[1];
+	let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+	let r = search.match(reg);
+	if (r != null) return unescape(r[2]); 
+	return null;
+}
+
 module.exports = {
   formatTime: formatTime,
   dataValidity: dataValidity,
+  getQuery: getQuery
 }

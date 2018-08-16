@@ -48,14 +48,14 @@
 					<view class="__content g-fd-c g-jc-sb">
 						<view class="g-m-b-5"> 
 							<text class="g-fs-16 g-m-r-5">{{item.name}}</text>
-							<text class="icon-shouji g-c-blue g-fs-16 g-m-r-5" wx:if="{{item.sex==1}}"/>
-							<text class="icon-shouji g-c-orange g-fs-16 g-m-r-5" wx:else/>
+							<text class="icon-boy g-c-blue g-fs-16 g-m-r-5" wx:if="{{item.sex==1}}"/>
+							<text class="icon-girl g-c-orange g-fs-16 g-m-r-5" wx:else/>
 							<block wx:for="{{[1,2,3,4,5]}}" wx:for-item="i" wx:key="{{i}}">
-								<text class="icon-shouji g-c-yellow g-fs-12 g-m-r-5"/>
+								<text class="icon-star g-c-yellow g-fs-12 g-m-r-5"/>
 							</block>
 						</view>
 						<view class="g-c-yellow g-fs-12 g-m-b-10">商品顾问</view>
-						<view class="g-fs-12">{{item.sign}}</view>
+						<view class="g-fs-12 g-twoline">{{item.sign}}</view>
 					</view>
 				</view>
 			</swiper-item>

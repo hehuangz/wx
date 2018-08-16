@@ -53,15 +53,15 @@ Component({
 
         //隐藏弹框
         hideDialog(){
-        this.setData({
-            isShow: !this.data.isShow
-        })
+			this.setData({
+				isShow: false
+			})
         },
         //展示弹框
         showDialog(){
-        this.setData({
-            isShow: !this.data.isShow
-        })
+			this.setData({
+				isShow: true
+			})
         },
         /*
         * 内部私有方法建议以下划线开头

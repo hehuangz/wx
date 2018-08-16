@@ -10,33 +10,54 @@ Page({
 		skuData: {}, // {'hh':{value:['red','yellow'],active:'red'}}
 		skuSelect: {}, // 当前选中的sku组合{"color":"red","weight":"300g"}
 		skuInfo: {}, // 当前选中的整条商品信息，包括价格图片库存，skuArr中的一条
-		adviser: {uid:0,name:'大大'},
+		adviser: {uid:'',name:''},
 		// 下面的数据只是加入购物车或立即购买时使用
 		userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{},
 		goodId: null,
 		shopInfo: wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{},
-		skuDesc: ''
+		skuDesc: '',
+		address: ''
 	},
 	onLoad: function (options) {
 		this.toast=this.selectComponent("#toast")
-		const {goodId=null} = options
+		let {goodId=null} = options
+		let {adviser} = this.data
+		let wt_counselor=wx.getStorageSync('wt_counselor')?wx.getStorageSync('wt_counselor'):{}
+		if(wt_counselor.uid) {
+			adviser={uid:wt_counselor.uid,name:wt_counselor.name}
+		}
 		this.setData({
 			goodId,
-			shopInfo: wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{},
+			adviser
 		})
 		this._onGetData(goodId)
+		this._onGetShopAddress()
 	},
 	// 生命周期-页面显示即调用，因为ready和load方法在返回路由时不调用
 	onShow: function(){
+		// 只要显示先设置下title
+		let local_shop = wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{}
+		local_shop.id && wx.setNavigationBarTitle({
+			title: local_shop.shopName 
+		})
+		// 选顾问时，选好返回上一页
 		const pages=getCurrentPages()
 		let currentPage=pages[pages.length-1]
 		let adviser = currentPage.data.adviser
 		adviser && this.setData({
 			adviser:currentPage.data.adviser
 		})
+		const {userInfo} = this.data
+		let wt_user=wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{}
+		if(wt_user.uid && userInfo.uid!=wt_user.uid){
+			this.setData({userInfo:wt_user})
+		}
 	},
 	// 获取数据
 	_onGetData: function(goodId){
+		wx.showLoading({
+			title: '加载中',
+		})
 		const _this=this
 		wx.request({
 			url: API.GOODS_DETAIL,
@@ -56,6 +77,9 @@ Page({
 			},
 			fail: function (res) {
 				return _this.toast.error('请求失败，请刷新重试')
+			},
+			complete: function () {
+				wx.hideLoading()
 			}
 		})
 	},
@@ -165,7 +189,8 @@ Page({
 				shopId: shopInfo.id,
 				skuDesc: skuDesc,
 				skuId: skuInfo.skuId,
-				uid: userInfo.uid
+				uid: userInfo.uid,
+				source: 0  //0是线上(默认)，1是线下，扫码进来链接带的参数 --TEMP--
 			},
 			method: 'POST',
 			header: {
@@ -189,22 +214,68 @@ Page({
 				return _this.toast.error('请求失败，请刷新重试')
 			}
 		})
-
+	},
+	/**
+	 * 获取店铺地址,主要是在立即购买的时候用到
+	 */
+	_onGetShopAddress: function () {
+		const {shopInfo} = this.data
+		const _this=this
+		wx.request({
+			url: API.HOME_SHOP_ADDRESS,
+			data: {
+				shopId:shopInfo.id
+			},
+			method: 'POST',
+			header: {
+			},
+			success: function (res) {
+				const {code='', data={}, message=''} = res.data
+				if( code===200 ){
+					let address=data.address || ''
+					return _this.setData({address})
+				}
+				return _this.toast.warning(message)
+			},
+			fail: function (res) {
+				return _this.toast.error('请求失败，请刷新重试')
+			}
+		})
 	},
 	// 立即购买
 	handleBuy: function () {
-		const {skuInfo={}} = this.data
-		if(!skuInfo.stock)return this.handleChooseSku()//未选择规格，让它去选
-		// 订单数据
-		const {data,adviser,userInfo,goodId,stepperValue,shopInfo,skuDesc}=this.data
+		const {skuInfo={},userInfo} = this.data
+
+		// 验证是否登录
+		if(!userInfo.uid){
+			return wx.showModal({
+				title: '提示',
+				content: '绑定手机号才能下单哦～，绑定？',
+				success: function(res) {
+				  if (res.confirm) {
+					 wx.switchTab({
+						 url: '/pages/mine/mine?showDialog=1'
+					 })
+				  } else if (res.cancel) {
+					console.log('用户点击取消')
+				  }
+				}
+			  })  
+		}
+		// 验证规格，未选择规格，让它去选
+		if(!skuInfo.stock)return this.handleChooseSku()
+		
+		// 验证都通过，开始发数据，订单数据
+		const {data,adviser,goodId,stepperValue,shopInfo,skuDesc,address}=this.data
 		let ordersGoods=[{
 			counselorId: adviser.uid || 8,
 			goodsId: goodId || 68,
 			number: stepperValue,
-			shopAddress: userInfo.address,
+			shopAddress: address,
 			shopId: shopInfo.id,
 			skuDesc: skuDesc,
-			skuId: skuInfo.skuId
+			skuId: skuInfo.skuId,
+			source: 0 //0是线上(默认)，1是线下，扫码进来链接带的参数 --TEMP--
 		}]
 		// 显示数据
 		
@@ -221,8 +292,8 @@ Page({
 				marketPrice:data.marketPrice,
 				number:stepperValue
 			},
-			priceTotal:Number(skuInfo.price)*stepperValue,
-			marketPriceTotal:Number(data.marketPrice)*stepperValue
+			priceTotal: Number(skuInfo.price)*stepperValue,
+			marketPriceTotal: Number(data.marketPrice)*stepperValue
 		}
 		wx.setStorage({
 			key: "wt_toBuy",

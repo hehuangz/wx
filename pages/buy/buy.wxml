@@ -18,7 +18,7 @@
 		</view>
 
 		<!-- 地址 -->
-		<view wx:if="{{deliveryType==2}}" class="address g-flex g-jc-fs g-width g-pd-lr-10 g-bs-bb g-ai-c">
+		<view wx:if="{{deliveryType==2}}" class="address g-flex g-jc-fs g-width g-pd-lr-10 g-bs-bb g-ai-c" bindtap="handleGetAddress">
 			<text class="icon-location g-fs-0 g-tc g-fs-22 g-c-orange" style="width:40px;font-size:22px" />
 			<view wx:if="{{address && address.addressId}}" class="g-width g-pd-r-10">
 				<view class="g-flex g-jc-sb g-width g-m-b-5">
@@ -30,7 +30,7 @@
 			<view wx:else class="g-width g-pd-r-10">
 				<view class="g-c-3e3e3e g-pd-tb-10">请填写收获地址</view>
 			</view>
-			<text class="icon-more2 g-fs-0 g-fs-16 g-c-929292" bindtap="handleGetAddress"/>
+			<text class="icon-more2 g-fs-0 g-fs-16 g-c-929292"/>
 		</view>
 
 		<image mode="widthFix" src="{{IMG_OSS_TIAO}}" class="g-width" />

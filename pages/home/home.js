@@ -1,6 +1,7 @@
 //honme.js
 import API from '../../constants/apiRoot';
-
+import {getQuery} from '../../utils/utils';
+import Promise from '../../utils/promise';
 //获取应用实例
 const app = getApp()
 
@@ -17,16 +18,16 @@ Page({
 		pageNum: 1
 	},
 	onLoad: function (){
+		wx.showLoading({
+			title: '加载中',
+		})
 		this.dialog=this.selectComponent("#dialog")
 		this.toast=this.selectComponent("#toast")
+		const {shop} = this.data
 		/**
 		 * 获取定位信息
 		 */
 		this._onLocation()
-		/**
-		 * 获取顾问列表
-		 */
-		this._onGetAdviser()
 		/**
 		 * 获取一级分类
 		 */
@@ -36,12 +37,28 @@ Page({
 		 */
 		this._onWxUser()
 	},
-	onReady: function () {
-		
+	/**
+	 * 显示时判断是否切换店铺，以本地为准
+	 */
+	onShow: function () {
+		// 本地数据与现在data中不一致就本地覆盖data，以本地为准
+		const {shop} = this.data
+		let local_shop = wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{}
+		local_shop.id && wx.setNavigationBarTitle({
+			title: local_shop.shopName 
+		})
+		if(local_shop.id && local_shop.id!=shop.id){
+			this.setData({shop:local_shop},()=>{
+				this._onGetCategory()
+				this._onGetAdviser()
+			})	
+		}
 	},
 	_onLocation: function () {
 		const _this=this;
-		wx.getLocation({
+		const {shop} = this.data
+		// 本地无数据再去获取地理位置
+		!shop.id && wx.getLocation({
 			type: 'wgs84', // 默认该类型
 			success: function(res) {
 				wx.request({
@@ -57,8 +74,20 @@ Page({
 					success: function (res) {
 						const {code, data, message} = res.data
 						if( code===200 ){
-							_this._onGetShopAddress(data)
-							return _this.setData({shop:data})
+							wx.setStorage({
+								key: "wt_shop",
+								data
+							})
+							return _this.setData({shop:data},()=>{
+								/**
+								 * 获取顾问列表
+								 */
+								_this._onGetAdviser()
+								/**
+								 * 获取一级分类
+								 */
+								_this._onGetCategory()
+							})
 						}else{
 							return _this.toast.warning(message)
 						}
@@ -119,52 +148,36 @@ Page({
 			})
 		}
 	},
+	// 去搜索页面
 	handleSearch: function () {
 		wx.navigateTo({url:'/pages/search/search'})
-	},
-	/**
-	 * 扫一扫按钮
-	 */
-	handleSao: function () {
-		this.setData({noNet:true})
-		wx.scanCode({
-			success: (res) => {
-				console.log('扫码结果',res)
-				wx.request({
-					url: API.HOME_SAOMA,
-					data: {
-						
-					},
-					method: 'POST',
-					header: {
-					},
-					success: function (res) {
-						
-					},
-					fail: function (res) {
-						return _this.toast.error('请求失败，请刷新重试')
-					}
-				})
-			}
-		})		  
 	},
 	/**
 	 * 获取顾问列表
 	 */
 	_onGetAdviser: function () {
+		wx.showLoading({title:'加载中'})
+		const {shop={}} = this.data;
 		const _this = this;
-		wx.request({
+		shop.id && wx.request({
 			url: API.HOME_ADVISER,
 			data: {
-				shopId: (_this.shop && _this.shop.id) || 26 //---TEMP---
+				shopId: shop.id
 			},
 			method: 'POST',
 			header: {
 			},
 			success: function (res) {
-				const {code, data, message} = res.data
+				const {code='', data=[], message=''} = res.data
 				if( code===200 ){
-					return _this.setData({adviserList:data})
+					return _this.setData({adviserList:data},()=>{
+						wx.setStorageSync('wt_counselor',{
+							uid: data[0] && data[0].uid,
+							name: data[0] && data[0].name
+						})
+						_this.resolve && _this.resolve() //在扫顾问二维码跳转到商品详情时使用的primise
+						wx.hideLoading()
+					})
 				}
 				return _this.toast.warn(message)
 			},
@@ -177,11 +190,12 @@ Page({
 	 * 获取一级分类
 	 */
 	_onGetCategory: function () {
+		const {shop} = this.data
 		const _this = this;
-		wx.request({
+		shop.id && wx.request({
 			url: API.HOME_CATEGORY_FIRST,
 			data: {
-				shopId: (_this.shop && _this.shop.id) || 26 //---TEMP---
+				shopId: shop.id
 			},
 			method: 'POST',
 			header: {
@@ -205,13 +219,16 @@ Page({
 	 * 获取分类下的商品
 	 */
 	_onGetGoods: function () {
-		const {pageSize,pageNum}=this.data
+		wx.showLoading({
+			title: '加载中',
+		})
+		const {pageSize,pageNum,shop,currentTab}=this.data
 		const _this = this;
-		wx.request({
+		shop.id && wx.request({
 			url: API.HOME_COODS,
 			data: {
-				shopId: (_this.shop && _this.shop.id) || 26, //---TEMP---
-				firstId: _this.data.currentTab || 14, //---TEMP---
+				shopId: shop.id, //---TEMP---
+				firstId: currentTab, //---TEMP---
 				pageSize,
 				pageNum
 			},
@@ -228,43 +245,11 @@ Page({
 			},
 			fail: function (res) {
 				return _this.toast.error('请求失败，请刷新重试')
+			},
+			complete: function () {
+				wx.hideLoading()
 			}
 		})
-	},
-	/**
-	 * 获取店铺地址
-	 */
-	_onGetShopAddress: function (opts) {
-		const {id,shopName} = opts;
-		const _this=this
-		wx.request({
-			url: API.HOME_SHOP_ADDRESS,
-			data: {
-				shopId:id
-			},
-			method: 'POST',
-			header: {
-			},
-			success: function (res) {
-				const {code='', data={}, message=''} = res.data
-				if( code===200 ){
-					let address=data.address || ''
-					return 	wx.setStorage({
-						key:"wt_shop",
-						data:{
-							id,shopName,address
-						},
-						success:function () {
-						}
-					})
-				}
-				return _this.toast.warning(message)
-			},
-			fail: function (res) {
-				return _this.toast.error('请求失败，请刷新重试')
-			}
-		})
-		
 	},
 	//dialog取消事件
 	_cancelEvent(){
@@ -277,5 +262,67 @@ Page({
 	// 无网络时，点击立即刷新按钮
 	_buttonEvent() {
 		this.onLoad() //---TEMP---没有刷新成功
+	},
+	/**
+	 * 扫一扫按钮
+	 */
+	handleSao: function () {
+		this.setData({noNet:true})
+		wx.scanCode({
+			success: (res) => {
+				//商品：https://app.wutonglife.com/detail?shopId=45&id=254&shopName=A1-B类型&source=1&isApp=
+				//顾问：https://app.wutonglife.com?shopId=57&assistantId=107&shopName=附近测试店铺
+				// console.log('扫码结果',res)
+				if(res.errMsg="scanCode:ok"){
+					const {result} = res
+					let shopId=getQuery('shopId',result)
+					let shopName=getQuery('shopName',result)
+					let id=getQuery('id',result)//商品id
+					let source=getQuery('source',result)
+					let assistantId=getQuery('assistantId',result)
+					console.log(shopId,shopName,id,source,assistantId);
+					if(id){ //商品，进入商品详情，并且切换店铺 --TEMP--不切换顾问吗
+						this._onSaoGoods({shopId,shopName,id,source})
+					}else if(assistantId){// 扫描的是顾问二维码，进入顾问
+						this._onSaoAdviser({shopId,shopName,assistantId})
+					}
+				}
+			}
+		})		  
+	},
+	/**
+	 * 扫商品码进入的链接，跳转到商品详情，切换到该店铺和该顾问
+	 */
+	_onSaoGoods: function (opts) {
+		const {shopId='',shopName='',id='',source=''} = opts
+		const _this=this
+		this.setData({
+			shop:{id:shopId,shopName}
+		},()=>{
+			//先设置本地，获取_onGetAdviser列表，将第一个设置为默认顾问，然后跳转到顾问列表
+			wx.setStorageSync('wt_shop',{id: shopId,shopName})
+			new Promise(function(resolve,reject){
+				_this.resolve=resolve
+				_this._onGetAdviser()
+			}).then(()=>{
+				wx.navigateTo({
+					url: `/pages/goodsDetail/goodsDetail?goodId=${id}&source=${source}`
+				})
+			})
+		})
+	},
+	_onSaoAdviser: function (opts) {
+		const {shopId='',shopName='',assistantId=''} = opts
+		const _this=this
+		wx.setStorage({
+			key: "wt_shop",
+			data: {
+				id: shopId,
+				shopName: shopName
+			},
+			success: function (){
+				_this.onShow()
+			}
+		})
 	}
 })

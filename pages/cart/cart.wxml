@@ -170,14 +170,5 @@
 		>确定</view>
 	</zan-popup>
 
-	<!-- 删除购物车的二次确认弹窗 -->
-	<dialog id='dialog' 
-		title='温馨提示' 
-		content='确认将宝贝从购物车中删除吗？' 
-		cancelText='取消' 
-		confirm='确定'
-		bind:cancelEvent="_cancelEvent"  
-		bind:confirmEvent="_confirmEvent">
-	</dialog>
 </view>
 
