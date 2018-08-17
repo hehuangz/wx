@@ -33,13 +33,21 @@
 			</view>
 		</view>
 		<!-- 店铺下商品 -->
-		<view class="g-flex g-ai-c g-pd-r-15 g-width g-bs-bb" wx:for="{{itemPar.cartVoList}}" wx:key="item.cartId">
+		<view 
+			class="g-flex g-ai-c g-pd-r-15 g-width g-bs-bb" 
+			wx:for="{{itemPar.cartVoList}}" 
+			wx:key="item.cartId"
+		>
 			<text 
 				class="{{item.checked?'icon-checkbox-after g-c-orange':'icon-checkbox-before g-c-c4c4c4'}} g-fs-0 g-tc g-m-lr-15 g-fs-20"
 				bindtap="handleChecked"
 				data-cartid="{{item.cartId}}"
 			/>			
-			<view class="sku-goods g-flex g-width g-bs-bb g-pd-tb-10">
+			<view 
+				class="sku-goods g-flex g-width g-bs-bb g-pd-tb-10" 
+				bindtap="handleToDetail" 
+				data-goodsid="{{item.goodsId}}"
+			>
 				<image mode="aspectFill" src="{{item.goodsImg}}" class="sku-goods-img g-fs-0 g-m-r-5" />
 				<view class="g-flex g-ai-fs g-fw-w g-width">
 					<view>{{item.goodsName}}</view>
@@ -84,7 +92,7 @@
 		<!-- 店铺下商品 -->
 		<view class="g-flex g-ai-c g-pd-r-15 g-width g-bs-bb" wx:for="{{itemPar.cartVoList}}" wx:key="item.cartId">
 			<text class="icon-checkbox-before g-fs-0 g-tc g-m-lr-15 g-c-c4c4c4 g-fs-20"/>
-			<view class="sku-goods g-flex g-width g-bs-bb g-pd-tb-10">
+			<view class="sku-goods g-flex g-width g-bs-bb g-pd-tb-10" bindtap="handleToDetail" data-goodsid="{{item.goodsId}}">
 				<image mode="aspectFill" src="{{item.goodsImg}}" class="sku-goods-img g-fs-0 g-m-r-5" />
 				<view class="g-flex g-ai-sb g-fw-w g-width">
 					<view class="g-c-929292">{{item.goodsName}}</view>

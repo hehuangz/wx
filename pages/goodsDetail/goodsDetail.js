@@ -16,11 +16,15 @@ Page({
 		goodId: null,
 		shopInfo: wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{},
 		skuDesc: '',
-		address: ''
+		address: '',
+		source: 0,//扫描进来的时候，如果是1，则加入购物车和立即购买时携带1过去
 	},
 	onLoad: function (options) {
 		this.toast=this.selectComponent("#toast")
-		let {goodId=null} = options
+		let {goodId=null,source=0} = options
+		// 设置方式
+		this.setData({source})
+
 		let {adviser} = this.data
 		let wt_counselor=wx.getStorageSync('wt_counselor')?wx.getStorageSync('wt_counselor'):{}
 		if(wt_counselor.uid) {
@@ -177,7 +181,7 @@ Page({
 	},
 	// 加入购物车
 	handleToCart: function () {
-		const {adviser={},userInfo={},skuInfo={},goodId,stepperValue,shopInfo,skuDesc}=this.data
+		const {adviser={},userInfo={},skuInfo={},goodId,stepperValue,shopInfo,skuDesc,source}=this.data
 		if(!skuInfo.stock)return this.handleChooseSku() //未选择规格，让它去选
  		const _this=this
 		wx.request({
@@ -190,7 +194,7 @@ Page({
 				skuDesc: skuDesc,
 				skuId: skuInfo.skuId,
 				uid: userInfo.uid,
-				source: 0  //0是线上(默认)，1是线下，扫码进来链接带的参数 --TEMP--
+				source,  //0是线上(默认)，1是线下，扫码进来链接带的参数 --TEMP--
 			},
 			method: 'POST',
 			header: {
@@ -202,9 +206,9 @@ Page({
 					return wx.switchTab({
 						url:'/pages/cart/cart',
 						success: function(){
-							let page=getCurrentPages().pop()
-							if(!page)return
-							page.onLoad()
+							// let page=getCurrentPages().pop()
+							// if(!page)return
+							// page.onLoad()
 						}
 					})
 				}
@@ -266,7 +270,7 @@ Page({
 		if(!skuInfo.stock)return this.handleChooseSku()
 		
 		// 验证都通过，开始发数据，订单数据
-		const {data,adviser,goodId,stepperValue,shopInfo,skuDesc,address}=this.data
+		const {data,adviser,goodId,stepperValue,shopInfo,skuDesc,address,source}=this.data
 		let ordersGoods=[{
 			counselorId: adviser.uid || 8,
 			goodsId: goodId || 68,
@@ -275,7 +279,7 @@ Page({
 			shopId: shopInfo.id,
 			skuDesc: skuDesc,
 			skuId: skuInfo.skuId,
-			source: 0 //0是线上(默认)，1是线下，扫码进来链接带的参数 --TEMP--
+			source, //0是线上(默认)，1是线下，扫码进来链接带的参数 --TEMP--
 		}]
 		// 显示数据
 		
@@ -304,5 +308,17 @@ Page({
 				})
 			}
 		})
+	},
+	onShareAppMessage: function (res) {
+		const {goodId} = this.data
+		console.log(goodId,res);
+		if (res.from === 'button') {
+			// 来自页面内转发按钮
+			console.log(res.target)
+		}
+		return {
+			title: '这个东西不错',
+			path: `/page/goodsDetail/goodsdetail?goodId=${goodId}`
+		}
 	}
 })

@@ -22,6 +22,9 @@ Page({
 		adviser_shopId: null // 重改店铺顾问时的店铺ID
 	},
 	onLoad: function () {
+		wx.showLoading({
+			title: '加载中',
+		})
 		this.toast=this.selectComponent("#toast")	
 		let {userInfo} = this.data
 		this.setData({
@@ -41,10 +44,10 @@ Page({
 		const pages=getCurrentPages()
 		let currentPage=pages[pages.length-1]
 		let adviser = currentPage.data.adviser
-		adviser && this._onSetAdviser(adviser)
+		adviser && adviser.uid && this._onSetAdviser(adviser)
 	},
 	onReady: function () {
-		console.log('onReady');
+		// console.log('onReady');
 	},
 	_onGetData:function () {
 		const {userInfo} = this.data;
@@ -76,6 +79,9 @@ Page({
 			},
 			fail: function (res) {
 				return _this.toast.error('请求失败，请刷新重试')
+			},
+			complete: function () {
+				wx.hideLoading()
 			}
 		})
 	},
@@ -83,6 +89,7 @@ Page({
 	_onGetTotal: function() {
 		const {cartVos} = this.data
 		let {total} = this.data
+		total=0
 		cartVos.map((itemPar)=>{
 			itemPar.cartVoList.map(()=>{
 				total++
@@ -186,7 +193,8 @@ Page({
 			url: API.CART_CHANGE_ADVISER,
 			data: {
 				shopId: adviser_shopId,
-				counselorId: adviser.uid
+				counselorId: adviser.uid,
+				uid: userInfo.uid
 			},
 			method: 'POST',
 			header: {
@@ -196,7 +204,7 @@ Page({
 			success: function (res) {
 				const {code='', data={}, message=''} = res.data
 				if( code===200 ){
-					return _this.toast.warning('变更顾问成功',2,()=>{
+					return _this.toast.success('变更顾问成功',2,()=>{
 						_this._onGetData()
 					})
 				}
@@ -204,6 +212,14 @@ Page({
 			},
 			fail: function (res) {
 				return _this.toast.error('请求失败，请刷新重试')
+			},
+			complete: function (res) {
+				const pages=getCurrentPages()
+				let currentPage=pages[pages.length-1]
+				let adviser = currentPage.data.adviser
+				adviser && currentPage.setData({
+					adviser: null
+				})
 			}
 		})
 	},
@@ -430,6 +446,7 @@ Page({
 				if(item.checked){
 					showSonList.push(item)
 					let obj={
+						cartId: item.cartId,
 						counselorId: item.counselorId,
 						goodsId: item.goodsId,
 						number: item.number,
@@ -471,7 +488,7 @@ Page({
 		})
 	},
 	// 删除购物车时的确认事件
-	_onDeleteCart(){
+	_onDeleteCart: function () {
 		const {cartVos,userInfo} = this.data
 		let param=[]
 		cartVos.map((itemPar)=>{
@@ -501,6 +518,15 @@ Page({
 			fail: function (res) {
 				return _this.toast.error('请求失败，请刷新重试')
 			}
+		})
+	},
+	handleToDetail: function (e) {
+		const {is_edit} = this.data
+		console.log(is_edit);
+		if(is_edit)return
+		const goodsId = e.currentTarget.dataset.goodsid
+		wx.navigateTo({
+			url: `/pages/goodsDetail/goodsDetail?goodId=${goodsId}`
 		})
 	}
 })

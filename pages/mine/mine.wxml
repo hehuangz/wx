@@ -7,7 +7,7 @@
 		<view 
 			class="g-bt-hollow-orange g-tr" 
 			bindtap="handleDialog"
-			wx:if="{{!userInfo.tel}}"
+			wx:if="{{!userInfo.uid}}"
 		>绑定手机号</view>
 	</view>
 	<zan-cell title="我的订单"></zan-cell>

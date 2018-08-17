@@ -4,6 +4,6 @@ const api = {
     CART_UPDATE: 'carts/AppletUpdate',
     CART_DEL: 'carts/delete',
     CART_TOSETTLEMENT: 'carts/getNewStock',//去结算
-    CART_CHANGE_ADVISER: 'carts/selectCounselor'
+    CART_CHANGE_ADVISER: 'carts/updateCounselor'
 };
 export default api;

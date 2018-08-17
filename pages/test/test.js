@@ -23,23 +23,24 @@ Page({
 		wx.login({
 			success: function(res){
 				if(res.code){
-					wx.request({
-						url: API.WXPAY_GET_OPENID,
-						data: {
-							code: res.code
-						},
-						method: 'POST',
-						header: {
-						},
-						success: function (res2) {
-							console.log('获取openId接口返回的数据：',res2);
-							const { openId='' }=res2.data
-							_this.setData({openId})
-						},
-						fail: function (res) {
+					console.log(res.code);
+					// wx.request({
+					// 	url: API.WXPAY_GET_OPENID,
+					// 	data: {
+					// 		code: res.code
+					// 	},
+					// 	method: 'POST',
+					// 	header: {
+					// 	},
+					// 	success: function (res2) {
+					// 		console.log('获取openId接口返回的数据：',res2);
+					// 		const { openId='' }=res2.data
+					// 		_this.setData({openId})
+					// 	},
+					// 	fail: function (res) {
 	
-						}
-					})
+					// 	}
+					// })
 				}
 			}
 		})

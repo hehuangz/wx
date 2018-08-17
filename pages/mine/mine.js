@@ -12,16 +12,36 @@ Page({
 	onLoad: function () {
 		this.toast=this.selectComponent("#toast")
 		this.dialog = this.selectComponent("#dialog");
-		let {userInfo} = this.data
+		let {userInfo={}} = this.data
 		if(wx.getStorageSync('wt_user') || wx.getStorageSync('wx_user')){
 			userInfo=wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):wx.getStorageSync('wx_user')
 		}else {
 			userInfo={}
 		}
 		this.setData({userInfo})
+
+		wx.getSetting({//先获取用户当前的设置
+			success(res) {
+				if (!res.authSetting['scope.address']) {
+					wx.authorize({
+						scope: 'scope.address',
+						success(res) {
+							console.log(res.errMsg);//用户授权后执行方法
+						},
+						fail(res){
+						//用户拒绝授权后执行
+						}
+					})
+				}
+			}
+		})
 	},
 	onShow: function(){
 		this.dialog.hideDialog();
+		const {userInfo} = this.data
+		if(wx.getStorageSync('wt_user')!=userInfo){
+			this.setData({userInfo:wx.getStorageSync('wt_user') || wx.getStorageSync('wx_user') || {}})
+		}
 	},
 	handleCall: function () {
 		wx.makePhoneCall({
@@ -33,6 +53,23 @@ Page({
 		wx.chooseAddress({
 			success: function (res) {}
 		})
+		// 拒绝后的方式,打开设置
+		const _this = this;
+		wx.getSetting({
+			success(res) {
+				if (!res.authSetting['scope.address']) {
+					wx.openSetting({})
+				}else{
+					//打开选择地址
+					wx.chooseAddress({
+						success: function (res) {}
+					})
+				}
+			},
+			fail(res){
+				console.log('调用失败')
+			}
+		})	
 	},
 	handleDownload: function () {
 		wx.navigateTo({

@@ -272,7 +272,7 @@ Page({
 			success: (res) => {
 				//商品：https://app.wutonglife.com/detail?shopId=45&id=254&shopName=A1-B类型&source=1&isApp=
 				//顾问：https://app.wutonglife.com?shopId=57&assistantId=107&shopName=附近测试店铺
-				// console.log('扫码结果',res)
+				console.log('扫码结果',res)
 				if(res.errMsg="scanCode:ok"){
 					const {result} = res
 					let shopId=getQuery('shopId',result)
@@ -306,7 +306,13 @@ Page({
 				_this._onGetAdviser()
 			}).then(()=>{
 				wx.navigateTo({
-					url: `/pages/goodsDetail/goodsDetail?goodId=${id}&source=${source}`
+					url: `/pages/goodsDetail/goodsDetail?goodId=${id}&source=${source}`,
+					success: function () {
+						// 使下一页load()
+						let page=getCurrentPages().pop()
+						if(!page)return
+						page.onLoad()
+					}
 				})
 			})
 		})

@@ -13,8 +13,14 @@ Page({
 	},
 	onReady: function () {
 		this.toast=this.selectComponent("#toast")
+		this._onGetData()
+	},
+	_onGetData: function () {
 		const {id} = this.data.shop
 		const _this = this;
+		wx.showLoading({
+			title: '加载中',
+		})
 		wx.request({
 			url: API.CATEGORY_LIST,
 			dataType:'formData',
@@ -37,6 +43,9 @@ Page({
 			},
 			fail: function (res) {
 				return _this.toast.error('请求失败，请刷新重试')
+			},
+			complete: function () {
+				wx.hideLoading()
 			}
 		})
 	},

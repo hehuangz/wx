@@ -3,3 +3,4 @@
 	<view class="g-width g-tc g-m-b-20 g-fs-14 g-weight-200">如需下载app，点击以下网址即可复制，然后使用浏览器访问</view>	
 	<view bindtap="handleCopy" class="_url">{{url}}</view>
 </view>
+<button bindtap="handleCode">复制临时code</button>

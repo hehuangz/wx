@@ -89,8 +89,8 @@ Page({
 						tel: _this.data.tel,
 						code: _this.data.code,
 						jscode: wxres.code,
-						img: userInfo.avatarUrl,
-						nickname: userInfo.nickName
+						img: userInfo.avatarUrl || null,
+						nickname: userInfo.nickName || null
 					},
 					method: 'POST',
 					header: {
@@ -110,7 +110,7 @@ Page({
 								}
 							})
 						}			
-						return _this.toast.warning(res.data.message)
+						return _this.toast.warning('未知错误')
 					},
 					fail: function (res) {
 						_this.toast.error('请求失败，请刷新重试')
