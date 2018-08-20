@@ -134,6 +134,9 @@
 }
 
 /* padding */
+.g-pd-0 {
+  padding: 0;
+}
 /* 5 */
 .g-pd-5 {
   padding: 5px;
@@ -262,9 +265,16 @@
   border-radius: 100px;
 }
 /* border */
+.g-border-none {
+  border: none
+}
 .g-border-e5e5e5 {
   border: 1rpx solid #e5e5e5;
 }
 .g-border-b-gray {
+  border-bottom: 1rpx solid #e5e5e5;
+}
+.g-border-tb-gray {
+  border-top: 1rpx solid #e5e5e5;
   border-bottom: 1rpx solid #e5e5e5;
 }

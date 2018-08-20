@@ -50,7 +50,7 @@
 			>
 				<image mode="aspectFill" src="{{item.goodsImg}}" class="sku-goods-img g-fs-0 g-m-r-5" />
 				<view class="g-flex g-ai-fs g-fw-w g-width">
-					<view>{{item.goodsName}}</view>
+					<view class="g-twoline">{{item.goodsName}}</view>
 					<!-- 编辑状态时 sku 可选 -->					
 					<view class="g-width g-fs-12 g-c-929292" wx:if="{{!is_edit}}">{{item.skuDesc}}</view>
 					<block wx:if="{{is_edit}}">
@@ -95,7 +95,7 @@
 			<view class="sku-goods g-flex g-width g-bs-bb g-pd-tb-10" bindtap="handleToDetail" data-goodsid="{{item.goodsId}}">
 				<image mode="aspectFill" src="{{item.goodsImg}}" class="sku-goods-img g-fs-0 g-m-r-5" />
 				<view class="g-flex g-ai-sb g-fw-w g-width">
-					<view class="g-c-929292">{{item.goodsName}}</view>
+					<view class="g-c-929292 g-twoline">{{item.goodsName}}</view>
 					<view class="g-width g-fs-12 g-c-929292">{{item.skuDesc}}</view>
 					<view class="g-width g-flex g-jc-sb">
 						<view class="g-c-orange">¥{{item.goodsPrice}} 

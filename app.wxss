@@ -25,6 +25,9 @@ text,view {
 .g-bg-yellow {
   background: #ffc425;
 }
+.g-bg-orange-yellow {
+  background: #ff972d;
+}
 .g-bg-orange {
   background: #ff4b2e;
 }
@@ -72,6 +75,12 @@ text,view {
 .g-ib {
   display: inline-block
 }
+
+/* overflow */
+.g-overflow-h {
+  overflow: hidden
+}
+
 
 /* 重写checkbox样式 */
 /*  重写 checkbox 样式  */

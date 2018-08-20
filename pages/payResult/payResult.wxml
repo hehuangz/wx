@@ -36,7 +36,7 @@
 	<view class="sku-goods g-flex g-pd-tb-10 g-pd-lr-15 g-width g-bs-bb g-bg-white">
 		<image mode="aspectFill" src="{{local_toBuy.show.image}}" class="sku-goods-img g-fs-0 g-m-r-5" />
 		<view class="g-flex g-ai-sb g-fw-w g-width">
-			<view class="">{{local_toBuy.show.name}}</view>
+			<view class="g-twoline">{{local_toBuy.show.name}}</view>
 			<view class="g-width g-fs-12 g-c-929292">{{local_toBuy.show.skuDesc}}</view>
 			<view class="g-width g-flex g-jc-sb">
 				<view class="g-c-orange g-fs-14">¥{{local_toBuy.show.price}} 

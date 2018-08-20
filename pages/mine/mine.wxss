@@ -1,3 +1,6 @@
 page {
     background: #f9f9f9;
 }
+text,view{
+    color: #3e3e3e;
+}

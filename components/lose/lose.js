@@ -14,9 +14,17 @@ Component({
             type: String,
             value: 'icon-none'
         },
-        title:{
+        title: {
             type: String,
             value: '当前网络不稳定，请刷新重试'
+        },
+        classes: {
+            type: String,
+            value: ''
+        },
+        styles: {
+            type: String,
+            value: ''
         }
     },
     data:{

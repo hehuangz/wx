@@ -1,0 +1,9 @@
+.container {
+    overflow-y: scroll;
+}
+.sku-goods .sku-goods-img {
+    width: 86px;
+    height: 86px;
+    background: #f0f0f0;
+    border: 1rpx solid #f0f0f0;
+}

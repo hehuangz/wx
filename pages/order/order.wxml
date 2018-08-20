@@ -1,0 +1,86 @@
+<!-- login -->
+<toast id="toast"></toast>
+<view class="container" style="background:#fafafa">
+	<view style="position:fixed;top:0;left:0" class="g-width">
+		<view 
+			class="g-width g-bs-bb g-bg-white g-flex g-jc-sb g-height-30 g-lh-30 g-fs-30 g-pd-lr-20 g-pd-t-10 g-pd-b-10"
+			style="height: 40px"
+		>
+			<input 
+				value="{{goodsName}}"
+				type="search"
+				placeholder="查找您想要的" 
+				class="g-fs-12 g-width g-br-oval g-pd-lr-10"
+				placeholder-style="color:#e6e6e6"
+				bindinput="bindKeyWords"
+			/>
+			<text class="g-fs-12 g-m-l-10 g-c-929292 g-fs-0 g-ls-1" bindtap="handleSearch">搜索</text>
+		</view>
+		<zan-tab
+			scroll="{{ false }}"
+			list="{{ tab }}"
+			selected-id="{{ selectedId }}"
+			height="{{ 44 }}"
+			bindtabchange="handleTabChange"
+		/>
+	</view>
+	<!-- 有订单 -->
+	<view wx:if="{{list.length}}" style="margin-top:84px">
+		<block wx:for="{{list}}" wx:key="index">
+			<view class="g-flex g-pd-15 g-width g-bs-bb">
+				<view class="g-flex g-jc-sb g-width">
+					<view>{{item.shopName}}</view>
+					<view>{{status[item.status]}}</view>
+				</view>
+			</view>
+			<view class="sku-goods g-flex g-pd-tb-10 g-pd-lr-15 g-width g-bs-bb g-border-tb-gray" 
+				bindtap="handleDetail"
+				data-sn="{{item.sn}}"
+			>
+				<image mode="aspectFill" src="{{item.goodsImg}}" class="sku-goods-img g-fs-0 g-m-r-5" />
+				<view class="g-flex g-ai-sb g-fw-w g-width">
+					<view class="g-twoline g-fs-12 g-c-212121">{{item.goodsName}}</view>
+					<view class="g-width g-fs-12 g-c-929292">{{item.skuDesc}}</view>
+					<view class="g-width g-flex g-jc-sb">
+						<view class="g-c-orange g-fs-14">¥{{item.goodsPrice}} 
+							<text class="g-m-l-5 g-c-929292 g-fs-12 g-del">¥{{item.goodsMarcketPrice}}</text>
+						</view>
+						<text class="g-c-929292 g-fs-12">X {{item.goodsNumber}}</text>
+					</view>
+				</view>
+			</view>
+			<view class="g-tr g-pd-r-15 g-lh-36 g-fs-12 g-border-b-gray"> 
+				<text>共{{item.totalNumber}}件商品，小计：<text class="g-c-orange">¥{{item.amount}}</text></text>
+			</view>
+			<!-- 操作项 0待支付,1待发货,2待收货,3交易完成,4交易取消 -->
+			<view wx:if="{{item.status==0}}" class="g-flex g-jc-fe g-pd-tb-10">
+				<view class="g-bt-hollow-black g-m-r-15" bindtap="handleToCancle">取消订单</view>
+				<view class="g-bt-hollow-orange active g-m-r-15" bindtap="handleToPay">去付款</view>
+			</view>
+			<view wx:if="{{item.status==2}}" class="g-flex g-jc-fe g-pd-tb-10">
+				<view class="g-bt-hollow-black g-m-r-15" bindtap="handleToCancle">查看物流</view>
+				<view class="g-bt-hollow-orange active g-m-r-15" bindtap="handleToPay">确认收获</view>
+			</view>
+			<view wx:if="{{item.status==3}}" class="g-flex g-jc-fe g-pd-tb-10">
+				<view class="g-bt-hollow-black g-m-r-15" bindtap="handleToCancle">查看物流</view>
+				<view class="g-bt-hollow-black g-m-r-15" bindtap="handleDelete">删除订单</view>
+			</view>
+			<view wx:if="{{item.status==4}}" class="g-flex g-jc-fe g-pd-tb-10">
+				<view class="g-bt-hollow-black g-m-r-15" bindtap="handleDelete">删除订单</view>
+			</view>
+			<view class="g-gray-10"/>
+		</block>
+	</view>
+	<!-- 无订单时显示 -->
+	<lose wx:else 
+		id="lose" 
+		icon="icon-none" 
+		title="还没有订单哦～" 
+		buttonText="去逛逛" 
+		bind:buttonEvent="_buttonEvent" 
+		styles="padding-top:84px;"
+	/>
+	
+
+</view>
+

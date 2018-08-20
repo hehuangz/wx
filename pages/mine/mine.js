@@ -149,5 +149,10 @@ Page({
 				}
 			}			
 		})
+	},
+	handleAboutUs: function () {
+		wx.navigateTo({
+			url: '/pages/aboutus/aboutus'
+		})
 	}
 })

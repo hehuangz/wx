@@ -1,5 +1,5 @@
 <!-- lose -->   
-<view class="c-lose">
+<view class="c-lose {{classes}}" style="{{styles}}">
     <view class="center">
         <text class="{{icon}} iconfont _icon"></text>
         <view class="_title">{{title}}</view>    

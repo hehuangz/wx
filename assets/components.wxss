@@ -12,6 +12,9 @@
 	border-radius: 100px;
 	font-weight: 200;
 }
+.g-bt-orange-s:active{
+	opacity: 0.75;
+}
 .g-bt-gray-s {
 	min-width: 102px;
 	height: 32px;
@@ -23,7 +26,9 @@
 	border-radius: 100px;
 	font-weight: 200;
 }
-
+.g-bt-gray-s:active{
+	opacity: 0.75;
+}
 .g-bt-orange-m {
 	width: 180px;
 	height: 50px;
@@ -35,6 +40,9 @@
 	border-radius: 100px;
 	font-weight: 200;
 }
+.g-bt-orange-m:active{
+	opacity: 0.75;
+}
 .g-bt-orange-l {
 	width: 295px;
 	height: 48px;
@@ -45,6 +53,9 @@
 	text-align: center;
 	border-radius: 100px;
 	font-weight: 200;
+}
+.g-bt-orange-l:active{
+	opacity: 0.75;
 }
 /* 两行文字 */
 .g-twoline {
@@ -103,19 +114,6 @@
 	text-align: center;
 	border-radius: 100px;
 }
-.g-bt-hollow-black {
-	display: inline-block;
-	min-width: 70px;
-	box-sizing: border-box;
-	padding: 0 20px;
-	height: 30px;
-	border: 1px solid #3e3e3e;
-	color: #3e3e3e;
-	font-size: 12px;
-	line-height: 28px;
-	text-align: center;
-	border-radius: 100px;
-}
 .g-bt-hollow-orange.active {
 	display: inline-block;
 	min-width: 70px;
@@ -130,6 +128,25 @@
 	text-align: center;
 	border-radius: 100px;
 }
+.g-bt-hollow-orange:active {
+	opacity: 0.75;
+}
+.g-bt-hollow-black {
+	display: inline-block;
+	min-width: 70px;
+	box-sizing: border-box;
+	padding: 0 20px;
+	height: 30px;
+	border: 1px solid #3e3e3e;
+	color: #3e3e3e;
+	font-size: 12px;
+	line-height: 28px;
+	text-align: center;
+	border-radius: 100px;
+}
+.g-bt-hollow-black:active{
+	opacity: 0.75;
+}
 /* 微信支付按钮 */
 .g-bt-wechat {
 	width: 100vw;
@@ -143,6 +160,9 @@
 	font-weight: 200;
 	border-radius: 0;
 }
+.g-bt-wechat:active{
+	opacity: 0.75;
+}
 .g-bt-orange-square {
 	width: 100vw;
 	height: 46px;
@@ -154,6 +174,9 @@
 	text-align: center;
 	font-weight: 200;
 	border-radius: 0;
+}
+.g-bt-orange-square:active {
+	opacity: 0.75;
 }
 .g-bt-orange-dark {
 	width: 100vw;
@@ -167,11 +190,18 @@
 	font-weight: 200;
 	border-radius: 0;
 }
+.g-bt-orange-dark:active {
+	opacity: 0.75;
+}
 /* 一个细线当边框 */
 .g-line-gray {
 	width: 100vw;
 	height: 1rpx;
 	background: #e5e5e5;
+}
+.g-gray-10 {
+	height: 10px;
+	background: #fafafa;
 }
 
 /* 购物车结算按钮 */
@@ -184,4 +214,19 @@
 	line-height: 44px;
 	text-align: center;
 	font-weight: 200;
+}
+.g-bt-orange-Settlement:active {
+	opacity: 0.75;
+}
+/* 我的订单 */
+.g-bt-square {
+	padding: 0;
+	margin: 0;
+	background: white;
+	line-height: 30px;
+	border: none;
+}
+.g-bt-square:active {
+	/* opacity: 0.6; */
+	background: #f8f8f8;
 }

@@ -1,0 +1,78 @@
+<!--buy.wxml-->
+<toast id="toast"></toast>
+<view class="container">
+	<scroll-view scroll-y style="height: 100vh;" >
+
+		<!-- 订单状态 -->
+		<view class="g-bg-orange-yellow g-flex g-jc-fs g-width g-pd-10 g-bs-bb">
+			<text class="{{status[detail.status].icon}} g-fs-0 g-tc g-fs-20 g-c-white" style="width:40px;font-size:22px" />
+			<view class="g-width g-pd-r-10 g-flex g-fw-w">
+				<text class="g-width g-fs-18 g-c-white">{{status[detail.status].name}}</text>
+				<text class="g-fs-14 g-weight-100 g-c-white g-m-t-5">{{status[detail.status].desc}}</text>
+			</view>
+		</view>
+
+		<!-- 地址 -->
+		<view class="g-flex g-jc-fs g-width g-pd-lr-10 g-pd-tb-5 g-bs-bb g-ai-c">
+			<text class="icon-location g-fs-0 g-tc g-fs-22 g-c-3e3e3e" style="width:40px;font-size:22px" />
+			<view wx:if="{{detail.deliveryType==2 && detail.address}}" class="g-width g-pd-r-10">
+				<view class="g-flex g-jc-sb g-width g-m-tb-5">
+					<text class="g-c-3e3e3e">{{detail.address.username}} {{detail.address.mobile}}</text>
+					<text class="g-c-orange" style="font-size:13px">配送：送货上门</text>
+				</view>
+				<view class="g-c-3e3e3e">{{detail.address.provinceName}}{{detail.address.cityName}}{{detail.address.districtName}}{{detail.address.detailAddress}}</view>
+			</view>
+			<view wx:if="{{detail.deliveryType==1}}" class="g-width g-pd-r-10">
+				<view class="g-c-3e3e3e g-pd-tb-10">{{detail.shopAddress}}</view>
+			</view>
+		</view>
+		<image mode="widthFix" src="{{IMG_OSS_TIAO}}" class="g-width" />
+		
+		<!-- 商品卡片 -->
+		<!-- 店铺名称 -->
+		<view class="g-flex g-height-30 g-lh-30 g-pd-lr-15 g-width g-bs-bb">
+			<view class="g-flex g-jc-sb g-width">
+				<view class="g-fs-12">{{detail.shopName}}</view>
+				<view class="g-fs-12">商品顾问：{{}}</view>
+			</view>
+		</view>
+		<!-- 店铺下商品 -->
+		<view class="g-flex g-ai-c g-pd-lr-15 g-width g-bs-bb" wx:for="{{goods}}" wx:key="index">		
+			<view class="sku-goods g-flex g-width g-bs-bb g-pd-tb-10">
+				<image mode="aspectFill" src="{{item.goodsImg}}" class="sku-goods-img g-fs-0 g-m-r-5" />
+				<view class="g-flex g-ai-fs g-fw-w g-width">
+					<view class="g-fs-12 g-twoline">{{item.goodsName}}</view>
+					<!-- 编辑状态时 sku 可选 -->					
+					<view class="g-width g-fs-12 g-c-929292">{{item.skuDesc}}</view>
+					<view class="g-width g-flex g-jc-sb g-ai-c">
+						<view class="g-c-orange g-fs-14">¥{{item.goodsPrice}}</view>
+						<text class="g-c-929292 g-fs-12">X {{item.goodsNumber}}</text>
+					</view>
+				</view>
+			</view>
+		</view>
+		<view class="g-fs-12 g-c-929292 g-m-l-15 g-lh-24">订单编号：{{detail.sn}}</view>
+		<view class="g-fs-12 g-c-929292 g-m-l-15 g-lh-24">下单时间：{{detail.createTime}}</view>
+		<view class="g-fs-12 g-c-929292 g-m-l-15 g-lh-24" wx:if="{{detail.status==4}}">取消时间：{{detail.finishTime}}</view>
+		<view class="g-fs-12 g-c-929292 g-m-l-15 g-lh-24" wx:if="{{detail.status==1}}">支付单号：{{detail.endTime}}</view>
+		<view class="g-fs-12 g-c-929292 g-m-l-15 g-lh-24" wx:if="{{detail.status==1}}">支付时间：{{detail.payTime}}</view>
+		<view class="g-fs-12 g-c-929292 g-m-l-15 g-lh-24" wx:if="{{detail.status==4}}">支付渠道：{{detail.paymentType}}</view>
+		
+		<view class="g-line-gray"/>
+		<zan-cell title="商品总金额">
+			<view slot="footer">¥{{detail.amount}}</view>
+		</zan-cell>
+		<view class="g-line-gray"/>
+		<zan-cell title="实付总金额">
+			<view slot="footer" class="g-c-orange">¥{{detail.receiveAmount}}</view>
+		</zan-cell>
+		<view class="g-line-gray"/>
+		<view class="g-gray-10"/>
+		<view class="g-flex g-jc-fe g-pd-tb-10">
+			<view class="g-bt-hollow-black g-m-r-15" bindtap="handleDelete">删除订单</view>
+		</view>
+
+		<view style="height: 200px"/>
+	</scroll-view>
+
+</view>

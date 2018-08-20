@@ -11,12 +11,30 @@
 		>绑定手机号</view>
 	</view>
 	<zan-cell title="我的订单"></zan-cell>
-	<view>
-		<image src="{{IMG_OSS_MINEBG}}" mode="widthFix" class="g-width" bindtap="handleDownload"/>
+	<view class="g-flex g-pd-b-10 g-bs-bb g-bg-white">
+		<view class="g-1of4 g-bs-bb g-flex g-fd-c g-jc-c g-bg-white g-bt-square g-pd-10">
+			<text class="icon-wallet-nocolor g-c-orange g-fs-24 g-tc"/>
+			<text class="g-tc g-fs-12">待支付</text>
+		</view>
+		<view class="g-1of4 g-bs-bb g-flex g-fd-c g-jc-c g-bg-white g-bt-square g-pd-10">
+			<text class="icon-daifahuo g-c-orange g-fs-24 g-tc"/>
+			<text class="g-tc g-fs-12">待发货</text>
+		</view>
+		<view class="g-1of4 g-bs-bb g-flex g-fd-c g-jc-c g-bg-white g-bt-square g-pd-10">
+			<text class="icon-daishouhuo g-c-orange g-fs-24 g-tc"/>
+			<text class="g-tc g-fs-12">待收货</text>
+		</view>
+		<view class="g-1of4 g-bs-bb g-flex g-fd-c g-jc-c g-bg-white g-bt-square g-pd-10">
+			<text class="icon-tuikuan g-c-orange g-fs-24 g-tc"/>
+			<text class="g-tc g-fs-12">我的订单</text>
+		</view>
 	</view>
+	<!-- <view>
+		<image src="{{IMG_OSS_MINEBG}}" mode="widthFix" class="g-width" bindtap="handleDownload"/>
+	</view> -->
 	<zan-cell-group border>
 		<zan-cell title="我的地址" is-link bindtap="handleAddress"></zan-cell>
-		<zan-cell title="关于我们" is-link url="/pages/home/home"></zan-cell>	
+		<zan-cell title="关于我们" is-link bindtap="handleAboutUs"></zan-cell>	
 		<zan-cell title="在线反馈（工作日9:30-17:30）" value="{{tel}}" is-link bindtap="handleCall"></zan-cell>
 		<zan-cell wx:if="{{userInfo.uid}}" title="注销登录" is-link bindtap="handleLogout"></zan-cell>
 	</zan-cell-group>

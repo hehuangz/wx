@@ -1,0 +1,12 @@
+{
+    "navigationBarTitleText": "搜索",
+	"usingComponents":{
+		"toast": "/components/toast/toast",
+		"goods": "/components/goods/goods",
+		"lose": "/components/lose/lose",
+		"zan-cell": "/bower_components/zanui-weapp/dist/cell/index",
+		"zan-tab": "/bower_components/zanui-weapp/dist/tab/index"
+	},
+	"enablePullDownRefresh": true,
+ 	"onReachBottomDistance": 50
+}
