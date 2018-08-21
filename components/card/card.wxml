@@ -4,7 +4,7 @@
 	<view class="__content g-fd-c g-jc-sb g-width">
 		<view class="g-m-b-5"> 
 			<text class="g-fs-14 g-m-r-5">{{name}}</text>
-			<text class="{{sex==1?'icon-boy':'icon-girl'}} iconfont  g-c-blue g-fs-16 g-m-r-5" />
+			<text class="{{sex==1?'icon-boy g-c-blue':'icon-girl g-c-purple'}} iconfont g-fs-16 g-m-r-5" />
 			<block wx:for="{{[1,2,3,4,5]}}" wx:key="index" >
 				<text class="iconfont icon-star g-c-yellow g-fs-12 g-m-r-5"/>
 			</block>

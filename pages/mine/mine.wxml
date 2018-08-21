@@ -12,22 +12,38 @@
 	</view>
 	<zan-cell title="我的订单"></zan-cell>
 	<view class="g-flex g-pd-b-10 g-bs-bb g-bg-white">
-		<view class="g-1of4 g-bs-bb g-flex g-fd-c g-jc-c g-bg-white g-bt-square g-pd-10">
+		<navigator 
+			url="/pages/order/order?selectedId=0" 
+			hover-class="none"
+			class="g-1of4 g-bs-bb g-flex g-fd-c g-jc-c g-bg-white g-bt-square g-pd-10"
+		>
 			<text class="icon-wallet-nocolor g-c-orange g-fs-24 g-tc"/>
 			<text class="g-tc g-fs-12">待支付</text>
-		</view>
-		<view class="g-1of4 g-bs-bb g-flex g-fd-c g-jc-c g-bg-white g-bt-square g-pd-10">
+		</navigator>
+		<navigator 
+			url="/pages/order/order?selectedId=1" 
+			hover-class="none"
+			class="g-1of4 g-bs-bb g-flex g-fd-c g-jc-c g-bg-white g-bt-square g-pd-10"
+		>
 			<text class="icon-daifahuo g-c-orange g-fs-24 g-tc"/>
 			<text class="g-tc g-fs-12">待发货</text>
-		</view>
-		<view class="g-1of4 g-bs-bb g-flex g-fd-c g-jc-c g-bg-white g-bt-square g-pd-10">
+		</navigator>
+		<navigator 
+			url="/pages/order/order?selectedId=2" 
+			hover-class="none"
+			class="g-1of4 g-bs-bb g-flex g-fd-c g-jc-c g-bg-white g-bt-square g-pd-10"
+		>
 			<text class="icon-daishouhuo g-c-orange g-fs-24 g-tc"/>
 			<text class="g-tc g-fs-12">待收货</text>
-		</view>
-		<view class="g-1of4 g-bs-bb g-flex g-fd-c g-jc-c g-bg-white g-bt-square g-pd-10">
+		</navigator>
+		<navigator 
+			url="/pages/order/order" 
+			hover-class="none"
+			class="g-1of4 g-bs-bb g-flex g-fd-c g-jc-c g-bg-white g-bt-square g-pd-10"
+		>
 			<text class="icon-tuikuan g-c-orange g-fs-24 g-tc"/>
 			<text class="g-tc g-fs-12">我的订单</text>
-		</view>
+		</navigator>
 	</view>
 	<!-- <view>
 		<image src="{{IMG_OSS_MINEBG}}" mode="widthFix" class="g-width" bindtap="handleDownload"/>

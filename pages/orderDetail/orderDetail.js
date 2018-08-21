@@ -21,6 +21,7 @@ Page({
 			},
 			'2': {
 				name: '待收货',
+				desc1: '请尽快到店领取您的宝贝',//到店取货时的文案
 				desc: '商品已发货，物流小哥正在路上……',
 				icon: 'icon-daishouhuo'
 			},
@@ -38,6 +39,7 @@ Page({
 	},
 	onLoad: function (opts) {
 		this.toast=this.selectComponent("#toast")
+		this.time=this.selectComponent("#time")
 		// 4:15346603062032
 		// 1:15343366069854
 		const {sn='15343366069854'} = opts

@@ -11,12 +11,14 @@
 .g-width-50 {
   width: 50px;
 }
-
 .g-height {
   height: 100vh;
 }
 .g-height-30 {
   height: 30px;
+}
+.g-height-36 {
+  height: 36px;
 }
 /* margin */
 .g-m-t-0half {

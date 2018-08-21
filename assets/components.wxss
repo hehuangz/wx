@@ -57,6 +57,15 @@
 .g-bt-orange-l:active{
 	opacity: 0.75;
 }
+/* 一行文字 */
+.g-oneline {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	word-break: break-all;
+}
 /* 两行文字 */
 .g-twoline {
 	overflow: hidden;
@@ -64,7 +73,7 @@
 	display: -webkit-box;
 	-webkit-line-clamp: 2;
 	-webkit-box-orient: vertical;
-	word-break:break-all;
+	word-break: break-all;
 }
 /* 标签 */
 .g-label-gray {
@@ -200,10 +209,15 @@
 	background: #e5e5e5;
 }
 .g-gray-10 {
+	width: 100%;
 	height: 10px;
 	background: #fafafa;
 }
-
+.g-dark-gray-10 {
+	width: 100%;
+	height: 10px;
+	background: #f0f0f0;
+}
 /* 购物车结算按钮 */
 .g-bt-orange-Settlement {
 	min-width: 104px;

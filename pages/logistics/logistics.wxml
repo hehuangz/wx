@@ -1,0 +1,26 @@
+<toast id="toast"></toast>
+<lose wx:if="{{!data.expressCode}}" id="lose" icon="icon-none" title="未查询到物流信息喔～"/>
+<view class="container g-width" wx:else>
+	<view class="g-flex g-width g-bs-bb g-pd-15 g-m-b-20 g-bg-white">
+		<image class="__img g-m-r-10 g-fs-0" mode="aspectFill" src="{{data.cover}}}}"></image>
+		<view class="g-width g-m-t-5">
+			<view class="g-c-yellow g-fs-14 g-c-212121 g-width g-m-b-5">
+				<text class="g-c-929292">物流单号：</text>{{data.expressCode}}
+			</view>
+			<view class="g-c-yellow g-fs-14 g-c-212121 g-width">
+				<text class="g-c-929292">物流公司：</text>{{data.expressName}}
+			</view>
+		</view>
+	</view>
+	<view class="g-pd-lr-15 g-flex g-width g-bs-bb g-weight-200 g-bg-white" wx:for="{{data.expressDetail}}" wx:key="index" style="height: 88px;">
+		<view class="g-flex g-fd-c g-ai-c" style="width:50px;height:100%;">
+			<view class="circle g-fs-0 {{index==0?'active':''}}"/>
+			<view wx:if="{{index!==data.expressDetail.length-1}}" class="line"/>
+		</view>
+		<view class="g-width g-pd-b-20" style="margin-top:-4px">
+			<view class="g-fs-14 {{index==0?'g-c-orange':'g-c-929292'}}">{{item.status}}</view>
+			<view class="g-fs-14 {{index==0?'g-c-orange':'g-c-929292'}}">{{item.time}}</view>
+		</view>
+	</view>
+	<view style="margin-bottom:50px"/>
+</view>

@@ -1,9 +1,9 @@
 {
-    "navigationBarTitleText": "支付",
+    "navigationBarTitleText": "查看物流",
 	"usingComponents":{
     	"lose": "/components/lose/lose",
 		"card": "/components/card/card",
 		"toast": "/components/toast/toast",
-		"time": "/components/time/time"
+		"zan-steps": "/bower_components/zanui-weapp/dist/steps/index"
 	}
 }

@@ -1,9 +1,10 @@
 {
-    "navigationBarTitleText": "搜索",
+    "navigationBarTitleText": "订单列表",
 	"usingComponents":{
 		"toast": "/components/toast/toast",
 		"goods": "/components/goods/goods",
 		"lose": "/components/lose/lose",
+		"time": "/components/time/time",
 		"zan-cell": "/bower_components/zanui-weapp/dist/cell/index",
 		"zan-tab": "/bower_components/zanui-weapp/dist/tab/index"
 	},

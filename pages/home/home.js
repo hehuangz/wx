@@ -14,8 +14,9 @@ Page({
 		categoryList: [], // 分类列表
 		goodsList: [],
 		noNet: false,
-		pageSize: 20,
-		pageNum: 1
+		pageSize: 5,
+		pageNum: 1,
+		total: null
 	},
 	onLoad: function (){
 		wx.showLoading({
@@ -137,14 +138,14 @@ Page({
 	},
 	//点击切换
 	handleCategory: function (e) {
-		var _this = this;
 		if (this.data.currentTab === e.currentTarget.dataset.current) {
 			return false;
 		} else {
-			_this.setData({
-				currentTab: e.currentTarget.dataset.current
+			this.setData({
+				currentTab: e.currentTarget.dataset.current,
+				pageNum: 1
 			},()=>{
-				_this._onGetGoods()
+				this._onGetGoods()
 			})
 		}
 	},
@@ -204,7 +205,7 @@ Page({
 			success: function (res) {
 				const {code, data=[], message} = res.data
 				if( code===200 ){
-					return _this.setData({categoryList:data,currentTab:data[0] && data[0].id},()=>{
+					return _this.setData({categoryList:data,currentTab:data[0] && data[0].id,pageNum:1},()=>{
 						_this._onGetGoods()
 					})
 				}
@@ -218,11 +219,15 @@ Page({
 	/**
 	 * 获取分类下的商品
 	 */
-	_onGetGoods: function () {
+	_onGetGoods: function (more=false) {
 		wx.showLoading({
 			title: '加载中',
 		})
-		const {pageSize,pageNum,shop,currentTab}=this.data
+		const {pageSize,pageNum,shop,currentTab,goodsList}=this.data
+		let oldList=[]
+		if(more){
+			oldList=goodsList
+		}
 		const _this = this;
 		shop.id && wx.request({
 			url: API.HOME_COODS,
@@ -239,7 +244,7 @@ Page({
 			success: function (res) {
 				const {code, data={}, message} = res.data
 				if( code===200 ){
-					return _this.setData({goodsList:data.dataList})
+					return _this.setData({goodsList:[...oldList,...data.dataList],total:data.total})
 				}
 				return _this.toast.warn(message)
 			},
@@ -248,6 +253,7 @@ Page({
 			},
 			complete: function () {
 				wx.hideLoading()
+				wx.stopPullDownRefresh();
 			}
 		})
 	},
@@ -330,5 +336,25 @@ Page({
 				_this.onShow()
 			}
 		})
-	}
+	},
+	onPullDownRefresh() {
+		this.setData({pageNum:1},()=>{
+			this._onGetGoods();
+		})
+	},
+	onReachBottom() {
+		let {total,pageNum,pageSize} = this.data
+		if(Math.ceil(total/pageSize)<=pageNum){
+			return wx.showToast({
+				title: '无数据，不要再拉我了～',
+				icon: 'none',
+				duration: 1000
+			})	   
+		}
+		this.setData({
+			pageNum: pageNum+1
+		},()=>{
+			this._onGetGoods(true);
+		})
+	},
 })

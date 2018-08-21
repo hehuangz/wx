@@ -11,6 +11,12 @@
 .g-c-blue {
   color: #4a90e2;
 }
+.g-c-pink {
+  color: pink;
+}
+.g-c-purple {
+  color: #fd527e;
+}
 .g-c-yellow {
   color: #ff972d;
 }

@@ -7,3 +7,10 @@
     background: #f0f0f0;
     border: 1rpx solid #f0f0f0;
 }
+.card .__img {
+	background: #f0f0f0;
+	width: 82px;
+	height: 82px;
+    border-radius: 8px; 
+    border: 1rpx solid #f9f9f9;
+}

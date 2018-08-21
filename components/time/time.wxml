@@ -1,0 +1,4 @@
+<text 
+    class="{{classes}}" 
+    style="{{styles}}"
+><block wx:if="{{time}}">{{newTime}}</block><block wx:else>{{newRestTime}}</block></text>

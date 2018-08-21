@@ -1,0 +1,26 @@
+page {
+    background: #fafafa;
+}
+.__img {
+    background: #f0f0f0;
+	width: 66px;
+	height: 66px;
+    border: 1rpx solid #f9f9f9;
+}
+.circle.active {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #ff4b2d;
+}
+.circle {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #9b9b9b;
+}
+.line {
+    width: 1px;
+    height: 100%;
+    background: #f0f0f0;
+}

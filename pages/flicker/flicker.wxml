@@ -1,4 +1,4 @@
-<!-- login -->
+<!-- 闪屏页 -->
 <view class="container" style="background:url({{IMG_OSS_BG}}) center center;background-size:cover">
 	<view class="bottom g-flex g-fw-w g-jc-c g-width">	
 		<view class="g-c-white g-fs-20 g-width g-tc g-m-b-20 g-weight-200">专属顾问就在您身边</view>

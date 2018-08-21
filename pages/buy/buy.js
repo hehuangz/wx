@@ -110,7 +110,7 @@ Page({
 				const {code='', data={}, message=''} = res.data
 				if( code===200 ){
 					return wx.navigateTo({
-						url:`/pages/pay/pay?orderPid=${data.orderPid}&price=${local_toBuy.priceTotal}`
+						url:`/pages/pay/pay?orderPid=${data.orderPid}&price=${local_toBuy.priceTotal}&createTime=${data.createTime}`
 					})
 				}
 				return _this.toast.warning(message)

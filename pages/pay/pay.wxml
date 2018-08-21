@@ -2,7 +2,9 @@
 <toast id="toast"></toast>
 <view class="container g-width">
 	<view class="g-flex g-fw-w g-ai-c g-pd-20">
-		<view class="g-fs-14 g-c-929292 g-width g-tc g-m-b-5">请在2小时内完成支付</view>
+		<view class="g-fs-14 g-c-929292 g-width g-tc g-m-b-5">
+			请在<time id="time" restTime="{{createTime}}"/>内完成支付
+		</view>
 		<view class="g-fs-24 g-c-orange g-width g-tc">¥{{price}}</view>
 	</view>
 	<view class="g-line-gray"/>

@@ -3,6 +3,7 @@
   "usingComponents": {
     "dialog": "/components/dialog/dialog",
     "toast": "/components/toast/toast",
+    "time": "/components/time/time",
 		"zan-cell": "/bower_components/zanui-weapp/dist/cell/index",
     "zan-cell-group": "/bower_components/zanui-weapp/dist/cell-group/index"
   }

@@ -8,7 +8,8 @@
 			<text class="{{status[detail.status].icon}} g-fs-0 g-tc g-fs-20 g-c-white" style="width:40px;font-size:22px" />
 			<view class="g-width g-pd-r-10 g-flex g-fw-w">
 				<text class="g-width g-fs-18 g-c-white">{{status[detail.status].name}}</text>
-				<text class="g-fs-14 g-weight-100 g-c-white g-m-t-5">{{status[detail.status].desc}}</text>
+				<text class="g-fs-14 g-weight-100 g-c-white g-m-t-5"
+				>{{detail.status==2 && detail.deliveryType==1?status[detail.status].desc1:status[detail.status].desc}}</text>
 			</view>
 		</view>
 
@@ -33,7 +34,7 @@
 		<view class="g-flex g-height-30 g-lh-30 g-pd-lr-15 g-width g-bs-bb">
 			<view class="g-flex g-jc-sb g-width">
 				<view class="g-fs-12">{{detail.shopName}}</view>
-				<view class="g-fs-12">商品顾问：{{}}</view>
+				<view class="g-fs-12" wx:if="{{detail.status==1}}">剩余付款时间{{}}</view>
 			</view>
 		</view>
 		<!-- 店铺下商品 -->
@@ -41,7 +42,7 @@
 			<view class="sku-goods g-flex g-width g-bs-bb g-pd-tb-10">
 				<image mode="aspectFill" src="{{item.goodsImg}}" class="sku-goods-img g-fs-0 g-m-r-5" />
 				<view class="g-flex g-ai-fs g-fw-w g-width">
-					<view class="g-fs-12 g-twoline">{{item.goodsName}}</view>
+					<view class="g-fs-12">{{item.goodsName}}</view>
 					<!-- 编辑状态时 sku 可选 -->					
 					<view class="g-width g-fs-12 g-c-929292">{{item.skuDesc}}</view>
 					<view class="g-width g-flex g-jc-sb g-ai-c">
@@ -51,21 +52,57 @@
 				</view>
 			</view>
 		</view>
-		<view class="g-fs-12 g-c-929292 g-m-l-15 g-lh-24">订单编号：{{detail.sn}}</view>
-		<view class="g-fs-12 g-c-929292 g-m-l-15 g-lh-24">下单时间：{{detail.createTime}}</view>
-		<view class="g-fs-12 g-c-929292 g-m-l-15 g-lh-24" wx:if="{{detail.status==4}}">取消时间：{{detail.finishTime}}</view>
-		<view class="g-fs-12 g-c-929292 g-m-l-15 g-lh-24" wx:if="{{detail.status==1}}">支付单号：{{detail.endTime}}</view>
-		<view class="g-fs-12 g-c-929292 g-m-l-15 g-lh-24" wx:if="{{detail.status==1}}">支付时间：{{detail.payTime}}</view>
-		<view class="g-fs-12 g-c-929292 g-m-l-15 g-lh-24" wx:if="{{detail.status==4}}">支付渠道：{{detail.paymentType}}</view>
+		<!-- 顾问名片 -->
+		<view class="card g-flex g-width g-bs-bb g-pd-15">
+			<image class="__img g-m-r-10 g-fs-0" mode="aspectFill" src="{{detail.counselorImg}}}}"></image>
+			<view class="__content g-flex g-fd-c g-jc-c g-width">
+				<view class="g-m-b-5 g-flex g-jc-sb g-width"> 
+					<view class="g-fs-14 g-m-r-5">
+						{{detail.counselorName}}
+						<text class="{{detail.counselorSex==1?'icon-boy g-c-blue':'icon-girl g-c-purple'}} iconfont g-fs-16 g-m-r-5" />
+					</view>
+					<view class="g-flex g-jc-fe">
+						<text class="iconfont icon-star g-c-yellow g-fs-14 g-m-r-5" wx:for="{{[1,2,3,4,5]}}" wx:key="index"/>
+					</view>
+				</view>
+				<view class="g-c-yellow g-fs-14 g-m-b-20 g-c-212121">商品顾问</view>
+			</view>
+		</view>
 		
+		<view class="g-fs-12 g-c-929292 g-m-l-15 g-lh-24">订单编号：{{detail.sn}}</view>
+		<view class="g-fs-12 g-c-929292 g-m-l-15 g-lh-24">下单时间：
+			<time id="time" time="{{detail.createTime}}" styles="font-size:12px"></time>
+		</view>
+		<view class="g-fs-12 g-c-929292 g-m-l-15 g-lh-24" wx:if="{{detail.status==4}}">取消时间：
+			<time id="time" time="{{detail.finishTime}}" styles="font-size:12px"></time>
+		</view>
+		<view class="g-fs-12 g-c-929292 g-m-l-15 g-lh-24" wx:if="{{detail.status!=4}}">支付单号：{{detail.tradeNo}}</view>
+		<view class="g-fs-12 g-c-929292 g-m-l-15 g-lh-24" wx:if="{{detail.status!=4}}">支付时间：
+			<time id="time" time="{{detail.payTime}}" styles="font-size:12px"></time>
+		</view>
+		<view class="g-fs-12 g-c-929292 g-m-l-15 g-lh-24" wx:if="{{detail.status!=4}}">支付渠道：{{detail.paymentResource==1?'微信':'支付宝'}}</view>
+		<view class="g-fs-12 g-c-929292 g-m-l-15 g-lh-24" wx:if="{{detail.status==2 || detail.status==3}}">物流单号：{{deatil.expressCode || '不需要物流'}}</view>
+		<view class="g-fs-12 g-c-929292 g-m-l-15 g-lh-24" wx:if="{{detail.status==3}}">完成时间：
+			<time id="time" time="{{detail.payTime}}" styles="font-size:12px"></time>
+		</view>
+	
 		<view class="g-line-gray"/>
-		<zan-cell title="商品总金额">
-			<view slot="footer">¥{{detail.amount}}</view>
-		</zan-cell>
+		<view class="g-pd-tb-5">
+			<view class="g-flex g-jc-sb g-pd-lr-15 g-lh-24">
+				<text class="g-fs-12">商品总价</text>
+				<text class="g-fs-12">¥{{detail.amount}}</text>
+			</view>
+			<view class="g-flex g-jc-sb g-pd-lr-15 g-lh-24 g-fs-12" wx:if="{{detail.discountAmount}}">
+				<text class="g-fs-12">改价优惠金额</text>
+				<text class="g-fs-12">¥{{detail.discountAmount}}</text>
+			</view>
+		</view>
 		<view class="g-line-gray"/>
-		<zan-cell title="实付总金额">
+		<view class="g-line-gray"/>
+		<zan-cell title="实付金额">
 			<view slot="footer" class="g-c-orange">¥{{detail.receiveAmount}}</view>
 		</zan-cell>
+		<view class="g-line-gray"/>
 		<view class="g-line-gray"/>
 		<view class="g-gray-10"/>
 		<view class="g-flex g-jc-fe g-pd-tb-10">

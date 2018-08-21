@@ -123,8 +123,8 @@ const dataValidity = (rules)  => {
  * @example getQuery('id','http://xx.com?id=1')  => 1
  */
 const getQuery = (name='',url='') => {
-	var match = /^[hH][tT][tT][pP]([sS]?):\/\/(\S+\.)+\S{2,}$/; //匹配中文
-	// var match = /^((ht|f)tps?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-\.,@?^=%&:\/~\+#]*[\w\-\@?^=%&\/~\+#])?$/; //不匹配中文
+	let match = /^[hH][tT][tT][pP]([sS]?):\/\/(\S+\.)+\S{2,}$/; //匹配中文
+	// let match = /^((ht|f)tps?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-\.,@?^=%&:\/~\+#]*[\w\-\@?^=%&\/~\+#])?$/; //不匹配中文
 	if(!match.test(url) || (url.indexOf('?')==-1)) return console.error('url格式不正确')
 	let search=url.split('?')[1];
 	let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -133,8 +133,55 @@ const getQuery = (name='',url='') => {
 	return null;
 }
 
+/**
+ * 	处理时间戳,转化成标准格式
+ */
+function formatDate(time){
+    let date = new Date(time);
+    let year = date.getFullYear(),
+        month = date.getMonth()+1,//月份是从0开始的
+        day = date.getDate(),
+        hour = date.getHours(),
+        min = date.getMinutes(),
+        sec = date.getSeconds();
+    let preArr = Array.apply(null,Array(10)).map(function(elem, index) {
+        return '0'+index;
+    });////开个长度为10的数组 格式为 00 01 02 03
+
+    let newTime = year + '-' +
+                (preArr[month]||month) + '-' +
+                (preArr[day]||day) + ' ' +
+                (preArr[hour]||hour) + ':' +
+                (preArr[min]||min) + ':' +
+                (preArr[sec]||sec);
+    return newTime;         
+}
+
+/**
+ * @param {String} time 传入时间戳
+ * @param {String} range 传入时间范围，以这个范围倒计时，单位是分钟,默认120分钟
+ * @returns {String} min 与当前时间差了多少分钟
+ */
+function countDown(time,range=120) {
+	let current=new Date().getTime()
+	let dVal=current-Number(time)
+	let val=Number(range)-Math.floor(dVal/1000/60)
+	if(val<0){
+		return '已超时'
+	}else if(val>=0 && val<=60){
+		return val+'分钟'
+	}else if(val>60 && val<120){
+		return '1小时'+(val-60)+'分钟'
+	}else if(val==120){
+		return '2小时'
+	}
+}
+
+
 module.exports = {
   formatTime: formatTime,
   dataValidity: dataValidity,
-  getQuery: getQuery
+  getQuery: getQuery,
+  formatDate: formatDate,
+  countDown: countDown
 }

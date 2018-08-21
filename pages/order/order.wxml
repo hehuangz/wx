@@ -1,18 +1,18 @@
 <!-- login -->
 <toast id="toast"></toast>
-<view class="container" style="background:#fafafa">
+<view class="container g-bs-bb" style="background:#fafafa">
 	<view style="position:fixed;top:0;left:0" class="g-width">
 		<view 
 			class="g-width g-bs-bb g-bg-white g-flex g-jc-sb g-height-30 g-lh-30 g-fs-30 g-pd-lr-20 g-pd-t-10 g-pd-b-10"
 			style="height: 40px"
 		>
-			<input 
+			<input
 				value="{{goodsName}}"
 				type="search"
-				placeholder="查找您想要的" 
+				placeholder="根据商品关键字查找订单……" 
 				class="g-fs-12 g-width g-br-oval g-pd-lr-10"
 				placeholder-style="color:#e6e6e6"
-				bindinput="bindKeyWords"
+				bindinput="bindGoodsName"
 			/>
 			<text class="g-fs-12 g-m-l-10 g-c-929292 g-fs-0 g-ls-1" bindtap="handleSearch">搜索</text>
 		</view>
@@ -29,8 +29,11 @@
 		<block wx:for="{{list}}" wx:key="index">
 			<view class="g-flex g-pd-15 g-width g-bs-bb">
 				<view class="g-flex g-jc-sb g-width">
-					<view>{{item.shopName}}</view>
-					<view>{{status[item.status]}}</view>
+					<view class="g-oneline g-1of2">{{item.shopName}}</view>
+					<view wx:if="{{item.status!=0}}">{{status[item.status]}}</view>
+					<view wx:else class="g-c-orange g-oneline">
+						剩余付款时间:<time id="time" restTime="{{item.createTime}}" styles="color:#ff4b2d"/>
+					</view>
 				</view>
 			</view>
 			<view class="sku-goods g-flex g-pd-tb-10 g-pd-lr-15 g-width g-bs-bb g-border-tb-gray" 
@@ -40,7 +43,7 @@
 				<image mode="aspectFill" src="{{item.goodsImg}}" class="sku-goods-img g-fs-0 g-m-r-5" />
 				<view class="g-flex g-ai-sb g-fw-w g-width">
 					<view class="g-twoline g-fs-12 g-c-212121">{{item.goodsName}}</view>
-					<view class="g-width g-fs-12 g-c-929292">{{item.skuDesc}}</view>
+					<view class="g-width g-fs-12 g-c-929292 g-pd-tb-5">{{item.skuDesc}}</view>
 					<view class="g-width g-flex g-jc-sb">
 						<view class="g-c-orange g-fs-14">¥{{item.goodsPrice}} 
 							<text class="g-m-l-5 g-c-929292 g-fs-12 g-del">¥{{item.goodsMarcketPrice}}</text>
@@ -54,21 +57,27 @@
 			</view>
 			<!-- 操作项 0待支付,1待发货,2待收货,3交易完成,4交易取消 -->
 			<view wx:if="{{item.status==0}}" class="g-flex g-jc-fe g-pd-tb-10">
-				<view class="g-bt-hollow-black g-m-r-15" bindtap="handleToCancle">取消订单</view>
-				<view class="g-bt-hollow-orange active g-m-r-15" bindtap="handleToPay">去付款</view>
+				<view class="g-bt-hollow-black g-m-r-15" bindtap="handleToCancle" data-sn="{{item.sn}}">取消订单</view>
+				<view 
+					class="g-bt-hollow-orange active g-m-r-15" 
+					bindtap="handleToPay" 
+					data-orderpid="{{item.orderPid}}"
+					data-price="{{item.amount}}"
+					data-createtime="{{item.createTime}}"
+				>去付款</view>
 			</view>
 			<view wx:if="{{item.status==2}}" class="g-flex g-jc-fe g-pd-tb-10">
-				<view class="g-bt-hollow-black g-m-r-15" bindtap="handleToCancle">查看物流</view>
-				<view class="g-bt-hollow-orange active g-m-r-15" bindtap="handleToPay">确认收获</view>
+				<view class="g-bt-hollow-black g-m-r-15" bindtap="handleLogistics" data-sn="{{item.sn}}" wx:if="{{item.deliveryType==2}}">查看物流</view>
+				<view class="g-bt-hollow-orange active g-m-r-15" bindtap="handleGetGoods" data-sn="{{item.sn}}">确认收获</view>
 			</view>
 			<view wx:if="{{item.status==3}}" class="g-flex g-jc-fe g-pd-tb-10">
-				<view class="g-bt-hollow-black g-m-r-15" bindtap="handleToCancle">查看物流</view>
-				<view class="g-bt-hollow-black g-m-r-15" bindtap="handleDelete">删除订单</view>
+				<view class="g-bt-hollow-black g-m-r-15" bindtap="handleLogistics" data-sn="{{item.sn}}" wx:if="{{item.deliveryType==2}}">查看物流</view>
+				<view class="g-bt-hollow-black g-m-r-15" bindtap="handleDelete" data-sn="{{item.sn}}">删除订单</view>
 			</view>
 			<view wx:if="{{item.status==4}}" class="g-flex g-jc-fe g-pd-tb-10">
-				<view class="g-bt-hollow-black g-m-r-15" bindtap="handleDelete">删除订单</view>
+				<view class="g-bt-hollow-black g-m-r-15" bindtap="handleDelete" data-sn="{{item.sn}}">删除订单</view>
 			</view>
-			<view class="g-gray-10"/>
+			<view class="g-dark-gray-10"/>
 		</block>
 	</view>
 	<!-- 无订单时显示 -->

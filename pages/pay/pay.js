@@ -7,12 +7,14 @@ Page({
 	data: {
 		userInfo:wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{},
 		orderPid: '',
-		price: ''
+		price: '',
+		createTime: ''
 	},
 	onLoad: function (options) {
 		this.toast=this.selectComponent("#toast")
-		const {orderPid,price} = options
-		orderPid && this.setData({orderPid,price})
+		const {orderPid,price,createTime} = options
+		console.log(createTime);
+		orderPid && this.setData({orderPid,price,createTime})
 	},
 	handlePay: function () {
 		const {orderPid,userInfo} = this.data

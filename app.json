@@ -3,6 +3,7 @@
     "pages/home/home",
     "pages/order/order",
     "pages/orderDetail/orderDetail",
+    "pages/logistics/logistics",
     "pages/payResult/payResult",
     "pages/pay/pay",
     "pages/aboutus/aboutus",
