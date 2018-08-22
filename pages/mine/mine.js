@@ -1,4 +1,4 @@
-//logs.js
+//mine.js
 import Debounce from '../../utils/debounce.js';
 import {IMG_OSS_MINEBG} from '../../constants/constants'
 import API from '../../constants/apiRoot'
@@ -143,6 +143,12 @@ Page({
 			success: function(res) {
 				if (res.confirm) {
 					wx.clearStorageSync()
+					wx.removeStorageSync("wt_user")
+					wx.removeStorageSync("wt_shop")
+					wx.removeStorageSync("wt_adviser")
+					wx.removeStorageSync("wwt_toBuy")
+					wx.removeStorageSync("wt_counselor")
+					wx.removeStorageSync("wt_adviser")
 					_this.onLoad()
 				} else if (res.cancel) {
 					console.log('用户点击取消')

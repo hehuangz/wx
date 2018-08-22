@@ -7,7 +7,7 @@
 	<block wx:for="{{list}}" wx:key="index">
 		<card id="card" 
 			styles="{{uid==item.uid?'border:1px solid red':''}}"
-			img="{{item.nickname || item.img}}"
+			img="{{item.img}}"
 			name="{{item.name}}"
 			title="{{item}}" 
 			explain="{{item.sign}}"

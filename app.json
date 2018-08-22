@@ -19,8 +19,7 @@
     "pages/test/test",    
     "pages/flicker/flicker",
     "pages/login/login",
-    "pages/index/index",
-    "pages/logs/logs"
+    "pages/index/index"
   ],
   "window":{
     "backgroundTextStyle": "light",

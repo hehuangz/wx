@@ -2,7 +2,8 @@ text {
     font-size: 14px;
     color: #303030;
     font-weight: 300;
-    text-justify: newspaper
+    text-justify: newspaper;
+    line-height: 26px;
 }
 .__img {
     width: 100px;

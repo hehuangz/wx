@@ -25,7 +25,6 @@ Page({
 			userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{}
 		})
 		!this.data.address.addressId && this._onGetAddress()
-
 		// 兼容获取用户地址授权失败的情况
 		wx.getSetting({//先获取用户当前的设置
 			success(res) {
@@ -48,6 +47,15 @@ Page({
 	 */
 	onShow: function () {
 		let local_toBuy = wx.getStorageSync('wt_toBuy')?wx.getStorageSync('wt_toBuy'):{}
+		// 多店时不能到店取货
+		if(local_toBuy.showArr && local_toBuy.showArr.length>1){
+			this.setData({
+				delivery:[{
+					name: '送货上门',
+					type: 2
+				}]
+			})
+		}
 		this.setData({local_toBuy})
 	},
 	_onGetAddress: function(){

@@ -1,4 +1,4 @@
-//logs.js
+//goodsDetail.js
 import API from '../../constants/apiRoot'
 
 Page({
@@ -12,9 +12,9 @@ Page({
 		skuInfo: {}, // 当前选中的整条商品信息，包括价格图片库存，skuArr中的一条
 		adviser: {uid:'',name:''},
 		// 下面的数据只是加入购物车或立即购买时使用
-		userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{},
+		userInfo: {},
 		goodId: null,
-		shopInfo: wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{},
+		shopInfo: {},
 		skuDesc: '',
 		address: '',
 		source: 0,//扫描进来的时候，如果是1，则加入购物车和立即购买时携带1过去
@@ -23,7 +23,6 @@ Page({
 		this.toast=this.selectComponent("#toast")
 		let {goodId=null,source=0} = options
 		// 设置方式
-		this.setData({source})
 
 		let {adviser} = this.data
 		let wt_counselor=wx.getStorageSync('wt_counselor')?wx.getStorageSync('wt_counselor'):{}
@@ -31,8 +30,11 @@ Page({
 			adviser={uid:wt_counselor.uid,name:wt_counselor.name}
 		}
 		this.setData({
+			source,
 			goodId,
-			adviser
+			adviser,
+			userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{},
+			shopInfo:wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{}
 		})
 		this._onGetData(goodId)
 		this._onGetShopAddress()
@@ -63,10 +65,10 @@ Page({
 			title: '加载中',
 		})
 		const _this=this
-		wx.request({
+		goodId && wx.request({
 			url: API.GOODS_DETAIL,
 			data: {
-				goodId: goodId || 68 // --TEMP--
+				goodId: goodId
 			},
 			method: 'POST',
 			header: {
@@ -184,17 +186,17 @@ Page({
 		const {adviser={},userInfo={},skuInfo={},goodId,stepperValue,shopInfo,skuDesc,source}=this.data
 		if(!skuInfo.stock)return this.handleChooseSku() //未选择规格，让它去选
  		const _this=this
-		wx.request({
+		goodId && wx.request({
 			url: API.CART_INSERT,
 			data:{
-				counselorId: adviser.uid || 8,//--TEMP--
-				goodsId: goodId || 68,//--TEMP--
+				counselorId: adviser.uid,
+				goodsId: goodId,
 				number: stepperValue,
 				shopId: shopInfo.id,
 				skuDesc: skuDesc,
 				skuId: skuInfo.skuId,
 				uid: userInfo.uid,
-				source,  //0是线上(默认)，1是线下，扫码进来链接带的参数 --TEMP--
+				source,  //0是线上(默认)，1是线下，扫码进来链接带的参数
 			},
 			method: 'POST',
 			header: {
@@ -279,7 +281,7 @@ Page({
 			shopId: shopInfo.id,
 			skuDesc: skuDesc,
 			skuId: skuInfo.skuId,
-			source, //0是线上(默认)，1是线下，扫码进来链接带的参数 --TEMP--
+			source, //0是线上(默认)，1是线下，扫码进来链接带的参数
 		}]
 		// 显示数据
 		

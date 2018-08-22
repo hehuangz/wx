@@ -1,5 +1,5 @@
 <!-- login -->
-<view class="container g-width g-bs-bb g-pd-lr-10 g-pd-b-30">
+<view class="container g-width g-bs-bb g-pd-lr-15 g-pd-b-30">
     <image src="{{IMG_OSS_LOGO}}" mode="widthFix" class="__img"/>
     <text>吾同生活，无所同而无所不同的优质生活追求者，是一家定位为创意驱动型“服务运营”平台公司。
 不管科技如何进步，社会变得多么的匆忙，我们都是为了拥有更有品质的生活。

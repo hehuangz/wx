@@ -1,4 +1,4 @@
-//logs.js
+//cart.js
 import API from '../../constants/apiRoot';
 import Debounce from '../../utils/debounce.js';
 
@@ -22,9 +22,6 @@ Page({
 		adviser_shopId: null // 重改店铺顾问时的店铺ID
 	},
 	onLoad: function () {
-		wx.showLoading({
-			title: '加载中',
-		})
 		this.toast=this.selectComponent("#toast")	
 		let {userInfo} = this.data
 		this.setData({
@@ -50,6 +47,9 @@ Page({
 		// console.log('onReady');
 	},
 	_onGetData:function () {
+		wx.showLoading({
+			title: '加载中',
+		})
 		const {userInfo} = this.data;
 		const {token,uid=1} = userInfo
 		const _this=this
@@ -117,7 +117,7 @@ Page({
 		this.setData({is_edit: !this.data.is_edit})
 	},
 	/**
-	 * 建议优化，将单个checkbox变更与全选何在一起，可以避免很多问题 //--TEMP--
+	 * 建议优化，将单个checkbox变更与全选合在一起，可以避免很多问题 //--TEMP--
 	 */
 	// 变更checkbox
 	handleChecked: function (e) {
@@ -225,17 +225,17 @@ Page({
 	},
 	// 点击选择sku按钮
 	handleShowSku: function (e) {
-		// console.log();
 		const cartId = e.currentTarget.dataset.cartid
 		const shopId = e.currentTarget.dataset.shopid
 		const skuId = e.currentTarget.dataset.skuid
 		const number = e.currentTarget.dataset.number
 		const goodsId = e.currentTarget.dataset.goodsid
+		const counselorId = e.currentTarget.dataset.counselorid
 		this.setData({
 			showsku: true,
 			skuArr: [],
 			skuData: {},
-			selectInfo:{shopId,cartId,goodsId}
+			selectInfo:{shopId,cartId,goodsId,counselorId}
 		},()=>{
 			this._onGetSkuKey({cartId,shopId,skuId,number})
 		})
@@ -345,7 +345,7 @@ Page({
 	handleSureSku: function () {
 		const _this = this
 		const {stepperValue,selectInfo,userInfo,skuData,skuInfo} = this.data
-		const {shopId,cartId,goodsId} = selectInfo
+		const {shopId,cartId,goodsId,counselorId} = selectInfo
 		/**
 		 * 组织skuDesc
 		 */
@@ -365,7 +365,7 @@ Page({
 					skuId: skuInfo.skuId,
 					number: stepperValue,
 					goodsId,
-					counselorId: 8,//--TEMP--
+					counselorId,//--TEMP--
 					uid: userInfo.uid,
 					skuDesc
 				}],
@@ -420,8 +420,9 @@ Page({
 	},
 	// 删除购物车商品
 	handleDel: function () {
+		const {settlementTotal}=this.data
 		const _this = this
-		wx.showModal({
+		settlementTotal && wx.showModal({
 			title: '提示',
 			content: '确定从购物车中删除这些商品吗？',
 			success: function(res) {
@@ -522,7 +523,6 @@ Page({
 	},
 	handleToDetail: function (e) {
 		const {is_edit} = this.data
-		console.log(is_edit);
 		if(is_edit)return
 		const goodsId = e.currentTarget.dataset.goodsid
 		wx.navigateTo({

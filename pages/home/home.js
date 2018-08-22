@@ -7,21 +7,18 @@ const app = getApp()
 
 Page({
 	data: {
-		currentTab: 0,
+		currentTab: '',
 		canIUse: wx.canIUse('button.open-type.getUserInfo'),
 		shop: {},
 		adviserList: [], // 顾问列表
 		categoryList: [], // 分类列表
 		goodsList: [],
-		noNet: false,
+		errorPage: false,
 		pageSize: 5,
 		pageNum: 1,
 		total: null
 	},
 	onLoad: function (){
-		wx.showLoading({
-			title: '加载中',
-		})
 		this.dialog=this.selectComponent("#dialog")
 		this.toast=this.selectComponent("#toast")
 		const {shop} = this.data
@@ -56,8 +53,11 @@ Page({
 		}
 	},
 	_onLocation: function () {
+		wx.showLoading({
+			title: '加载中',
+		})
 		const _this=this;
-		const {shop} = this.data
+		const { shop } = this.data
 		// 本地无数据再去获取地理位置
 		!shop.id && wx.getLocation({
 			type: 'wgs84', // 默认该类型
@@ -90,11 +90,15 @@ Page({
 								_this._onGetCategory()
 							})
 						}else{
+							this.setData({errorPage:true})
 							return _this.toast.warning(message)
 						}
 					},
 					fail: function (res) {
 						return _this.toast.error('请求失败，请刷新重试')
+					},
+					complete: function () {
+						wx.hideLoading()
 					}
 				})
 			}
@@ -157,10 +161,13 @@ Page({
 	 * 获取顾问列表
 	 */
 	_onGetAdviser: function () {
-		wx.showLoading({title:'加载中'})
 		const {shop={}} = this.data;
 		const _this = this;
-		shop.id && wx.request({
+		if(!shop.id){
+			return
+		}
+		wx.showLoading({title:'加载中'})		
+		wx.request({
 			url: API.HOME_ADVISER,
 			data: {
 				shopId: shop.id
@@ -176,14 +183,18 @@ Page({
 							uid: data[0] && data[0].uid,
 							name: data[0] && data[0].name
 						})
-						_this.resolve && _this.resolve() //在扫顾问二维码跳转到商品详情时使用的primise
-						wx.hideLoading()
+						//在扫顾问二维码跳转到商品详情时使用的primise
+						_this.resolve && _this.resolve() 
 					})
 				}
 				return _this.toast.warn(message)
 			},
 			fail: function (res) {
 				return _this.toast.error('请求失败，请刷新重试')
+			},
+			complete: function () {
+				console.log('complete _onGetAdviser');
+				wx.hideLoading()
 			}
 		})
 	},
@@ -205,6 +216,7 @@ Page({
 			success: function (res) {
 				const {code, data=[], message} = res.data
 				if( code===200 ){
+					if(!data.length)return
 					return _this.setData({categoryList:data,currentTab:data[0] && data[0].id,pageNum:1},()=>{
 						_this._onGetGoods()
 					})
@@ -232,8 +244,8 @@ Page({
 		shop.id && wx.request({
 			url: API.HOME_COODS,
 			data: {
-				shopId: shop.id, //---TEMP---
-				firstId: currentTab, //---TEMP---
+				shopId: shop.id, 
+				firstId: currentTab,
 				pageSize,
 				pageNum
 			},
@@ -267,13 +279,12 @@ Page({
 	},
 	// 无网络时，点击立即刷新按钮
 	_buttonEvent() {
-		this.onLoad() //---TEMP---没有刷新成功
+		this.onLoad()
 	},
 	/**
 	 * 扫一扫按钮
 	 */
 	handleSao: function () {
-		this.setData({noNet:true})
 		wx.scanCode({
 			success: (res) => {
 				//商品：https://app.wutonglife.com/detail?shopId=45&id=254&shopName=A1-B类型&source=1&isApp=

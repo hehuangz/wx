@@ -9,11 +9,16 @@ Page({
 		list:[],
 		mainActiveIndex: 0,
 		activeId: 0,
-		shop: wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{}
+		shop: wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{},
 	},
-	onReady: function () {
+	onLoad: function () {
 		this.toast=this.selectComponent("#toast")
 		this._onGetData()
+	},
+	onShow: function () {
+		this.setData({
+			shop: wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{},
+		})
 	},
 	_onGetData: function () {
 		const {id} = this.data.shop
@@ -25,7 +30,7 @@ Page({
 			url: API.CATEGORY_LIST,
 			dataType:'formData',
 			data: {
-				shopId: 26
+				shopId: id
 			},
 			method: 'POST',
 			header: {

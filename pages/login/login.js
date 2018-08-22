@@ -40,6 +40,9 @@ Page({
 				}
 			};
 			if(!this._onCheck(rules))return;
+			wx.showLoading({
+				title: '加载中',
+			})
 			const _this=this;
 			wx.request({
 				url: API.LOGIN_CREATECODE,
@@ -59,6 +62,9 @@ Page({
 				},
 				fail: function (res) {
 					return _this.toast.error('请求失败，请刷新重试')
+				},
+				complete: function () {
+					wx.hideLoading()
 				}
 			})
 		})
@@ -79,6 +85,9 @@ Page({
 			}
 		};
 		if(!this._onCheck(rules))return;
+		wx.showLoading({
+			title: '加载中',
+		})
 		const _this=this;
 		const userInfo=wx.getStorageSync('wx_user')?wx.getStorageSync('wx_user'):{}
 		wx.login({
@@ -114,6 +123,9 @@ Page({
 					},
 					fail: function (res) {
 						_this.toast.error('请求失败，请刷新重试')
+					},
+					complete: function () {
+						wx.hideLoading()
 					}
 				})	
 			}

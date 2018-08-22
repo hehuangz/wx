@@ -28,12 +28,14 @@
 }
 .center .third {
     width: 33%;
+    min-width: 86px;
     height: auto;
 }
 .center .third .__img{
-    width: 100%;
+    width: 80px;
     height: 80px;
     background: #f0f0f0;
+    border: 1rpx solid #f0f0f0;
 }
 .active {
     color: #ff4b2d !important;

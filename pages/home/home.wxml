@@ -1,26 +1,31 @@
 <!--home.wxml-->
 <toast id="toast"></toast>
-<!-- <lose id="lose" icon="icon-none" title="当前网络不稳定，请刷新重试～" buttonText="立即刷新" wx:if="{{noNet}}" bind:buttonEvent="_buttonEvent"/> -->
-
-<view class="container">
-	<!-- 获取用户信息和定位 -->
-	<dialog 
-		id='dialog' 
-		title='温馨提示'
-		content='是否允许我们使用定位和用户信息' 
-		cancelText='不好' 
-		confirm='可以'
-		bind:cancelEvent="_cancelEvent"  
-		bind:confirmEvent="_confirmEvent"
-		wxAuth="{{true}}"
-		wx:if="{{canIUse}}"
-	>
-    	<button slot="confirm" open-type="getUserInfo" bindgetuserinfo="getUserInfo" class="g-fs-16 g-bg-white g-c-green">确定</button>		
-    </dialog>
+<lose id="lose" 
+	icon="icon-wifii" 
+	title="页面丢失了，请刷新重试～" 
+	buttonText="立即刷新" 
+	wx:if="{{!shop.id}}" 
+	bind:buttonEvent="_buttonEvent"
+/>
+<dialog 
+	id='dialog'
+	title='温馨提示'
+	content='是否允许我们使用定位和用户信息' 
+	cancelText='不好' 
+	confirm='可以'
+	bind:cancelEvent="_cancelEvent"  
+	bind:confirmEvent="_confirmEvent"
+	wxAuth="{{true}}"
+	wx:if="{{canIUse}}"
+>
+	<button slot="confirm" open-type="getUserInfo" bindgetuserinfo="getUserInfo" class="g-fs-16 g-bg-white g-c-green">确定</button>		
+</dialog>
+<view class="container" wx:if="{{shop.id}}">
+	<!-- 获取用户信息和定位 -->	
 	<!-- 顶部搜索栏 -->
 	<view 
-		class="top g-width g-bs-bb g-bg-white g-flex g-jc-sb g-height-30 g-lh-30 g-fs-30 g-pd-lr-30 g-pd-t-5 g-pd-b-15 g-fixed"
-		style="height: 40px"
+		class="top g-width g-bs-bb g-bg-white g-flex g-jc-sb g-height-30 g-lh-30 g-fs-30 g-pd-lr-30 g-pd-t-5 g-pd-b-15 g-fixed g-border-b-f0f0f0"
+		style="height: 46px"
 	>
 		<text class="icon-saoma g-c-orange g-fs-24 g-m-r-20" style="font-size:22px" bindtap="handleSao"></text>
 		<view bindtap="handleSearch" class='g-width'>
@@ -33,13 +38,14 @@
 			/>
 		</view>
 	</view>
-
+	<view style="margin-top: 46px;" />
 	<!-- 顾问切换 -->
 	<swiper 
 		class="g-width card"
 		indicator-dots="true"
 		circular="true"
 		duration="200"
+		wx:if="{{adviserList.length}}"
 	>
 		<block wx:for="{{adviserList}}" wx:key="index">
 			<swiper-item>
@@ -62,7 +68,7 @@
 		</block>
 	</swiper>	
 	<!-- 商品列表tab栏 -->
-	<view class="swiper-tab g-m-t-10">
+	<view class="swiper-tab g-m-t-10" wx:if="{{categoryList.length}}">
 		<block wx:for="{{categoryList}}" wx:key="index">
 			<view class="swiper-tab-item {{currentTab==item.id?'active':''}}" data-current="{{item.id}}" bindtap="handleCategory">{{item.name}}</view>
 		</block>

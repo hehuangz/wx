@@ -1,7 +1,10 @@
 <!-- lose -->   
 <view class="c-lose {{classes}}" style="{{styles}}">
     <view class="center">
-        <text class="{{icon}} iconfont _icon"></text>
+        <text 
+            class="{{icon}} iconfont _icon" 
+            style="{{icon=='icon-wifii'?'color:#ccc':''}}"
+        ></text>
         <view class="_title">{{title}}</view>    
     </view>    
     <view class="g-bt-orange-sm g-m-t-30" wx:if="{{buttonText}}" catchtap='_buttonEvent'>{{buttonText}}</view>

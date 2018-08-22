@@ -62,6 +62,7 @@
 							data-skuid="{{item.skuId}}"
 							data-number="{{item.number}}"
 							data-goodsid="{{item.goodsId}}"
+							data-counselorid="{{item.counselorId}}"
 						>
 							<text class="g-c-3e3e3e g-fs-12">{{item.skuDesc}}</text>
 							<text class="icon-arrow-down g-c-929292 g-pd-l-10"/>

@@ -18,10 +18,11 @@
 	font-size: 14px;
 	color: #929292;
 	margin-top: 10px;
+	font-weight: 200;
 }
 ._icon {
 	font-size: 100px;
-	color: #929292;
+	color: #9b9b9b;
 }
 .g-m-t-30 {
 	margin-top: 30px;
@@ -31,7 +32,7 @@
 	height: 40px;
 	background: #ff4b2d;
 	color: #fff;
-	font-size: 16px;
+	font-size: 15px;
 	line-height: 40px;
 	text-align: center;
 	border-radius: 100px;
