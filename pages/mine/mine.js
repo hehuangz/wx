@@ -37,7 +37,6 @@ Page({
 		})
 	},
 	onShow: function(){
-		this.dialog.hideDialog();
 		const {userInfo} = this.data
 		if(wx.getStorageSync('wt_user')!=userInfo){
 			this.setData({userInfo:wx.getStorageSync('wt_user') || wx.getStorageSync('wx_user') || {}})
@@ -108,7 +107,6 @@ Page({
 									data,
 									success:function () {
 										_this.toast.success("绑定成功")
-										_this.dialog.hideDialog()
 									}
 								})
 							})
@@ -142,13 +140,11 @@ Page({
 			content: '确定注销登录吗',
 			success: function(res) {
 				if (res.confirm) {
-					wx.clearStorageSync()
 					wx.removeStorageSync("wt_user")
-					wx.removeStorageSync("wt_shop")
-					wx.removeStorageSync("wt_adviser")
-					wx.removeStorageSync("wwt_toBuy")
-					wx.removeStorageSync("wt_counselor")
-					wx.removeStorageSync("wt_adviser")
+					// wx.removeStorageSync("wt_shop")
+					// wx.removeStorageSync("wt_adviser")
+					// wx.removeStorageSync("wt_toBuy")
+					// wx.removeStorageSync("wt_counselor")
 					_this.onLoad()
 				} else if (res.cancel) {
 					console.log('用户点击取消')

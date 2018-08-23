@@ -26,7 +26,7 @@
 					<view class="g-c-3e3e3e g-pd-tb-10">{{local_toBuy.showArr[0].shopAddress}}</view>
 				</view>
 			</block>
-			<block wx:if="{{deliveryType==2}}" bindtap="handleGetAddress">
+			<block wx:if="{{deliveryType==2}}">
 				<view wx:if="{{address && address.addressId}}" class="g-width g-pd-r-10">
 					<view class="g-flex g-jc-sb g-width g-m-b-5">
 						<text>{{address.username}}</text>
@@ -34,10 +34,10 @@
 					</view>
 					<view>{{address.provinceName}}{{address.cityName}}{{address.districtName}}{{address.detailAddress}}</view>
 				</view>
-				<view wx:else class="g-width g-pd-r-10">
-					<view class="g-c-3e3e3e g-pd-tb-10">请填写收获地址</view>
+				<view wx:else class="g-width g-pd-r-10" bindtap="handleGetAddress">
+					<view class="g-c-3e3e3e g-pd-tb-10">请选择收获地址</view>
 				</view>
-				<text class="icon-more2 g-fs-0 g-fs-16 g-c-929292"/>
+				<text class="icon-more2 g-fs-0 g-fs-16 g-c-929292"  bindtap="handleGetAddress"/>
 			</block>
 		</view>
 

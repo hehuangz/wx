@@ -10,7 +10,6 @@ Page({
 		shopId: null
 	},
 	onLoad: function (options) {
-		console.log(options);
 		this.toast=this.selectComponent("#toast")
 		const {shopId='',cid=''} = options
 		shopId && this.setData({shopId,uid:cid},()=>{

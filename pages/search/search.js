@@ -29,9 +29,9 @@ Page({
 		pageSize: 20,
 		pageNum: 1,
 		noMoreData: false,
-		historyList: wx.getStorageSync('wt_history_label')? wx.getStorageSync('wt_history_label'): [], // ['鞋子','裤子','袜子']
+		historyList: [], // ['鞋子','裤子','袜子']
 		showHistory: true,
-		shopId: wx.getStorageSync('wt_shop')? wx.getStorageSync('wt_shop').id:null,
+		shopId: null,
 		thirdId: null
 	},
 	onLoad(options){ // url携带的参数，如果携带参数则是从分类进来的
@@ -45,7 +45,12 @@ Page({
 	},
 	onReady() {
 		this.toast=this.selectComponent("#toast")
-		const {keyWords,searcheCondtion} = this.data;
+	},
+	onShow() {
+		this.setData({
+			historyList: wx.getStorageSync('wt_history_label')? wx.getStorageSync('wt_history_label'): [],
+			shopId: wx.getStorageSync('wt_shop')? wx.getStorageSync('wt_shop').id:null
+		})
 	},
 	/**
 	 * 获取列表，同时兼顾两几种场景，1.单独搜索 2.从分类点击进入

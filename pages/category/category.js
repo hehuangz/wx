@@ -23,6 +23,7 @@ Page({
 	_onGetData: function () {
 		const {id} = this.data.shop
 		const _this = this;
+		if(!id)return
 		wx.showLoading({
 			title: '加载中',
 		})

@@ -6,7 +6,7 @@
 		<text class='icon-correct g-c-wxgreen g-m-b-10 g-width g-block g-tc' style="font-size: 50px"/>
 		<text class="g-c-212121 g-fs-16 g-width g-tc">支付成功</text>
 	</view>	
-		<!-- 配送方式 -->
+	<!-- 配送方式 
 	<view class="way g-flex g-jc-fs g-width g-m-t-10 g-pd-lr-10 g-bs-bb g-bg-white" style="height:50px;line-height:50px">
 		<text class="icon-courier g-fs-0 g-tc g-fs-22 g-c-3e3e3e" style="width:40px;font-size:22px" />
 		<view class="g-flex g-ai-c g-width">
@@ -15,7 +15,7 @@
 		</view>
 	</view>
 
-	<!-- 地址 -->
+	地址
 	<view wx:if="{{deliveryType==2}}" class="address g-flex g-jc-fs g-width g-pd-lr-10 g-bs-bb g-ai-c g-bg-white">
 		<text class="icon-location g-fs-0 g-tc g-fs-22 g-c-3e3e3e" style="width:40px;font-size:22px" />
 		<view wx:if="{{address && address.addressId}}" class="g-width g-pd-r-10">
@@ -28,11 +28,11 @@
 	</view>
 
 	<image mode="widthFix" src="{{IMG_OSS_TIAO}}" class="g-width" />
-	<!--  -->
+	
 	<zan-cell title="{{local_toBuy.show.shopName}}" value="商品顾问：{{local_toBuy.show.counselorName}}"></zan-cell>
 	<view class="g-line-gray"/>
 
-	<!-- 商品卡片 -->
+	商品卡片
 	<view class="sku-goods g-flex g-pd-tb-10 g-pd-lr-15 g-width g-bs-bb g-bg-white">
 		<image mode="aspectFill" src="{{local_toBuy.show.image}}" class="sku-goods-img g-fs-0 g-m-r-5" />
 		<view class="g-flex g-ai-sb g-fw-w g-width">
@@ -54,10 +54,11 @@
 	</zan-cell>
 	<view class="g-line-gray"/>
 	<view class="g-line-gray"/>
+	 -->
 	<!-- 底部按钮区域 -->
 	<view class="g-pd-20 g-flex g-jc-c g-width g-bs-bb">
 		<view class="g-bt-hollow-black" bindtap="handleToHome">返回首页</view>
-		<view class="g-bt-hollow-black" style="margin-left:30px" bindtap="handleToShare">分享此品</view>
+		<!-- <view class="g-bt-hollow-black" style="margin-left:30px" bindtap="handleToShare">分享此品</view> -->
 	</view>
 </view>
 <!-- 支付失败 -->

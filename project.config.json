@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 15,
+			"current": 8,
 			"list": [
 				{
 					"id": -1,
@@ -84,10 +84,10 @@
 					"query": ""
 				},
 				{
-					"id": 9,
+					"id": 8,
 					"name": "detail",
 					"pathName": "pages/goodsDetail/goodsDetail",
-					"query": "goodId=295"
+					"query": "goodId=2"
 				},
 				{
 					"id": 10,
@@ -128,7 +128,8 @@
 				{
 					"id": -1,
 					"name": "au",
-					"pathName": "pages/aboutus/aboutus"
+					"pathName": "pages/aboutus/aboutus",
+					"query": ""
 				}
 			]
 		}

@@ -135,7 +135,6 @@ Page({
 		wx.chooseAddress({
 			success: function (wxres) {
 				_this._onSaveWxAddress(wxres)
-				
 			}
 		})
 		// 拒绝后的方式,打开设置

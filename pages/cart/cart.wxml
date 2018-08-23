@@ -136,7 +136,7 @@
 	>
 		<view style="width:100vw" class="g-bg-white g-pd-20 g-bs-bb">
 			<view class="sku-img g-bg-white g-flex g-jc-fs g-ai-c g-m-b-20">
-				<image src="{{skuInfo.image}}" class="__img g-m-r-20 g-fs-0 g-border-e5e5e5" mode="aspectFit"/>
+				<image src="{{skuInfo.image}}" class="__img g-m-r-20 g-fs-0 g-border-e5e5e5" mode="aspectFill"/>
 				<view>
 					<text class="g-c-orange g-block g-fs-16 g-m-b-5">¥{{skuInfo.price}}</text>
 					<text class="g-c-929292 g-block g-fs-12">余量{{skuInfo.stock}}</text>
@@ -170,7 +170,7 @@
 					bind:change="handleZanStepperChange"
 				>
 				</zan-stepper>
-				<text wx:if="{{stepperValue==skuInfo.stock}}" class="g-c-orange g-fs-12">仅剩库存：{{skuInfo.stock}}</text>
+				<text wx:if="{{stepperValue>=skuInfo.stock}}" class="g-c-orange g-fs-12">仅剩库存：{{skuInfo.stock}}</text>
 			</view>
 		</view>
 		<view 

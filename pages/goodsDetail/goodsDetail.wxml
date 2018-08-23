@@ -8,14 +8,14 @@
 	>
 		<block wx:for="{{data.images}}" wx:key="index">
 			<swiper-item>
-				<image src="{{item}}" class="slide-image" mode="aspectFit"/>
+				<image src="{{item}}" class="slide-image" mode="aspectFill"/>
 			</swiper-item>
 		</block>
 	</swiper>
 	<view class="center g-width g-bs-bb g-pd-15">
 		<view class="">
-			<text class="g-m-r-20 g-fs-20 g-c-orange">¥{{data.marketPrice}}</text>
-			<text class="g-fs-12 g-c-929292">¥{{data.price}}</text>
+			<text class="g-m-r-20 g-fs-20 g-c-orange">¥{{data.price}}</text>
+			<text class="g-fs-12 g-c-929292 g-del">¥{{data.marketPrice}}</text>
 		</view>
 		<view class="g-fs-16 g-c-212121 g-ls-0 g-weight-200 g-m-b-5">{{data.name}}</view>
 		<view class="g-fs-14 g-c-929292 g-weight-200" wx:if="{{data.goodDesc}}">{{data.goodDesc}}</view>
@@ -59,16 +59,36 @@
 			</block>
 			<text class="g-fs-12 g-c-afafaf" style="margin-left:2px">顾问</text>
 		</view>
-		<view 
-			class="g-bg-yellow g-c-white g-fs-16 g-ls-0 g-weight-200" 
-			style="width:33%"
-			bindtap="handleToCart"
-		>加入购物车</view>
-		<view 
-			class="g-bg-orange g-c-white g-fs-16 g-ls-0 g-weight-200" 
-			style="width:33%"
-			bindtap="handleBuy"
-		>立即购买</view>
+		<block>
+			<view
+				wx:if="{{userInfo.uid}}"
+				class="g-bg-yellow g-c-white g-fs-16 g-ls-0 g-weight-200" 
+				style="width:33%"
+				bindtap="handleToCart"
+			>加入购物车</view>
+			<button
+				wx:else
+				class="g-bg-yellow g-c-white g-fs-16 g-ls-0 g-weight-200"
+				open-type="getPhoneNumber"
+				bindgetphonenumber="handleWxTel"
+				style="width:33%;border-radius:0;line-height:59px"
+			>加入购物车</button>
+		</block>
+		<block>
+			<view 
+				wx:if="{{userInfo.uid}}"
+				class="g-bg-orange g-c-white g-fs-16 g-ls-0 g-weight-200" 
+				style="width:33%"
+				bindtap="handleBuy"
+			>立即购买</view>
+			<button
+				wx:else
+				class="g-bg-orange g-c-white g-fs-16 g-ls-0 g-weight-200"
+				open-type="getPhoneNumber"
+				bindgetphonenumber="handleWxTel"
+				style="width:33%;border-radius:0;line-height:59px"
+			>立即购买</button>
+			</block>
 	</view>
 
 	<!-- 选择sku之后弹出的内容 -->
@@ -80,7 +100,7 @@
 	>
 		<view style="width:100vw;padding:20px 10px 20px 20px" class="g-bg-white g-pd-20 g-bs-bb">
 			<view class="sku-img g-bg-white g-flex g-jc-fs g-ai-c g-m-b-20">
-				<image src="{{skuInfo.image}}" class="__img g-m-r-20 g-fs-0 g-border-e5e5e5" mode="aspectFit"/>
+				<image src="{{skuInfo.image}}" class="__img g-m-r-20 g-fs-0 g-border-e5e5e5" mode="aspectFill"/>
 				<view>
 					<text class="g-c-orange g-block g-fs-16 g-m-b-5">¥{{skuInfo.price}}</text>
 					<text class="g-c-929292 g-block g-fs-12">余量{{skuInfo.stock}}</text>

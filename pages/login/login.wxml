@@ -2,14 +2,14 @@
 <view class="container ">
 	<!-- <lose id="lose"></lose> -->
 	<toast id="toast"></toast>
-	<view class="top g-flex g-jc-c g-pd-t-15"><image src="{{IMG_OSS_LOGO}}" mode="aspectFit" class="_img"/></view>
+	<view class="top g-flex g-jc-c g-pd-t-15"><image src="{{IMG_OSS_LOGO}}" mode="aspectFill" class="_img"/></view>
 	<view class="center g-width g-flex g-jc-c g-fw-w">
 		<view class="_item g-bg-white g-flex g-jc-fs g-ai-c">
-			<image src="{{IMG_OSS_PHONE}}" mode="aspectFit" class="_img g-fs-0"/>
+			<image src="{{IMG_OSS_PHONE}}" mode="aspectFill" class="_img g-fs-0"/>
 			<input class="__input g-width-80p g-fs-16" type="number" bindinput="bindTel"/>
 		</view>
 		<view class="_item g-bg-white g-flex g-jc-fs g-ai-c g-m-t-10">
-			<image src="{{IMG_OSS_LOCK}}" mode="aspectFit" class="_img g-fs-0"/>
+			<image src="{{IMG_OSS_LOCK}}" mode="aspectFill" class="_img g-fs-0"/>
 			<input class="__input g-width-80p g-fs-16" type="number" bindinput="bindCode"/>
 			<view class="g-bt-orange-s g-m-r-10" bindtap="handleCode" wx:if="{{is_code}}">发送验证码</view>
 			<view class="g-bt-gray-s g-m-r-10" wx:else>重新获取({{time}})</view>

@@ -8,13 +8,13 @@ Page({
 		userInfo:wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{},
 		orderPid: '',
 		price: '',
-		createTime: ''
+		createTime: '',
+		deliveryType: ''
 	},
 	onLoad: function (options) {
 		this.toast=this.selectComponent("#toast")
-		const {orderPid,price,createTime} = options
-		console.log(createTime);
-		orderPid && this.setData({orderPid,price,createTime})
+		const {orderPid,price,createTime,deliveryType} = options
+		orderPid && this.setData({orderPid,price,createTime,deliveryType})
 	},
 	handlePay: function () {
 		const {orderPid,userInfo} = this.data
@@ -46,7 +46,7 @@ Page({
 		})
 	},
 	_onWxPay: function (data) {
-		const {orderPid}=this.data
+		const {orderPid,deliveryType}=this.data
 		wx.requestPayment({
 			"appId": data.appId,
 			"nonceStr": data.nonceStr,

@@ -34,7 +34,7 @@ Page({
 			goodId,
 			adviser,
 			userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{},
-			shopInfo:wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{}
+			shopInfo: wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{}
 		})
 		this._onGetData(goodId)
 		this._onGetShopAddress()
@@ -175,17 +175,18 @@ Page({
 	},
 	// 更换顾问
 	handleChangeAdviser: function(){
-		const {shopInfo} = this.data
+		const {shopInfo,adviser} = this.data
 		const {id} = shopInfo
 		wx.navigateTo({
-			url: `/pages/adviser/adviser?shopId=${id}`
+			url: `/pages/adviser/adviser?shopId=${id}&cid=${adviser.uid}`
 		})
 	},
 	// 加入购物车
 	handleToCart: function () {
 		const {adviser={},userInfo={},skuInfo={},goodId,stepperValue,shopInfo,skuDesc,source}=this.data
 		if(!skuInfo.stock)return this.handleChooseSku() //未选择规格，让它去选
- 		const _this=this
+		if(!userInfo.uid)return //--TEMP--
+		const _this=this
 		goodId && wx.request({
 			url: API.CART_INSERT,
 			data:{
@@ -227,10 +228,10 @@ Page({
 	_onGetShopAddress: function () {
 		const {shopInfo} = this.data
 		const _this=this
-		wx.request({
+		shopInfo.id && wx.request({
 			url: API.HOME_SHOP_ADDRESS,
 			data: {
-				shopId:shopInfo.id
+				shopId: shopInfo.id
 			},
 			method: 'POST',
 			header: {
@@ -251,7 +252,7 @@ Page({
 	// 立即购买
 	handleBuy: function () {
 		const {skuInfo={},userInfo} = this.data
-
+		if(!userInfo.uid) return
 		// 验证是否登录
 		if(!userInfo.uid){
 			return wx.showModal({
@@ -266,7 +267,7 @@ Page({
 					console.log('用户点击取消')
 				  }
 				}
-			  })  
+			})
 		}
 		// 验证规格，未选择规格，让它去选
 		if(!skuInfo.stock)return this.handleChooseSku()
@@ -298,6 +299,7 @@ Page({
 				marketPrice:data.marketPrice,
 				number:stepperValue
 			},
+			showArr:[{shopAddress: address}],
 			priceTotal: Number(skuInfo.price)*stepperValue,
 			marketPriceTotal: Number(data.marketPrice)*stepperValue
 		}
@@ -313,14 +315,59 @@ Page({
 	},
 	onShareAppMessage: function (res) {
 		const {goodId} = this.data
-		console.log(goodId,res);
 		if (res.from === 'button') {
 			// 来自页面内转发按钮
 			console.log(res.target)
 		}
 		return {
-			title: '这个东西不错',
+			title: '分享这期不做',
 			path: `/page/goodsDetail/goodsdetail?goodId=${goodId}`
 		}
+	},
+	handleWxTel: function (e) {
+		let userInfo=wx.getStorageSync('wx_user')?wx.getStorageSync('wx_user'):{}
+		const _this=this
+		if(e.detail.errMsg!="getPhoneNumber:ok"){
+			return
+		}
+		wx.login({
+			success: function(wxres){
+				wx.request({
+					url: API.MINE_WXTEL,// ADVISER_SHOP_LIST
+					data: {
+						iv: e.detail.iv,
+						encryptedData: e.detail.encryptedData,
+						jscode: wxres.code,
+						img: userInfo.avatarUrl || null,
+						nickname:  userInfo.nickName || null
+					},
+					method: 'POST',
+					header: {
+						"Content-Type": "application/x-www-form-urlencoded"
+					},
+					success: function (res) {
+						const {code='', data={}, message=""} = res.data
+						if( code===200 && data){
+							return  _this.setData({
+								userInfo: data
+							},()=>{
+								wx.setStorage({
+									key: "wt_user",
+									data,
+									success:function () {
+										_this.toast.success("绑定成功")
+									}
+								})
+							})
+							
+						}
+						return _this.toast.warning(message)
+					},
+					fail: function (res) {
+						return _this.toast.error('请求失败，请刷新重试')
+					}
+				})
+			}
+		})
 	}
 })

@@ -34,7 +34,10 @@ Page({
 	onShow: function(){
 		let {userInfo} = this.data
 		this.setData({
-			userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{}
+			userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{},
+			is_edit: false,
+			settlementTotal: 0,
+			totalPrice: 0
 		},()=>{
 			userInfo.token && this._onGetData()
 		})
@@ -336,7 +339,7 @@ Page({
 				return false
 			}
 		}
-		this.handleZanStepperChange({detail:1}) //label切换计数器归1 
+		// this.handleZanStepperChange({detail:1}) //label切换计数器归1 
 		this.setData({skuData},()=>{
 			this._onGetSkuInfo({init:false})
 		})

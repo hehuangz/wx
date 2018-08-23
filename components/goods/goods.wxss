@@ -8,6 +8,7 @@
 .c-goods ._title {
     margin-top: 5px;
     margin-bottom: 5px;
+    height: 40px;
 }
 .c-goods ._img {
     width: 100%;
@@ -21,7 +22,7 @@
 	display: -webkit-box;
 	-webkit-line-clamp: 2;
 	-webkit-box-orient: vertical;
-	word-break:break-all;
+	word-break: break-all;
 }
 .g-c-929292 {
     color: #929292;

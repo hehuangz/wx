@@ -9,18 +9,15 @@ Page({
 	data: {
 		type: 0, //微信支付结果
 		orderPid:'',// 1534373634  1534300206
-		deliveryType: 2, //1:到店取货,2:送货上门
 		IMG_OSS_TIAO,
 		local_toBuy: wx.getStorageSync('wt_toBuy')?wx.getStorageSync('wt_toBuy'):{},
 		userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{},
 		result: null, //接口查询支付是否成功
-		address: wx.getStorageSync('wt_wxAddress')?wx.getStorageSync('wt_wxAddress'):{},
 	},
 	onLoad(options){
 		// 重新赋值，不要在data中给默认值，否则进去一次，第二次进去不会加载
 		this.setData({
 			local_toBuy: wx.getStorageSync('wt_toBuy')?wx.getStorageSync('wt_toBuy'):{},
-			address: wx.getStorageSync('wt_wxAddress')?wx.getStorageSync('wt_wxAddress'):{},
 		})
 		this.toast=this.selectComponent("#toast")
 		const {type=0,orderPid}=options
