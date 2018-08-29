@@ -3,10 +3,15 @@
 <view class="container">
 	<view class="g-flex g-ai-c g-pd-lr-20 g-pd-10 g-bg-white g-m-tb-10">
 		<!-- <block wx:if="{{userInfo.avatarUrl || userInfo.img}}"> -->
-			<image src="{{userInfo.avatarUrl || userInfo.img}}" mode="widthFix" class="g-avatar" />
+			<image 
+				src="{{userInfo.avatarUrl || userInfo.img}}" 
+				mode="aspectFill" 
+				class="g-avatar" 
+				bindtap="handlePreviewImg"
+				data-img="{{userInfo.avatarUrl || userInfo.img}}"
+			/>
 			<text class="g-fs-16 g-c-212121 g-m-l-20 g-m-r-20 g-weight-300">{{userInfo.nickName || userInfo.nickname}}</text>
 		<!-- </block> -->
-		<!-- TEMP -->
 		<!-- <view  
 			class="g-bt-hollow-orange g-tr" 
 			bindtap="handleDialog"

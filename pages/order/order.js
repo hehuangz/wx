@@ -75,6 +75,7 @@ Page({
 		if(more){
 			oldList=this.data.list
 		}
+		if(!userInfo.uid)return;
 		wx.showLoading({
 			title: '加载中',
 		})
@@ -117,11 +118,12 @@ Page({
 	onReachBottom() {
 		let {page,totalSize,pageSize} = this.data
 		if(Math.ceil(totalSize/pageSize)<=page){
-			return wx.showToast({
-				title: '无数据，不要再拉我了～',
-				icon: 'none',
-				duration: 1000
-			})	   
+			return 
+			// wx.showToast({
+			// 	title: '无数据，不要再拉我了～',
+			// 	icon: 'none',
+			// 	duration: 1000
+			// })	   
 		}
 		this.setData({
 			page: page+1

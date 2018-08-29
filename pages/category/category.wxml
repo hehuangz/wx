@@ -14,13 +14,13 @@
 				placeholder="查找您想要的"
 				class="g-fs-12 g-width g-br-oval g-pd-lr-10 g-bs-bb"
 				placeholder-style="color:#e6e6e6"
-				disables
+				disabled
 			/>
 		</view>
 	</view>
 	<view style="margin-top: 46px"></view>
 	<view class="center g-flex" wx:if="{{list.length}}">
-		<view class="_left g-fs-0" style="height:calc(100vh - 55px);overflow-y:scroll">
+		<view class="_left g-fs-0" style="height:calc(100vh - 50px);overflow-y:scroll">
 			<block wx:for="{{list}}" wx:key="{{item.id}}" >
 				<view 
 					class="first g-tc g-flex g-ai-c g-jc-c {{activeId==item.id?'active':''}}" 
@@ -29,7 +29,7 @@
 				>{{item.name}}</view>		
 			</block>					
 		</view>
-		<view class="_right g-pd-l-20 g-bs-bb" style="height:calc(100vh - 55px);overflow-y:scroll">
+		<view class="_right g-pd-l-20 g-bs-bb" style="height:calc(100vh - 50px);overflow-y:scroll">
 			<view class="second" wx:for="{{list}}" wx:for-item="item_yi" wx:if="{{activeId==item_yi.id}}" wx:key="item_yi.id">
 				<block wx:for="{{item_yi.children}}" wx:for-item="item_er" wx:key="item_er.id">
 					<text class="g-fs-14 g-c-212121 g-m-t-5">{{item_er.name}}</text>

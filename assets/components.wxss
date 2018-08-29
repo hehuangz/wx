@@ -244,3 +244,13 @@
 	/* opacity: 0.6; */
 	background: #f8f8f8;
 }
+.g-bt-square-pink {
+	width: 100vw;
+	height: 46px;
+	background: #ffa596;
+	font-size: 16px;
+	color: #fff;
+	font-weight: 200;
+	text-align: center;
+	line-height: 46px;
+}

@@ -16,7 +16,7 @@
 	border-radius: 10px;
     box-shadow: 0 0 8px 0 rgba(127,126,126,0.50);
 	background: #fff;
-    padding: 20px 25px 30px;
+    padding: 15px;
     border-top: 2rpx solid #f0f0f0;
 }
 ._swiper-item .__img {

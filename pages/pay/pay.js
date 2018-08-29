@@ -16,6 +16,11 @@ Page({
 		const {orderPid,price,createTime,deliveryType} = options
 		orderPid && this.setData({orderPid,price,createTime,deliveryType})
 	},
+	onShow: function () {
+		this.setData({
+			userInfo:wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{},
+		})
+	},
 	handlePay: function () {
 		const {orderPid,userInfo} = this.data
 		if(!orderPid)return

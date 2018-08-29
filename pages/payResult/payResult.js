@@ -45,7 +45,7 @@ Page({
 						result: true
 					});
 				}
-				return _this.toast.warning(message)
+				// return _this.toast.warning(message)
 			},
 			fail: function (res) {
 				return _this.toast.error('请求失败，请刷新重试')

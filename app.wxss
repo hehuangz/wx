@@ -56,6 +56,11 @@ text,view {
   left: 0;
   z-index: 10;
 }
+.g-fixed-bottom {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+}
 /* iconfont简写 */
 [class^="icon-"]{
   font-family:"iconfont" !important;

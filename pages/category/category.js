@@ -11,13 +11,12 @@ Page({
 		activeId: 0,
 		shop: wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{},
 	},
-	onLoad: function () {
-		this.toast=this.selectComponent("#toast")
-		this._onGetData()
-	},
 	onShow: function () {
+		this.toast=this.selectComponent("#toast")
 		this.setData({
 			shop: wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{},
+		},()=>{
+			this._onGetData()
 		})
 	},
 	_onGetData: function () {

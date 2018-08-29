@@ -1,6 +1,6 @@
 //index.js
 import API from '../../constants/apiRoot';
-
+import Debounce from '../../utils/debounce'
 //获取应用实例
 const app = getApp()
 Page({
@@ -26,8 +26,9 @@ Page({
 			searcheCondtion: 3
 		}],
 		goodsList: [],
-		pageSize: 20,
+		pageSize: 10,
 		pageNum: 1,
+		total: null,
 		noMoreData: false,
 		historyList: [], // ['鞋子','裤子','袜子']
 		showHistory: true,
@@ -40,7 +41,7 @@ Page({
 			showHistory:false,
 			thirdId
 		},()=>{
-			this._onGetList({thirdId:thirdId})
+			this._onGetData({thirdId:thirdId})
 		})
 	},
 	onReady() {
@@ -55,8 +56,11 @@ Page({
 	/**
 	 * 获取列表，同时兼顾两几种场景，1.单独搜索 2.从分类点击进入
 	 */
-	_onGetList: function (params={}) {
-		const {toLower=false,thirdId} = params
+	_onGetData: function (params={}) {
+		wx.showLoading({
+			title: '加载中',
+		})
+		const {more=false,thirdId} = params
 		const {keyWords,searcheCondtion,pageSize,pageNum,shopId} = this.data
 		const url=thirdId?API.SEARCH_GOODS_BYSHIRDID:API.SEARCH_GOODS
 		const temp=thirdId?{thirdId}:{keyWords:keyWords && keyWords.trim()}
@@ -71,16 +75,20 @@ Page({
 			success: function (res) {
 				const {code='', data=[], message=''} = res.data
 				if( code===200 ){
-					if(toLower){ // 上拉加载时
+					if(more){ // 上拉加载时
 						if(!(data.dataList && data.dataList.length)) return _this.setData({noMoreData:true}) // 无更多数据时
-						return _this.setData({goodsList:[..._this.data.goodsList,...data.dataList]})
+						return _this.setData({goodsList:[..._this.data.goodsList,...data.dataList],total:data.total})
 					}
-					return _this.setData({goodsList:data.dataList})
+					return _this.setData({goodsList:data.dataList,total:data.total})
 				}
 				return _this.toast.warning(message)
 			},
 			fail: function (res) {
 				return _this.toast.error('请求失败，请刷新重试')
+			},
+			complete: function () {
+				wx.stopPullDownRefresh();
+				wx.hideLoading()
 			}
 		})
 	},
@@ -88,42 +96,36 @@ Page({
 		this.setData({keyWords:e.detail.value})
 	},
 	handleCategory: function (e) {
-		this.setData({
-			searcheCondtion: e.currentTarget.dataset.current,
-			pageNum:1
-		},()=>{
-			this._onGetList({thirdId:this.data.thirdId})
+		Debounce(()=>{
+			this.setData({
+				searcheCondtion: e.currentTarget.dataset.current,
+				pageNum:1
+			},()=>{
+				this._onGetData({thirdId:this.data.thirdId})
+			})
 		})
 	},
 	handleSearch: function () {
-		const {keyWords=''} = this.data
-		// 点击搜索，页数归1，隐藏历史搜索，搜索加入缓存
-		this.setData({
-			pageNum:1,
-			showHistory: false,
-			thirdId: null
-		},()=>{
-			this._onGetList()
-			let old=wx.getStorageSync('wt_history_label')? wx.getStorageSync('wt_history_label'): [];
-			if(keyWords.trim() && (old.indexOf(keyWords)==-1)){
-				const data=[keyWords,...old].slice(0,12)
-				wx.setStorage({
-					key: "wt_history_label",
-					data,
-					success:function () {
-					}
-				})
-			}
-		})
-	},
-	/**
-	 * 滑动到底部
-	 */
-	handleScrollLower: function (e) {
-		this.setData({
-			pageNum:this.data.pageNum+1
-		},()=>{
-			this._onGetList({toLower:true})
+		Debounce(()=>{
+			const {keyWords=''} = this.data
+			// 点击搜索，页数归1，隐藏历史搜索，搜索加入缓存
+			this.setData({
+				pageNum: 1,
+				showHistory: false,
+				thirdId: null
+			},()=>{
+				this._onGetData()
+				let old=wx.getStorageSync('wt_history_label')? wx.getStorageSync('wt_history_label'): [];
+				if(keyWords.trim() && (old.indexOf(keyWords)==-1)){
+					const data=[keyWords,...old].slice(0,12)
+					wx.setStorage({
+						key: "wt_history_label",
+						data,
+						success:function () {
+						}
+					})
+				}
+			})
 		})
 	},
 	/**
@@ -145,5 +147,30 @@ Page({
 			keyWords,
 			showHistory: false
 		})
-	}
+	},
+	onPullDownRefresh() {
+		let {showHistory}=this.data
+		if(showHistory){
+			return wx.stopPullDownRefresh();
+		}
+		this.setData({pageNum:1},()=>{
+			this._onGetData();
+		})
+	},
+	onReachBottom() {
+		let {pageNum,total,pageSize} = this.data
+		if(Math.ceil(total/pageSize)<=pageNum){
+			return 
+			// wx.showToast({
+			// 	title: '无数据，不要再拉我了～',
+			// 	icon: 'none',
+			// 	duration: 1000
+			// })	   
+		}
+		this.setData({
+			pageNum: pageNum+1
+		},()=>{
+			this._onGetData({more:true});
+		})
+	},
 })

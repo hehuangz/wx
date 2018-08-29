@@ -5,6 +5,5 @@
 		"goods": "/components/goods/goods",
 		"lose": "/components/lose/lose"
 	},
-	"enablePullDownRefresh": true,
- 	"onReachBottomDistance": 50
+	"enablePullDownRefresh": true
 }

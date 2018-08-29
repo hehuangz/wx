@@ -19,7 +19,6 @@ Page({
 			userInfo={}
 		}
 		this.setData({userInfo})
-
 		wx.getSetting({//先获取用户当前的设置
 			success(res) {
 				if (!res.authSetting['scope.address']) {
@@ -28,8 +27,7 @@ Page({
 						success(res) {
 							console.log(res.errMsg);//用户授权后执行方法
 						},
-						fail(res){
-						//用户拒绝授权后执行
+						fail(res){//用户拒绝授权后执行
 						}
 					})
 				}
@@ -48,10 +46,6 @@ Page({
 		})		  
 	},
 	handleAddress: function () {
-		// 打开微信地址
-		wx.chooseAddress({
-			success: function (res) {}
-		})
 		// 拒绝后的方式,打开设置
 		const _this = this;
 		wx.getSetting({
@@ -63,6 +57,7 @@ Page({
 					wx.chooseAddress({
 						success: function (res) {}
 					})
+					return
 				}
 			},
 			fail(res){
@@ -80,7 +75,11 @@ Page({
 	},
 	handleWxTel: function (e) {
 		const {userInfo} = this.data
+		const shopInfo = wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{}
 		const _this=this
+		if(e.detail.errMsg!="getPhoneNumber:ok"){
+			return
+		}
 		wx.login({
 			success: function(wxres){
 				wx.request({
@@ -90,7 +89,8 @@ Page({
 						encryptedData: e.detail.encryptedData,
 						jscode: wxres.code,
 						img: userInfo.avatarUrl || null,
-						nickname:  userInfo.nickName || null
+						nickname: userInfo.nickName || null,
+						sid: shopInfo.id
 					},
 					method: 'POST',
 					header: {
@@ -102,6 +102,10 @@ Page({
 							return  _this.setData({
 								userInfo: data
 							},()=>{
+								data.wxuid && wx.setStorage({
+									key:'wt_counselor',
+									data:{uid:data.wxuid,name:data.wxname}
+								})
 								wx.setStorage({
 									key: "wt_user",
 									data,
@@ -112,7 +116,7 @@ Page({
 							})
 							
 						}
-						return _this.toast.warning(message)
+						return _this.toast.warning('绑定失败，请重新绑定')
 					},
 					fail: function (res) {
 						return _this.toast.error('请求失败，请刷新重试')
@@ -123,7 +127,7 @@ Page({
 	},
 	handleToLogin: function () {
 		wx.navigateTo({
-			url:'/pages/login/login'
+			url: '/pages/login/login'
 		})
 	},
 	//dialog取消事件
@@ -142,10 +146,10 @@ Page({
 				if (res.confirm) {
 					wx.removeStorageSync("wt_user")
 					// wx.removeStorageSync("wt_shop")
-					// wx.removeStorageSync("wt_adviser")
 					// wx.removeStorageSync("wt_toBuy")
 					// wx.removeStorageSync("wt_counselor")
 					_this.onLoad()
+					_this.toast.info('注销登录成功')
 				} else if (res.cancel) {
 					console.log('用户点击取消')
 				}
@@ -156,5 +160,12 @@ Page({
 		wx.navigateTo({
 			url: '/pages/aboutus/aboutus'
 		})
+	},
+	handlePreviewImg: function (e) {
+		const img=e.currentTarget.dataset.img
+		wx.previewImage({
+			current: img, // 当前显示图片的http链接
+			urls: [img] // 需要预览的图片http链接列表
+		  })
 	}
 })

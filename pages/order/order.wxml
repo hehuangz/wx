@@ -17,7 +17,7 @@
 			<text class="g-fs-12 g-m-l-10 g-c-929292 g-fs-0 g-ls-1" bindtap="handleSearch">搜索</text>
 		</view>
 		<zan-tab
-			scroll="{{ false }}"
+			scroll="{{ true }}"
 			list="{{ tab }}"
 			selected-id="{{ selectedId }}"
 			height="{{ 44 }}"

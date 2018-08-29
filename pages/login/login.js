@@ -106,7 +106,6 @@ Page({
 						"Content-Type": "application/x-www-form-urlencoded"
 					},
 					success: function (res) {
-						console.log(res);
 						const {message='',code='',data={}} = res.data	
 						if(code===200){
 							return 	wx.setStorage({

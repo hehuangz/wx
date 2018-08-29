@@ -14,7 +14,7 @@ Page({
 		categoryList: [], // 分类列表
 		goodsList: [],
 		errorPage: false,
-		pageSize: 5,
+		pageSize: 10,
 		pageNum: 1,
 		total: null
 	},
@@ -179,7 +179,7 @@ Page({
 				const {code='', data=[], message=''} = res.data
 				if( code===200 ){
 					return _this.setData({adviserList:data},()=>{
-						wx.setStorageSync('wt_counselor',{
+						!wx.getStorageSync('wt_counselor') && wx.setStorageSync('wt_counselor',{
 							uid: data[0] && data[0].uid,
 							name: data[0] && data[0].name
 						})
@@ -193,7 +193,6 @@ Page({
 				return _this.toast.error('请求失败，请刷新重试')
 			},
 			complete: function () {
-				console.log('complete _onGetAdviser');
 				wx.hideLoading()
 			}
 		})
@@ -296,7 +295,7 @@ Page({
 					let id=getQuery('id',result)//商品id
 					let source=getQuery('source',result)
 					let assistantId=getQuery('assistantId',result)
-					console.log(shopId,shopName,id,source,assistantId);
+					// console.log(shopId,shopName,id,source,assistantId);
 					if(id){ //商品，进入商品详情，并且切换店铺 --TEMP--不切换顾问吗
 						this._onSaoGoods({shopId,shopName,id,source})
 					}else if(assistantId){// 扫描的是顾问二维码，进入顾问
@@ -355,11 +354,12 @@ Page({
 	onReachBottom() {
 		let {total,pageNum,pageSize} = this.data
 		if(Math.ceil(total/pageSize)<=pageNum){
-			return wx.showToast({
-				title: '无数据，不要再拉我了～',
-				icon: 'none',
-				duration: 1000
-			})	   
+			return 
+			// wx.showToast({
+			// 	title: '无数据，不要再拉我了～',
+			// 	icon: 'none',
+			// 	duration: 1000
+			// })	   
 		}
 		this.setData({
 			pageNum: pageNum+1
@@ -367,4 +367,16 @@ Page({
 			this._onGetGoods(true);
 		})
 	},
+	handlePreviewImg: function (e) {
+		const img=e.currentTarget.dataset.img
+		wx.previewImage({
+			current: img, // 当前显示图片的http链接
+			urls: [img] // 需要预览的图片http链接列表
+		  })
+	},
+	handleToAsk: function () {
+		wx.navigateTo({
+			url: '/pages/download/download'
+		})
+	}
 })

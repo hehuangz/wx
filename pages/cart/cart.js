@@ -31,15 +31,16 @@ Page({
 		})
 	},
 	// 生命周期-页面显示即调用，因为ready和load方法在返回路由时不调用
-	onShow: function(){
-		let {userInfo} = this.data
+	onShow: function(){	
 		this.setData({
 			userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{},
 			is_edit: false,
 			settlementTotal: 0,
 			totalPrice: 0
 		},()=>{
-			userInfo.token && this._onGetData()
+			let {userInfo} = this.data
+			!userInfo.uid && this.setData({cartVos:[],disCartVos:[]})
+			userInfo.uid && this._onGetData()
 		})
 		const pages=getCurrentPages()
 		let currentPage=pages[pages.length-1]

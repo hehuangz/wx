@@ -18,16 +18,21 @@ Page({
 		skuDesc: '',
 		address: '',
 		source: 0,//扫描进来的时候，如果是1，则加入购物车和立即购买时携带1过去
+		share: {} // 点击好友分享到小程序进来
 	},
 	onLoad: function (options) {
 		this.toast=this.selectComponent("#toast")
-		let {goodId=null,source=0} = options
+		let {goodId=null,source=0,uid,gid,gname} = options
 		// 设置方式
-
 		let {adviser} = this.data
-		let wt_counselor=wx.getStorageSync('wt_counselor')?wx.getStorageSync('wt_counselor'):{}
-		if(wt_counselor.uid) {
-			adviser={uid:wt_counselor.uid,name:wt_counselor.name}
+		if(gid && gname){
+			adviser={uid,name:gname}
+			this.setData({share:{uid,gid}})
+		}else {
+			let wt_counselor=wx.getStorageSync('wt_counselor')?wx.getStorageSync('wt_counselor'):{}
+			if(wt_counselor.uid) {
+				adviser={uid:wt_counselor.uid,name:wt_counselor.name}
+			}
 		}
 		this.setData({
 			source,
@@ -184,8 +189,8 @@ Page({
 	// 加入购物车
 	handleToCart: function () {
 		const {adviser={},userInfo={},skuInfo={},goodId,stepperValue,shopInfo,skuDesc,source}=this.data
+		if(!userInfo.uid)return
 		if(!skuInfo.stock)return this.handleChooseSku() //未选择规格，让它去选
-		if(!userInfo.uid)return //--TEMP--
 		const _this=this
 		goodId && wx.request({
 			url: API.CART_INSERT,
@@ -209,9 +214,9 @@ Page({
 					return wx.switchTab({
 						url:'/pages/cart/cart',
 						success: function(){
-							// let page=getCurrentPages().pop()
-							// if(!page)return
-							// page.onLoad()
+							let page=getCurrentPages().pop()
+							if(!page)return
+							page.onLoad()
 						}
 					})
 				}
@@ -253,22 +258,6 @@ Page({
 	handleBuy: function () {
 		const {skuInfo={},userInfo} = this.data
 		if(!userInfo.uid) return
-		// 验证是否登录
-		if(!userInfo.uid){
-			return wx.showModal({
-				title: '提示',
-				content: '绑定手机号才能下单哦～，绑定？',
-				success: function(res) {
-				  if (res.confirm) {
-					 wx.switchTab({
-						 url: '/pages/mine/mine?showDialog=1'
-					 })
-				  } else if (res.cancel) {
-					console.log('用户点击取消')
-				  }
-				}
-			})
-		}
 		// 验证规格，未选择规格，让它去选
 		if(!skuInfo.stock)return this.handleChooseSku()
 		
@@ -314,17 +303,25 @@ Page({
 		})
 	},
 	onShareAppMessage: function (res) {
-		const {goodId} = this.data
+		const {goodId,data={},userInfo,adviser} = this.data
 		if (res.from === 'button') {
 			// 来自页面内转发按钮
 			console.log(res.target)
 		}
 		return {
-			title: '分享这期不做',
-			path: `/page/goodsDetail/goodsdetail?goodId=${goodId}`
+			title: data.name || '我发现了一件不错的宝贝',
+			path: `/pages/goodsDetail/goodsDetail?goodId=${goodId}&uid=${userInfo.uid}&gid=${adviser.uid}&gname=${adviser.name}`,
+			success: function(res) {
+				// 转发成功
+			},
+			fail: function(res) {
+				// 转发失败
+			}
 		}
+		
 	},
 	handleWxTel: function (e) {
+		const {share} = this.data
 		let userInfo=wx.getStorageSync('wx_user')?wx.getStorageSync('wx_user'):{}
 		const _this=this
 		if(e.detail.errMsg!="getPhoneNumber:ok"){
@@ -339,7 +336,9 @@ Page({
 						encryptedData: e.detail.encryptedData,
 						jscode: wxres.code,
 						img: userInfo.avatarUrl || null,
-						nickname:  userInfo.nickName || null
+						nickname:  userInfo.nickName || null,
+						uid: share.uid,
+						gid: share.gid
 					},
 					method: 'POST',
 					header: {
@@ -351,6 +350,10 @@ Page({
 							return  _this.setData({
 								userInfo: data
 							},()=>{
+								data.wxuid && wx.setStorage({
+									key:'wt_counselor',
+									data:{uid:data.wxuid, name:data.wxname}
+								})
 								wx.setStorage({
 									key: "wt_user",
 									data,
@@ -369,5 +372,16 @@ Page({
 				})
 			}
 		})
+	},
+	handlePreviewImg: function (e) {
+		const {data} = this.data
+		const img=e.currentTarget.dataset.img
+		wx.previewImage({
+			current: img, // 当前显示图片的http链接
+			urls: data.images // 需要预览的图片http链接列表
+		})
+	},
+	handleToHome: function () {
+		wx.switchTab({url:'/pages/home/home'})
 	}
 })

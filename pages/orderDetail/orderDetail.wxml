@@ -54,7 +54,7 @@
 		</view>
 		<!-- 顾问名片 -->
 		<view class="card g-flex g-width g-bs-bb g-pd-15">
-			<image class="__img g-m-r-10 g-fs-0" mode="aspectFill" src="{{detail.counselorImg}}}}"></image>
+			<image class="__img g-m-r-10 g-fs-0" mode="aspectFill" src="{{detail.counselorImg}}"/>
 			<view class="__content g-flex g-fd-c g-jc-c g-width">
 				<view class="g-m-b-5 g-flex g-jc-sb g-width"> 
 					<view class="g-fs-14 g-m-r-5">
@@ -98,16 +98,14 @@
 			</view>
 		</view>
 		<view class="g-line-gray"/>
-		<view class="g-line-gray"/>
 		<zan-cell title="实付金额">
 			<view slot="footer" class="g-c-orange">¥{{detail.receiveAmount}}</view>
 		</zan-cell>
 		<view class="g-line-gray"/>
-		<view class="g-line-gray"/>
 		<view class="g-gray-10"/>
-		<view class="g-flex g-jc-fe g-pd-tb-10">
+		<!-- <view class="g-flex g-jc-fe g-pd-tb-10">
 			<view class="g-bt-hollow-black g-m-r-15" bindtap="handleDelete">删除订单</view>
-		</view>
+		</view> -->
 
 		<view style="height: 200px"/>
 	</scroll-view>

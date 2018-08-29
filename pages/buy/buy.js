@@ -90,7 +90,7 @@ Page({
 	},
 	// 生成订单
 	handleCreatOrder: function () {
-		const {userInfo,deliveryType,local_toBuy,address}=this.data
+		const {userInfo,deliveryType=2,local_toBuy,address}=this.data
 		const _this = this
 		let params=null
 		if(deliveryType==1){
@@ -131,12 +131,6 @@ Page({
 	handleGetAddress: function () {
 		const {userInfo} = this.data
 		const _this = this
-		// 同意授权
-		wx.chooseAddress({
-			success: function (wxres) {
-				_this._onSaveWxAddress(wxres)
-			}
-		})
 		// 拒绝后的方式,打开设置
 		wx.getSetting({
 			success(res) {
@@ -163,8 +157,8 @@ Page({
 			"cityName": wxres.cityName,
 			"detailAddress": wxres.detailInfo,
 			"districtName": wxres.countyName,
-			"mobile": 19957895517,
-			// "mobile": wxres.telNumber,
+			// "mobile": 19957895517,
+			"mobile": wxres.telNumber,
 			"provinceName": wxres.provinceName,
 			"uid": userInfo.uid,
 			"username": wxres.userName

@@ -2,7 +2,7 @@
 <toast id="toast"></toast>
 <view class="container" style="background:#fcfcfc">
 	<view 
-		class="top g-width g-bs-bb g-bg-white g-flex g-jc-sb g-height-30 g-lh-30 g-fs-30 g-pd-lr-20 g-pd-t-10 g-pd-b-10"
+		class="top g-width g-bs-bb g-bg-white g-flex g-jc-sb g-height-30 g-lh-30 g-fs-30 g-pd-lr-20 g-pd-t-10 g-pd-b-10 g-ai-c"
 		style="height: 40px"
 	>
 		<input 
@@ -49,23 +49,20 @@
 			</block>
 		</view>
 		<block wx:if="{{goodsList.length}}">
-			<scroll-view scroll-y style="height: calc(100vh - 74px);" scroll-top="{{0}}" bindscrolltolower="handleScrollLower" scroll-with-animation="{{true}}"		>
-				<view class="goods-list">
-					<block wx:for="{{goodsList}}" wx:key="index">
-						<goods
-							id="goods"
-							style="width:50%" 
-							price="{{item.price}}" 
-							oldPrice="{{item.marketPrice}}"
-							data-id="{{item.goodId}}"
-							src="{{item.img}}"
-							title="{{item.name}}"
-							goodId="{{item.goodId}}"
-						/>
-					</block>
-				</view>
-			</scroll-view>
-			<view class="g-tc g-c-929292 g-bg-white">{{noMoreData || goodsList.length<10?'没有更多数据了～':'上拉加载更多'}}</view>
+			<view class="goods-list" style="height:calc(100vh - 70px);overflow-y:scroll;padding-bottom:30px">
+				<block wx:for="{{goodsList}}" wx:key="index">
+					<goods
+						id="goods"
+						style="width:50%" 
+						price="{{item.price}}" 
+						oldPrice="{{item.marketPrice}}"
+						data-id="{{item.goodId}}"
+						src="{{item.img}}"
+						title="{{item.name}}"
+						goodId="{{item.goodId}}"
+					/>
+				</block>
+			</view>
 		</block>	
 		<lose wx:if="{{!goodsList.length}}" id="lose" icon="icon-none" title="神马也没有搜索到哦～"></lose>
 	</block>

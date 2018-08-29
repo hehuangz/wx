@@ -62,7 +62,6 @@ Page({
 			success: function (res) {
 				const {code='', data={}, message=''} = res.data
 				if( code===200 ){
-					console.log(data,data.ordersGoodsList);
 					return _this.setData({detail:data,goods:data.ordersGoodsList})
 				}
 				return _this.toast.warning(message)
