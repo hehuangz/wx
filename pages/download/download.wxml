@@ -1,6 +1,5 @@
 <view class="container g-flex g-jc-c g-fw-w g-width g-bs-bb g-pd-lr-10" style="margin-top:100px">
 	<view class="g-width g-tc g-m-b-20 g-fs-14 g-weight-200">
-		更多功能详见吾同生活app，
-		或者点击以下网址复制到浏览器中进行下载</view>	
+		获取专属顾问，请点击以下网址复制到浏览器中下载App</view>	
 	<view bindtap="handleCopy" class="_url">{{url}}</view>
 </view>

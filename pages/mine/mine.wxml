@@ -6,11 +6,11 @@
 			<image 
 				src="{{userInfo.avatarUrl || userInfo.img}}" 
 				mode="aspectFill" 
-				class="g-avatar" 
+				class="g-avatar g-fs-0" 
 				bindtap="handlePreviewImg"
 				data-img="{{userInfo.avatarUrl || userInfo.img}}"
 			/>
-			<text class="g-fs-16 g-c-212121 g-m-l-20 g-m-r-20 g-weight-300">{{userInfo.nickName || userInfo.nickname}}</text>
+			<text class="g-fs-16 g-c-212121 g-m-l-20 g-m-r-20 g-weight-300 g-width">{{userInfo.nickName || userInfo.nickname}}</text>
 		<!-- </block> -->
 		<!-- <view  
 			class="g-bt-hollow-orange g-tr" 

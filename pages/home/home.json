@@ -5,6 +5,7 @@
     "dialog": "/components/dialog/dialog",
     "toast": "/components/toast/toast",
     "goods": "/components/goods/goods",
-    "lose": "/components/lose/lose"
+    "lose": "/components/lose/lose",
+    "tab": "/components/tab/tab"
   }
 }

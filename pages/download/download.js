@@ -5,11 +5,20 @@ Page({
 		url: 'http://www.baidu.com'
 	},
 	onLoad: function () {
-		
+		const _this=this
+		wx.getSystemInfo({
+			success: function(res) {
+				if(res.model && (/iPhone/.test(res.model) || /iPad/.test(res.model))){
+					_this.setData({
+						url: 'https://itunes.apple.com/cn/app/id1420004313'
+					})
+				}
+			}
+		  })
 	},
 	handleCopy: function () {
 		wx.setClipboardData({
-			data: 'sdfdfdfdff',
+			data: this.data.url,
 			success: function(res) {
 				console.log(res);
 			}

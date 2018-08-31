@@ -337,8 +337,8 @@ Page({
 						jscode: wxres.code,
 						img: userInfo.avatarUrl || null,
 						nickname:  userInfo.nickName || null,
-						uid: share.uid,
-						gid: share.gid
+						uid: share.uid || null,
+						gid: share.gid || null
 					},
 					method: 'POST',
 					header: {
@@ -364,7 +364,7 @@ Page({
 							})
 							
 						}
-						return _this.toast.warning(message)
+						return _this.toast.warning('绑定失败，请稍后重试')
 					},
 					fail: function (res) {
 						return _this.toast.error('请求失败，请刷新重试')

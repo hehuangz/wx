@@ -14,7 +14,7 @@ Page({
 		categoryList: [], // 分类列表
 		goodsList: [],
 		errorPage: false,
-		pageSize: 10,
+		pageSize: 20,
 		pageNum: 1,
 		total: null
 	},
@@ -132,13 +132,6 @@ Page({
 			data:e.detail.userInfo
 		})
 		this.dialog.hideDialog();
-	},
-	//滑动切换
-	handleSwiper: function (e) {
-		var _this = this;
-		_this.setData({
-		  	currentTab: e.detail.current
-		});
 	},
 	//点击切换
 	handleCategory: function (e) {
@@ -378,5 +371,22 @@ Page({
 		wx.navigateTo({
 			url: '/pages/download/download'
 		})
-	}
+	},
+	//滑动切换
+	handleSwiperGoods: function (e) {
+		console.log(e);
+		this.setData({
+			currentTab: e.detail.current+1
+		});
+		// if (this.data.currentTab === e.currentTarget.dataset.current) {
+		// 	return false;
+		// } else {
+		// 	this.setData({
+		// 		currentTab: e.currentTarget.dataset.current,
+		// 		pageNum: 1
+		// 	},()=>{
+		// 		this._onGetGoods()
+		// 	})
+		// }
+	},
 })

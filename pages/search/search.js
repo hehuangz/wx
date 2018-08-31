@@ -26,7 +26,7 @@ Page({
 			searcheCondtion: 3
 		}],
 		goodsList: [],
-		pageSize: 10,
+		pageSize: 20,
 		pageNum: 1,
 		total: null,
 		noMoreData: false,

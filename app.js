@@ -1,4 +1,5 @@
 //app.js
+var tdweapp = require('./utils/sdk/tdweapp.js');
 App({
   onLaunch: function () {
     // // 展示本地存储能力
