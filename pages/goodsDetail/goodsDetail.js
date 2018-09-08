@@ -17,7 +17,7 @@ Page({
 		shopInfo: {},
 		skuDesc: '',
 		address: '',
-		source: 0,//扫描进来的时候，如果是1，则加入购物车和立即购买时携带1过去
+		source: 0,// 扫描进来的时候，如果是1，则加入购物车和立即购买时携带1过去
 		share: {} // 点击好友分享到小程序进来
 	},
 	onLoad: function (options) {
@@ -41,12 +41,13 @@ Page({
 			userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{},
 			shopInfo: wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{}
 		})
-		this._onGetData(goodId)
+		this._onGetData(options)
 		this._onGetShopAddress()
 	},
 	// 生命周期-页面显示即调用，因为ready和load方法在返回路由时不调用
 	onShow: function(){
 		// 只要显示先设置下title
+		const _this = this
 		let local_shop = wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{}
 		local_shop.id && wx.setNavigationBarTitle({
 			title: local_shop.shopName 
@@ -63,9 +64,33 @@ Page({
 		if(wt_user.uid && userInfo.uid!=wt_user.uid){
 			this.setData({userInfo:wt_user})
 		}
+		wx.login({
+			success: function(wxres){
+				// 存储jscode
+				_this._onJscode(wxres)
+			}
+		})
+	},
+	// 绑定openId，sessionKey
+	_onJscode: function (wxres) {
+		wx.request({
+			url: API.MINE_JSCODE, // ADVISER_SHOP_LIST
+			data: {
+				jscode: wxres.code
+			},
+			method: 'POST',
+			header: {
+				"Content-Type": "application/x-www-form-urlencoded"
+			},
+			success: function (res) {
+			},
+			fail: function (res) {
+			}
+		})
 	},
 	// 获取数据
-	_onGetData: function(goodId){
+	_onGetData: function(options){
+		const {goodId,uid,counselorId,shopId} = options
 		wx.showLoading({
 			title: '加载中',
 		})
@@ -73,7 +98,10 @@ Page({
 		goodId && wx.request({
 			url: API.GOODS_DETAIL,
 			data: {
-				goodId: goodId
+				goodId: goodId,
+				uid,
+				counselorId,
+				shopId
 			},
 			method: 'POST',
 			header: {
@@ -274,7 +302,6 @@ Page({
 			source, //0是线上(默认)，1是线下，扫码进来链接带的参数
 		}]
 		// 显示数据
-		
 		let toBuyData={
 			type: 1,// 1:直接购买 2:购物车到购买
 			ordersGoods,
@@ -318,58 +345,63 @@ Page({
 				// 转发失败
 			}
 		}
-		
 	},
 	handleWxTel: function (e) {
-		const {share} = this.data
-		let userInfo=wx.getStorageSync('wx_user')?wx.getStorageSync('wx_user'):{}
 		const _this=this
 		if(e.detail.errMsg!="getPhoneNumber:ok"){
 			return
 		}
 		wx.login({
-			success: function(wxres){
-				wx.request({
-					url: API.MINE_WXTEL,// ADVISER_SHOP_LIST
-					data: {
-						iv: e.detail.iv,
-						encryptedData: e.detail.encryptedData,
-						jscode: wxres.code,
-						img: userInfo.avatarUrl || null,
-						nickname:  userInfo.nickName || null,
-						uid: share.uid || null,
-						gid: share.gid || null
-					},
-					method: 'POST',
-					header: {
-						"Content-Type": "application/x-www-form-urlencoded"
-					},
-					success: function (res) {
-						const {code='', data={}, message=""} = res.data
-						if( code===200 && data){
-							return  _this.setData({
-								userInfo: data
-							},()=>{
-								data.wxuid && wx.setStorage({
-									key:'wt_counselor',
-									data:{uid:data.wxuid, name:data.wxname}
-								})
-								wx.setStorage({
-									key: "wt_user",
-									data,
-									success:function () {
-										_this.toast.success("绑定成功")
-									}
-								})
-							})
-							
-						}
-						return _this.toast.warning('绑定失败，请稍后重试')
-					},
-					fail: function (res) {
-						return _this.toast.error('请求失败，请刷新重试')
-					}
-				})
+			success: function (wxres) {
+				_this.getPhoneNumber(e, wxres)
+			}
+		})
+	},
+	getPhoneNumber: function (_e, wxres) {
+		const {share} = this.data
+		let userInfo=wx.getStorageSync('wx_user')?wx.getStorageSync('wx_user'):{}
+		let shopInfo=wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{}
+		const _this=this
+		wx.request({
+			url: API.MINE_WXTEL,// ADVISER_SHOP_LIST
+			data: {
+				iv: _e.detail.iv,
+				encryptedData: _e.detail.encryptedData,
+				jscode: wxres.code,
+				img: userInfo.avatarUrl || null,
+				nickname:  userInfo.nickName || null,
+				uid: share.uid || null,
+				gid: share.gid || null,
+				sid: shopInfo.id || null
+			},
+			method: 'POST',
+			header: {
+				"Content-Type": "application/x-www-form-urlencoded"
+			},
+			success: function (res) {
+				const {code='', data={}, message=""} = res.data
+				if( code===200 && data){
+					return  _this.setData({
+						userInfo: data
+					},()=>{
+						data.wxuid && wx.setStorage({
+							key:'wt_counselor',
+							data:{uid:data.wxuid, name:data.wxname}
+						})
+						wx.setStorage({
+							key: "wt_user",
+							data,
+							success:function () {
+								_this.toast.success("绑定成功")
+							}
+						})
+					})
+					
+				}
+				return _this.toast.warning('绑定失败，请稍后重试')
+			},
+			fail: function (res) {
+				return _this.toast.error('请求失败，请刷新重试')
 			}
 		})
 	},

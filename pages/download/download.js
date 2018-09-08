@@ -2,7 +2,7 @@
 
 Page({
 	data: {
-		url: 'http://www.baidu.com'
+		url: 'https://itunes.apple.com/cn/app/id1420004313'
 	},
 	onLoad: function () {
 		const _this=this

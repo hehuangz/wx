@@ -13,6 +13,7 @@
 				class="g-fs-12 g-width g-br-oval g-pd-lr-10"
 				placeholder-style="color:#e6e6e6"
 				bindinput="bindGoodsName"
+				bindconfirm="handleSearch"
 			/>
 			<text class="g-fs-12 g-m-l-10 g-c-929292 g-fs-0 g-ls-1" bindtap="handleSearch">搜索</text>
 		</view>

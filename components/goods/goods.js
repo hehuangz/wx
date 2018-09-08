@@ -35,6 +35,18 @@ Component({
         goodId: {
             type: String,
             value: 0
+        },
+        uid: {
+            type: String,
+            value: 0
+        },
+        shopId: {
+            type: String,
+            value: 0
+        },
+        counselorId: {
+            type: String,
+            value: 0
         }
     },
     data:{
@@ -42,8 +54,9 @@ Component({
     },
     methods:{
         handleToDetail: function () {
+            const {goodId, uid, counselorId, shopId} = this.data
             wx.navigateTo({
-                url:`/pages/goodsDetail/goodsDetail?goodId=${this.data.goodId}`
+                url:`/pages/goodsDetail/goodsDetail?goodId=${goodId}&uid=${uid}&counselorId=${counselorId}&shopId=${shopId}`
             })
         }
     },

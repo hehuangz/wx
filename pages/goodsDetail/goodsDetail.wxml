@@ -11,7 +11,7 @@
 				<image 
 					src="{{item}}" 
 					class="slide-image" 
-					mode="aspectFill" 
+					mode="aspectFit" 
 					bindtap="handlePreviewImg"
 					data-img="{{item}}"
 				/>
@@ -86,7 +86,10 @@
 	<block wx:if="{{data.status==0}}">
 		<view class="g-bt-square-pink g-fixed-bottom" bindtap="handleToHome">商品已下架，请查看其他商品</view>
 	</block>
-
+	<view bindtap="handleToHome" class="home g-flex g-fd-c g-ai-c g-jc-c">
+		<text class="icon-shop2 g-fs-24"/>
+		<text class="g-fs-12">首页</text>
+	</view>
 	<!-- 选择sku之后弹出的内容 -->
 	<zan-popup 
 		type="bottom" 

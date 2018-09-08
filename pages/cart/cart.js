@@ -55,9 +55,9 @@ Page({
 			title: '加载中',
 		})
 		const {userInfo} = this.data;
-		const {token,uid=1} = userInfo
+		const {token,uid} = userInfo
 		const _this=this
-		wx.request({
+		userInfo.uid && wx.request({
 			url: API.CART_LIST,
 			data: {
 				uid: userInfo.uid

@@ -38,5 +38,18 @@ page {
     width: 66px;
     height: 66px;
     background: #f0f0f0;
-
+}
+.home {
+    position: fixed;
+    bottom: 72px;
+    right: 20px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+}
+.home:active {
+   background: rgba(0, 0, 0, 1) 
 }

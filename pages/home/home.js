@@ -16,12 +16,13 @@ Page({
 		errorPage: false,
 		pageSize: 20,
 		pageNum: 1,
-		total: null
+		total: null,
+		userInfo: {},
+		counselorInfo: {}
 	},
 	onLoad: function (){
 		this.dialog=this.selectComponent("#dialog")
 		this.toast=this.selectComponent("#toast")
-		const {shop} = this.data
 		/**
 		 * 获取定位信息
 		 */
@@ -46,7 +47,11 @@ Page({
 			title: local_shop.shopName 
 		})
 		if(local_shop.id && local_shop.id!=shop.id){
-			this.setData({shop:local_shop},()=>{
+			this.setData({
+				shop:local_shop,
+				userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{},
+				counselorInfo: wx.getStorageSync('wt_counselor')?wx.getStorageSync('wt_counselor'):{}
+			},()=>{
 				this._onGetCategory()
 				this._onGetAdviser()
 			})	
@@ -374,7 +379,6 @@ Page({
 	},
 	//滑动切换
 	handleSwiperGoods: function (e) {
-		console.log(e);
 		this.setData({
 			currentTab: e.detail.current+1
 		});

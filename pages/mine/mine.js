@@ -36,9 +36,35 @@ Page({
 	},
 	onShow: function(){
 		const {userInfo} = this.data
+		const _this = this
 		if(wx.getStorageSync('wt_user')!=userInfo){
 			this.setData({userInfo:wx.getStorageSync('wt_user') || wx.getStorageSync('wx_user') || {}})
 		}
+		// session_key 已经失效，需要重新执行登录流程
+		wx.login({
+			success: function(wxres){
+				// 存储jscode
+				_this._onJscode(wxres)
+			}
+		})
+	},
+	_onJscode: function (wxres) {
+		wx.request({
+			url: API.MINE_JSCODE, // ADVISER_SHOP_LIST
+			data: {
+				jscode: wxres.code
+			},
+			method: 'POST',
+			header: {
+				"Content-Type": "application/x-www-form-urlencoded"
+			},
+			success: function (res) {
+				console.log(res)	
+			},
+			fail: function (res) {
+				console.log(22, res)	
+			}
+		})
 	},
 	handleCall: function () {
 		wx.makePhoneCall({
@@ -74,54 +100,60 @@ Page({
 		this.dialog.showDialog();
 	},
 	handleWxTel: function (e) {
-		const {userInfo} = this.data
-		const shopInfo = wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{}
 		const _this=this
 		if(e.detail.errMsg!="getPhoneNumber:ok"){
 			return
 		}
 		wx.login({
-			success: function(wxres){
-				wx.request({
-					url: API.MINE_WXTEL, // ADVISER_SHOP_LIST
-					data: {
-						iv: e.detail.iv,
-						encryptedData: e.detail.encryptedData,
-						jscode: wxres.code,
-						img: userInfo.avatarUrl || null,
-						nickname: userInfo.nickName || null,
-						sid: shopInfo.id
-					},
-					method: 'POST',
-					header: {
-						"Content-Type": "application/x-www-form-urlencoded"
-					},
-					success: function (res) {
-						const {code='', data={}, message=""} = res.data
-						if( code===200 && data){
-							return  _this.setData({
-								userInfo: data
-							},()=>{
-								data.wxuid && wx.setStorage({
-									key:'wt_counselor',
-									data:{uid:data.wxuid,name:data.wxname}
-								})
-								wx.setStorage({
-									key: "wt_user",
-									data,
-									success:function () {
-										_this.toast.success("绑定成功")
-									}
-								})
-							})
-							
-						}
-						return _this.toast.warning('绑定失败，请重新绑定')
-					},
-					fail: function (res) {
-						return _this.toast.error('请求失败，请刷新重试')
-					}
-				})
+			success: function (wxres) {
+				_this.getPhoneNumber(e, wxres)
+			}
+		})
+	},
+	getPhoneNumber: function (_e, wxres) {
+		const {userInfo} = this.data
+		const shopInfo = wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{}
+		const _this=this
+		wx.request({
+			url: API.MINE_WXTEL, // ADVISER_SHOP_LIST
+			data: {
+				iv: _e.detail.iv,
+				encryptedData: _e.detail.encryptedData,
+				jscode: wxres.code,
+				img: userInfo.avatarUrl || null,
+				nickname: userInfo.nickName || null,
+				sid: shopInfo.id,
+				uid: null,
+				gid: null
+			},
+			method: 'POST',
+			header: {
+				"Content-Type": "application/x-www-form-urlencoded"
+			},
+			success: function (res) {
+				const {code='', data={}, message=""} = res.data
+				if( code===200 && data){
+					return  _this.setData({
+						userInfo: data
+					},()=>{
+						data.wxuid && wx.setStorage({
+							key:'wt_counselor',
+							data:{uid:data.wxuid,name:data.wxname}
+						})
+						wx.setStorage({
+							key: "wt_user",
+							data,
+							success:function () {
+								_this.toast.success("绑定成功")
+							}
+						})
+					})
+					
+				}
+				return _this.toast.warning('绑定失败，请重新绑定')
+			},
+			fail: function (res) {
+				return _this.toast.error('请求失败，请刷新重试')
 			}
 		})
 	},
@@ -166,6 +198,6 @@ Page({
 		wx.previewImage({
 			current: img, // 当前显示图片的http链接
 			urls: [img] // 需要预览的图片http链接列表
-		  })
+		})
 	}
 })

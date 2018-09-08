@@ -80,6 +80,9 @@ text,view {
 .g-ib {
   display: inline-block
 }
+.g-inline-block {
+  display: inline-block
+}
 
 /* overflow */
 .g-overflow-h {

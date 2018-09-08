@@ -33,10 +33,12 @@ Page({
 		historyList: [], // ['鞋子','裤子','袜子']
 		showHistory: true,
 		shopId: null,
-		thirdId: null
+		thirdId: null,
+		userInfo: {},
+		counselorInfo: {}
 	},
 	onLoad(options){ // url携带的参数，如果携带参数则是从分类进来的
-		const {thirdId,shopId} = options
+		const {thirdId} = options
 		thirdId && this.setData({
 			showHistory:false,
 			thirdId
@@ -50,7 +52,9 @@ Page({
 	onShow() {
 		this.setData({
 			historyList: wx.getStorageSync('wt_history_label')? wx.getStorageSync('wt_history_label'): [],
-			shopId: wx.getStorageSync('wt_shop')? wx.getStorageSync('wt_shop').id:null
+			shopId: wx.getStorageSync('wt_shop')? wx.getStorageSync('wt_shop').id:null,
+			userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{},
+			counselorInfo: wx.getStorageSync('wt_counselor')?wx.getStorageSync('wt_counselor'):{}
 		})
 	},
 	/**
