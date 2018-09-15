@@ -34,7 +34,7 @@
 		<view class="g-flex g-height-30 g-lh-30 g-pd-lr-15 g-width g-bs-bb">
 			<view class="g-flex g-jc-sb g-width">
 				<view class="g-fs-12">{{detail.shopName}}</view>
-				<view class="g-fs-12" wx:if="{{detail.status==1}}">剩余付款时间{{}}</view>
+				<view class="g-fs-12" wx:if="{{detail.status==1}}">剩余付款时间</view>
 			</view>
 		</view>
 		<!-- 店铺下商品 -->
@@ -76,7 +76,7 @@
 		<view class="g-fs-12 g-c-929292 g-m-l-15 g-lh-24" wx:if="{{detail.status==4}}">取消时间：
 			<time id="time" time="{{detail.finishTime}}" styles="font-size:12px"></time>
 		</view>
-		<view class="g-fs-12 g-c-929292 g-m-l-15 g-lh-24" wx:if="{{detail.status!=4}}">支付单号：{{detail.tradeNo}}</view>
+		<view class="g-fs-12 g-c-929292 g-m-l-15 g-lh-24" wx:if="{{detail.status!=4}}">支付单号：{{detail.tradeNo || '' }}</view>
 		<view class="g-fs-12 g-c-929292 g-m-l-15 g-lh-24" wx:if="{{detail.status!=4}}">支付时间：
 			<time id="time" time="{{detail.payTime}}" styles="font-size:12px"></time>
 		</view>

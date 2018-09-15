@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "我的",
+  "usingComponents": {
+    "dialog": "/components/dialog/dialog",
+    "toast": "/components/toast/toast",
+    "zan-cell": "/bower_components/zanui-weapp/dist/cell/index",
+    "zan-cell-group": "/bower_components/zanui-weapp/dist/cell-group/index"
+  }
+}

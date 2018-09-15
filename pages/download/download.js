@@ -2,7 +2,7 @@
 
 Page({
 	data: {
-		url: 'https://itunes.apple.com/cn/app/id1420004313'
+		url: 'https://m.pp.cn/detail.html?appid=7860566&ch_src=pp_dev&ch=default' // 安卓
 	},
 	onLoad: function () {
 		const _this=this
@@ -10,7 +10,11 @@ Page({
 			success: function(res) {
 				if(res.model && (/iPhone/.test(res.model) || /iPad/.test(res.model))){
 					_this.setData({
-						url: 'https://itunes.apple.com/cn/app/id1420004313'
+						url: 'https://itunes.apple.com/cn/app/id1420004313' // ios
+					})
+				}else {
+					_this.setData({
+						url: 'https://m.pp.cn/detail.html?appid=7860566&ch_src=pp_dev&ch=default' // 安卓
 					})
 				}
 			}

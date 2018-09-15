@@ -23,10 +23,11 @@ Page({
 	onLoad: function (options) {
 		this.toast=this.selectComponent("#toast")
 		let {goodId=null,source=0,uid,gid,gname} = options
+		console.log('链接参数',options)
 		// 设置方式
 		let {adviser} = this.data
-		if(gid && gname){
-			adviser={uid,name:gname}
+		if(gid && gname){ // 分享中进入
+			adviser={uid:gid,name:gname}
 			this.setData({share:{uid,gid}})
 		}else {
 			let wt_counselor=wx.getStorageSync('wt_counselor')?wx.getStorageSync('wt_counselor'):{}
@@ -42,7 +43,6 @@ Page({
 			shopInfo: wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{}
 		})
 		this._onGetData(options)
-		this._onGetShopAddress()
 	},
 	// 生命周期-页面显示即调用，因为ready和load方法在返回路由时不调用
 	onShow: function(){
@@ -90,7 +90,7 @@ Page({
 	},
 	// 获取数据
 	_onGetData: function(options){
-		const {goodId,uid,counselorId,shopId} = options
+		const {goodId,uid,counselorId,shopId,userId} = options // 用于数据采集使用
 		wx.showLoading({
 			title: '加载中',
 		})
@@ -98,10 +98,10 @@ Page({
 		goodId && wx.request({
 			url: API.GOODS_DETAIL,
 			data: {
-				goodId: goodId,
-				uid,
-				counselorId,
-				shopId
+				goodId,
+				uid:userId || 0, // uid/counselorId/shopId用于做数据统计
+				counselorId:counselorId || null,
+				shopId: shopId || 0
 			},
 			method: 'POST',
 			header: {
@@ -110,7 +110,12 @@ Page({
 			success: function (res) {
 				const {code='', data={}, message=''} = res.data
 				if( code===200 ){
-					return _this.setData({data,skuArr:data.skuArr})
+					_this._onGetShopInfo(data.shopId)
+					return _this.setData({
+						data,
+						skuArr: data.skuArr,
+						address: data.shopAddress
+					})
 				}
 				return _this.toast.warning(message || '请求失败')
 			},
@@ -119,6 +124,35 @@ Page({
 			},
 			complete: function () {
 				wx.hideLoading()
+			}
+		})
+	},
+	// 根据shopId获取店铺详细数据
+	_onGetShopInfo: function (shopId) {
+		const _this = this
+		shopId && wx.request({
+			url: API.COMMON_SHOPINFO,
+			data: {
+				shopId
+			},
+			method: 'POST',
+			header: {},
+			success: function (res) {
+				const {code='', data={}, message=''} = res.data
+				if( code===200 ){
+					return  _this.setData({
+						shopInfo: {id:shopId,shopName: data.shopName}
+					},()=>{
+						wx.setStorageSync('wt_shop',{
+							id: shopId,
+							shopName: data.shopName
+						})
+					})
+				}
+				return _this.toast.warning(message || '请求失败')
+			},
+			fail: function (res) {
+				return _this.toast.error('请求失败，请刷新重试')
 			}
 		})
 	},
@@ -257,31 +291,32 @@ Page({
 	},
 	/**
 	 * 获取店铺地址,主要是在立即购买的时候用到
+	 * 商品详情后端接口返回shopAddress，所以不用自己请求了
 	 */
-	_onGetShopAddress: function () {
-		const {shopInfo} = this.data
-		const _this=this
-		shopInfo.id && wx.request({
-			url: API.HOME_SHOP_ADDRESS,
-			data: {
-				shopId: shopInfo.id
-			},
-			method: 'POST',
-			header: {
-			},
-			success: function (res) {
-				const {code='', data={}, message=''} = res.data
-				if( code===200 ){
-					let address=data.address || ''
-					return _this.setData({address})
-				}
-				return _this.toast.warning(message)
-			},
-			fail: function (res) {
-				return _this.toast.error('请求失败，请刷新重试')
-			}
-		})
-	},
+	// _onGetShopAddress: function () {
+	// 	const {shopInfo} = this.data
+	// 	const _this=this
+	// 	shopInfo.id && wx.request({
+	// 		url: API.HOME_SHOP_ADDRESS,
+	// 		data: {
+	// 			shopId: shopInfo.id
+	// 		},
+	// 		method: 'POST',
+	// 		header: {
+	// 		},
+	// 		success: function (res) {
+	// 			const {code='', data={}, message=''} = res.data
+	// 			if( code===200 ){
+	// 				let address=data.address || ''
+	// 				return _this.setData({address})
+	// 			}
+	// 			return _this.toast.warning(message)
+	// 		},
+	// 		fail: function (res) {
+	// 			return _this.toast.error('请求失败，请刷新重试')
+	// 		}
+	// 	})
+	// },
 	// 立即购买
 	handleBuy: function () {
 		const {skuInfo={},userInfo} = this.data
@@ -316,8 +351,8 @@ Page({
 				number:stepperValue
 			},
 			showArr:[{shopAddress: address}],
-			priceTotal: Number(skuInfo.price)*stepperValue,
-			marketPriceTotal: Number(data.marketPrice)*stepperValue
+			priceTotal: (Number(skuInfo.price)*stepperValue).toFixed(2),
+			marketPriceTotal: (Number(data.marketPrice)*stepperValue).toFixed(2)
 		}
 		wx.setStorage({
 			key: "wt_toBuy",

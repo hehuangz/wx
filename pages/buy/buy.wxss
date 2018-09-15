@@ -3,7 +3,6 @@
 }
 .bottom {
     width: 100vw;
-    height: 117px;
     position: fixed;
     bottom: 0;
     left: 0;

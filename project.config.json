@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 16,
+			"current": 12,
 			"list": [
 				{
 					"id": -1,
@@ -108,7 +108,7 @@
 					"query": ""
 				},
 				{
-					"id": -1,
+					"id": 12,
 					"name": "order",
 					"pathName": "pages/order/order",
 					"query": ""
@@ -134,7 +134,8 @@
 				{
 					"id": -1,
 					"name": "down",
-					"pathName": "pages/download/download"
+					"pathName": "pages/download/download",
+					"query": ""
 				}
 			]
 		}

@@ -21,12 +21,10 @@
 		<view class="address g-flex g-jc-fs g-width g-pd-lr-10 g-bs-bb g-ai-c">
 			<text class="icon-location g-fs-0 g-tc g-fs-22 g-c-orange" style="width:40px;font-size:22px" />
 			<!-- 到店取货时地址显示的是店铺地址，并且多店时不能到店取货 -->
-			<block wx:if="{{deliveryType==1 && local_toBuy.showArr}}">
-				<view class="g-width g-pd-r-10">
-					<view class="g-c-3e3e3e g-pd-tb-10">{{local_toBuy.showArr[0].shopAddress}}</view>
-				</view>
-			</block>
-			<block wx:if="{{deliveryType==2}}">
+			<view wx:if="{{deliveryType==1 && local_toBuy.showArr}}" class="g-width g-pd-r-10">
+				<view class="g-c-3e3e3e g-pd-tb-10">{{local_toBuy.showArr[0].shopAddress || '店铺暂无收货地址'}}</view>
+			</view>
+			<view wx:if="{{deliveryType==2}}" bindtap="handleGetAddress" class="g-width g-flex g-ai-c">
 				<view wx:if="{{address && address.addressId}}" class="g-width g-pd-r-10">
 					<view class="g-flex g-jc-sb g-width g-m-b-5">
 						<text>{{address.username}}</text>
@@ -37,8 +35,8 @@
 				<view wx:else class="g-width g-pd-r-10" bindtap="handleGetAddress">
 					<view class="g-c-3e3e3e g-pd-tb-10">请选择收获地址</view>
 				</view>
-				<text class="icon-more2 g-fs-0 g-fs-16 g-c-929292"  bindtap="handleGetAddress"/>
-			</block>
+				<text class="icon-more2 g-fs-0 g-fs-16 g-c-929292"/>
+			</view>
 		</view>
 
 		<image mode="widthFix" src="{{IMG_OSS_TIAO}}" class="g-width" />

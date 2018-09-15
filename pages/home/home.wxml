@@ -100,6 +100,5 @@
 	<!-- <tab id="tab"
 		tabTitle="{{categoryList}}"
 		currentTab="{{currentTab}}"
-	
 	></tab> -->
 </view>

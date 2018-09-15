@@ -49,6 +49,13 @@ Page({
 			},
 			fail: function (res) {
 				return _this.toast.error('请求失败，请刷新重试')
+			},
+			complete: function () {
+				setTimeout(()=>{
+					wx.navigateTo({
+						url: '/pages/order/order'
+					})
+				},2000)	
 			}
 		})
 	},

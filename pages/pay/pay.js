@@ -60,20 +60,22 @@ Page({
 			"signType": data.signType,
 			"timeStamp": data.timeStamp,
 			success: function (res) {
-				console.log('支付成功回调：',res);
 				if(res.errMsg == 'requestPayment:ok'){
 					return wx.navigateTo({
-						url: `/pages/payResult/payResult?type=1&orderPid=${orderPid}`
+						// url: `/pages/payResult/payResult?type=1&orderPid=${orderPid}`
+						url: '/pages/order/order'
 					});
 				}
 				return wx.navigateTo({
-					url: `/pages/payResult/payResult?type=0&orderPid=${orderPid}`
+					// url: `/pages/payResult/payResult?type=0&orderPid=${orderPid}`
+					url: '/pages/order/order'
 				});
 			},
 			fail: function (res) {
 				console.log('fail:' + JSON.stringify(res));
 				return wx.navigateTo({
-					url: `/pages/payResult/payResult?type=0&orderPid=${orderPid}`
+					// url: `/pages/payResult/payResult?type=0&orderPid=${orderPid}`
+					url: '/pages/order/order'
 				});
 			}
 		})

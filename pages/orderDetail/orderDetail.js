@@ -5,18 +5,18 @@ import API from '../../constants/apiRoot'
 Page({
 	data: {
 		IMG_OSS_TIAO,
-		userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{},
+		userInfo: {},
 		detail: {},
 		goods: [],
 		status: {
 			'0': {
 				name: '待支付',
-				desc: '剩余付款时间：20分钟',
+				desc: '剩余付款时间不多矣……',
 				icon: 'icon-wallet-nocolor'
 			},
 			'1': {
 				name: '待发货',
-				desc: '您的商品正在发货中',
+				desc: '您的商品正在发货中……',
 				icon: 'icon-daifahuo'
 			},
 			'2': {
@@ -32,7 +32,7 @@ Page({
 			},
 			'4': {
 				name: '交易取消',
-				desc: '订单超时或者您已取消该订单',
+				desc: '订单超时或者您已取消该订单……',
 				icon: 'icon-close'
 			}
 		}
@@ -43,13 +43,18 @@ Page({
 		// 4:15346603062032
 		// 1:15343366069854
 		const {sn='15343366069854'} = opts
-		sn && this._onGetData(sn)
+		this.setData({
+			userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{}	
+		},()=>{
+			sn && this._onGetData(sn)
+		})
 	},
 	_onGetData: function (sn) {
 		wx.showLoading({
 			title: '加载中',
 		})
 		const {userInfo} = this.data
+		console.log()
 		const _this = this;
 		wx.request({
 			url: API.ORDER_DETAIL,

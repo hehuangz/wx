@@ -48,7 +48,7 @@ Page({
 		})
 		if(local_shop.id && local_shop.id!=shop.id){
 			this.setData({
-				shop:local_shop,
+				shop: local_shop,
 				userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{},
 				counselorInfo: wx.getStorageSync('wt_counselor')?wx.getStorageSync('wt_counselor'):{}
 			},()=>{
@@ -58,13 +58,16 @@ Page({
 		}
 	},
 	_onLocation: function () {
+		const local_shop = wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{}
+		if(local_shop.id){
+			return;
+		}
+		const _this=this
 		wx.showLoading({
 			title: '加载中',
 		})
-		const _this=this;
-		const { shop } = this.data
 		// 本地无数据再去获取地理位置
-		!shop.id && wx.getLocation({
+		wx.getLocation({
 			type: 'wgs84', // 默认该类型
 			success: function(res) {
 				wx.request({
@@ -111,7 +114,7 @@ Page({
 	},
 	_onWxUser: function () {
 		if(!wx.getStorageSync('wx_user') && !wx.getStorageSync('wt_user')){
-			this.dialog.showDialog();
+			this.dialog.showDialog()
 			const _this=this;
 			wx.getSetting({
 				success: function(res){
@@ -177,7 +180,7 @@ Page({
 				const {code='', data=[], message=''} = res.data
 				if( code===200 ){
 					return _this.setData({adviserList:data},()=>{
-						!wx.getStorageSync('wt_counselor') && wx.setStorageSync('wt_counselor',{
+						wx.setStorageSync('wt_counselor',{
 							uid: data[0] && data[0].uid,
 							name: data[0] && data[0].name
 						})
@@ -294,9 +297,11 @@ Page({
 					let source=getQuery('source',result)
 					let assistantId=getQuery('assistantId',result)
 					// console.log(shopId,shopName,id,source,assistantId);
-					if(id){ //商品，进入商品详情，并且切换店铺 --TEMP--不切换顾问吗
+					if(!shopId) {
+						return this.toast.warn('店铺不存在')
+					}else if (shopId && id) { //商品，进入商品详情，并且切换店铺 --TEMP--不切换顾问吗
 						this._onSaoGoods({shopId,shopName,id,source})
-					}else if(assistantId){// 扫描的是顾问二维码，进入顾问
+					}else if (shopId && assistantId) {// 扫描的是顾问二维码，进入顾问
 						this._onSaoAdviser({shopId,shopName,assistantId})
 					}
 				}

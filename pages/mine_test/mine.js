@@ -40,12 +40,26 @@ Page({
 			this.setData({userInfo:wx.getStorageSync('wt_user') || wx.getStorageSync('wx_user') || {}})
 		}
 		// session_key 已经失效，需要重新执行登录流程
+		// wx.login({
+		// 	success: function(wxres){
+		// 		// 存储jscode
+		// 		_this._onJscode(wxres)
+		// 	}
+		// })
+	},
+	handleJsCode: function () {
 		wx.login({
 			success: function(wxres){
 				// 存储jscode
-				_this._onJscode(wxres)
+				wx.setClipboardData({
+					data: JSON.stringify(wxres.code),
+					success: function(res) {
+						console.log(res);
+					}
+				})
 			}
 		})
+		
 	},
 	_onJscode: function (wxres) {
 		wx.request({
@@ -113,6 +127,23 @@ Page({
 		const {userInfo} = this.data
 		const shopInfo = wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{}
 		const _this=this
+		let temp = {
+			iv: _e.detail.iv,
+			encryptedData: _e.detail.encryptedData,
+			jscode: wxres.code,
+			img: userInfo.avatarUrl || null,
+			nickname: userInfo.nickName || null,
+			sid: shopInfo.id,
+			uid: null,
+			gid: null
+		}
+		wx.setClipboardData({
+			data: JSON.stringify(temp),
+			success: function(res) {
+				console.log(res);
+			}
+		})
+		return
 		wx.request({
 			url: API.MINE_WXTEL, // ADVISER_SHOP_LIST
 			data: {

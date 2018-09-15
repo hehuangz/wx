@@ -37,7 +37,8 @@
 					</view>
 				</view>
 			</view>
-			<view class="sku-goods g-flex g-pd-tb-10 g-pd-lr-15 g-width g-bs-bb g-border-tb-gray" 
+			<view 
+				class="sku-goods g-flex g-pd-tb-10 g-pd-lr-15 g-width g-bs-bb g-border-tb-gray" 
 				bindtap="handleDetail"
 				data-sn="{{item.sn}}"
 			>

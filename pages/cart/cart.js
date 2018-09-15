@@ -4,7 +4,7 @@ import Debounce from '../../utils/debounce.js';
 
 Page({
 	data: {
-		userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{},
+		userInfo: {},
 		disCartVos: [],
 		cartVos: [],
 		is_edit: false,
@@ -14,11 +14,11 @@ Page({
 		skuData: {}, // 数据含义同goodsDetail
 		skuInfo: {},
 		skuArr: [],
-		selectInfo: {},//选择sku点确定按钮需要传递的数据
+		selectInfo: {},// 选择sku点确定按钮需要传递的数据
 		total: 0, // 左上角数字：购物车共有多少件有效商品
-		settlementTotal: 0, //右下角结算数字：选中多少商品去结算
+		settlementTotal: 0, // 右下角结算数字：选中多少商品去结算
 		totalPrice: 0,
-		tolalMarketPrice: 0,
+		totalMarketPrice: 0,
 		adviser_shopId: null // 重改店铺顾问时的店铺ID
 	},
 	onLoad: function () {
@@ -128,7 +128,6 @@ Page({
 		let cartVos = this.data.cartVos
 		const shopId=e.currentTarget.dataset.shopid
 		const cartId=e.currentTarget.dataset.cartid
-		const is_checkedAll=e.currentTarget.dataset.all
 		if(shopId){
 			for(let itemPar of cartVos){ // 选用for-of循环是为了return，提升效率
 				if(itemPar.shopId == shopId){
@@ -137,6 +136,7 @@ Page({
 						item.checked=itemPar.checked
 					})
 					return this.setData({cartVos},()=>{
+						this._onIsCheckedAll() // 判断是否选择全部
 						this._onGetSettlement()
 						this._onGetTotalPrice()
 					})
@@ -153,6 +153,7 @@ Page({
 							return item.checked
 						})
 						return this.setData({cartVos},()=>{
+							this._onIsCheckedAll() // 判断是否选择全部
 							this._onGetSettlement()
 							this._onGetTotalPrice()
 						})
@@ -160,6 +161,15 @@ Page({
 				}
 			}
 		}
+	},
+	// 判断子check选中与否，全选check选中与否
+	_onIsCheckedAll: function () {
+		let cartVos = this.data.cartVos
+		let is_checkedAll = this.data.is_checkedAll
+		is_checkedAll=cartVos.every((itemPar)=>{
+			return itemPar.checked
+		})
+		this.setData({is_checkedAll})
 	},
 	// 全选按钮
 	handleCheckedAll: function() {
@@ -309,7 +319,6 @@ Page({
 			 */
 			this.handleZanStepperChange({detail:number})
 			// 默认选中现有的值
-			
 		}
 		let skuSelect={}
 		// console.log(skuData);
@@ -419,7 +428,7 @@ Page({
 		})
 		this.setData({
 			totalPrice:price.toFixed(2),
-			tolalMarketPrice:marketPrice.toFixed(2)
+			totalMarketPrice:marketPrice.toFixed(2)
 		})
 	},
 	// 删除购物车商品
@@ -440,7 +449,7 @@ Page({
 	},
 	// 	去结算按钮
 	handleSettlement: function () {
-		const {cartVos=[],userInfo={},settlementTotal,totalPrice,tolalMarketPrice} = this.data
+		const {cartVos=[],userInfo={},settlementTotal,totalPrice,totalMarketPrice} = this.data
 		if(!settlementTotal)return;
 		// 组装ordersGoods,// 组装showArr
 		let ordersGoods=[]
@@ -480,7 +489,7 @@ Page({
 			show: {},
 			showArr, // 整个购物车，没有过滤
 			priceTotal: totalPrice,
-			marketPriceTotal: tolalMarketPrice,
+			marketPriceTotal: totalMarketPrice,
 		}
 		wx.setStorage({
 			key: "wt_toBuy",
@@ -514,7 +523,7 @@ Page({
 			success: function (res) {
 				const {code='', data={}, message=''} = res.data
 				if( code===200 ){
-					_this.toast.success(message)
+					_this.toast.success('删除成功')
 					_this._onGetData()
 					return 
 				}
@@ -525,12 +534,16 @@ Page({
 			}
 		})
 	},
+	// 去商品详情
 	handleToDetail: function (e) {
-		const {is_edit} = this.data
+		const {is_edit,userInfo,adviser} = this.data
 		if(is_edit)return
 		const goodsId = e.currentTarget.dataset.goodsid
+		const shopId = e.currentTarget.dataset.shopid
+		const counselorId = e.currentTarget.dataset.counselorid
+		const uid = userInfo.uid
 		wx.navigateTo({
-			url: `/pages/goodsDetail/goodsDetail?goodId=${goodsId}`
+			url:`/pages/goodsDetail/goodsDetail?goodId=${goodsId}&userId=${uid}&counselorId=${counselorId}&shopId=${shopId}`
 		})
 	}
 })

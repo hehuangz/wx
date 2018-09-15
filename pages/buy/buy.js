@@ -5,8 +5,8 @@ import API from '../../constants/apiRoot'
 Page({
 	data: {
 		IMG_OSS_TIAO,
-		local_toBuy: wx.getStorageSync('wt_toBuy')?wx.getStorageSync('wt_toBuy'):{},
-		userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{},
+		local_toBuy: {},
+		userInfo: {},
 		delivery:[{
 			name:'到店取货',
 			type: 1
@@ -15,7 +15,7 @@ Page({
 			type: 2
 		}],
 		deliveryType: 2,
-		address: wx.getStorageSync('wt_wxAddress')?wx.getStorageSync('wt_wxAddress'):{},
+		address: {},
 	},
 	onLoad: function () {
 		this.toast=this.selectComponent("#toast")
@@ -107,6 +107,7 @@ Page({
 				uid: userInfo.uid
 			}
 		}
+		console.log('生成订单的参数',params)
 		wx.request({
 			url: API.BUY_CREATE_ORDER,
 			data: params,
@@ -151,25 +152,39 @@ Page({
 		})	
 	},
 	_onSaveWxAddress: function (wxres) {
-		const {userInfo} = this.data
+		const {userInfo,address} = this.data
 		const _this = this
-		let params = {
-			"cityName": wxres.cityName,
-			"detailAddress": wxres.detailInfo,
-			"districtName": wxres.countyName,
-			// "mobile": 19957895517,
-			"mobile": wxres.telNumber,
-			"provinceName": wxres.provinceName,
-			"uid": userInfo.uid,
-			"username": wxres.userName
+		let params
+		if(address.addressId){
+			params = {
+				"addressId": address.addressId,
+				"cityName": wxres.cityName,
+				"detailAddress": wxres.detailInfo,
+				"districtName": wxres.countyName,
+				// "mobile": 19957895517, // --TEMP--
+				"mobile": wxres.telNumber,
+				"provinceName": wxres.provinceName,
+				"uid": userInfo.uid || 1,
+				"username": wxres.userName
+			}
+		} else {
+			params = {
+				"cityName": wxres.cityName,
+				"detailAddress": wxres.detailInfo,
+				"districtName": wxres.countyName,
+				// "mobile": 19957895517, // --TEMP--
+				"mobile": wxres.telNumber,
+				"provinceName": wxres.provinceName,
+				"uid": userInfo.uid || 1,
+				"username": wxres.userName
+			}
 		}
-		
 		wxres && wx.request({
 			url: API.BUY_WECHAT_ADDRESS_SAVE,
 			data: params,
 			method: 'POST',
 			header: {
-				"toKen": userInfo.token
+				"token": userInfo.token
 			},
 			success: function (res) {
 				const {code='', data={}, message=''} = res.data

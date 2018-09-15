@@ -54,9 +54,10 @@ Component({
     },
     methods:{
         handleToDetail: function () {
+            // uid/counselorId/shopId用于做数据统计
             const {goodId, uid, counselorId, shopId} = this.data
             wx.navigateTo({
-                url:`/pages/goodsDetail/goodsDetail?goodId=${goodId}&uid=${uid}&counselorId=${counselorId}&shopId=${shopId}`
+                url:`/pages/goodsDetail/goodsDetail?goodId=${goodId}&userId=${uid}&counselorId=${counselorId}&shopId=${shopId}`
             })
         }
     },
