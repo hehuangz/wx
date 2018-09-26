@@ -32,7 +32,7 @@
 					</view>
 					<view>{{address.provinceName}}{{address.cityName}}{{address.districtName}}{{address.detailAddress}}</view>
 				</view>
-				<view wx:else class="g-width g-pd-r-10" bindtap="handleGetAddress">
+				<view wx:else class="g-width g-pd-r-10">
 					<view class="g-c-3e3e3e g-pd-tb-10">请选择收获地址</view>
 				</view>
 				<text class="icon-more2 g-fs-0 g-fs-16 g-c-929292"/>
@@ -51,6 +51,11 @@
 				<view class="g-flex g-ai-sb g-fw-w g-width">
 					<view class="g-twoline">{{local_toBuy.show.name}}</view>
 					<view class="g-width g-fs-12 g-c-929292">{{local_toBuy.show.skuDesc}}</view>
+					<view 
+						class="g-width g-fs-12 g-c-orange" 
+						wx:if="{{local_toBuy.show.regionLimit == 1}}">
+						该宝贝只在{{local_toBuy.show.limitArea}}出售～
+					</view>
 					<view class="g-width g-flex g-jc-sb">
 						<view class="g-c-orange g-fs-14">¥{{local_toBuy.show.price}} 
 							<text class="g-m-l-5 g-c-929292 g-fs-12 g-del">¥{{local_toBuy.show.marketPrice}}</text>
@@ -78,6 +83,11 @@
 						<view class="g-fs-12 g-twoline">{{item.goodsName}}</view>
 						<!-- 编辑状态时 sku 可选 -->					
 						<view class="g-width g-fs-12 g-c-929292">{{item.skuDesc}}</view>
+						<view 
+							class="g-width g-fs-12 g-c-orange" 
+							wx:if="{{litem.regionLimit == 1}}">
+							该宝贝只在{{item.limitArea}}出售～
+						</view>
 						<view class="g-width g-flex g-jc-sb g-ai-c">
 							<view class="g-c-orange g-fs-14">¥{{item.goodsPrice}} 
 								<text class="g-m-l-5 g-c-929292 g-fs-12 g-del">¥{{item.goodsMarketprice}}</text>

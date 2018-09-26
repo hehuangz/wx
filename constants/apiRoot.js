@@ -10,7 +10,7 @@ import goodsDetail from './api/goodsDetail';
 import cart from './api/cart';
 import buy from './api/buy';
 import order from './api/order';
-
+import counselor from './api/counselor';
 const baseUrl = 'https://api.wutonglife.com/life/';
 const API = {
 	...common,
@@ -24,7 +24,8 @@ const API = {
 	...goodsDetail,
 	...cart,
 	...buy,
-	...order
+	...order,
+	...counselor
 };
 
 for (let i in API) {

@@ -22,13 +22,13 @@
 				<view>{{itemPar.shopName}}</view>
 				<view>商品顾问：{{itemPar.counselorName}}
 					<!--变更顾问按钮 -->
-					<text 
+					<!-- <text 
 						wx:if="{{is_edit}}" 
 						class="icon-change" 
 						bindtap="handleChangeAdviser"
 						data-shopid="{{itemPar.shopId}}" 
 						data-cid="{{itemPar.counselorId}}"
-					 />
+					 /> -->
 				</view>
 			</view>
 		</view>
@@ -53,8 +53,13 @@
 				<image mode="aspectFill" src="{{item.goodsImg}}" class="sku-goods-img g-fs-0 g-m-r-5" />
 				<view class="g-flex g-ai-fs g-fw-w g-width">
 					<view class="g-twoline">{{item.goodsName}}</view>
-					<!-- 编辑状态时 sku 可选 -->					
-					<view class="g-width g-fs-12 g-c-929292" wx:if="{{!is_edit}}">{{item.skuDesc}}</view>
+					<!-- 编辑状态时 sku 可选 -->
+					<block wx:if="{{!is_edit}}">					
+						<view class="g-width g-fs-12 g-c-929292" >{{item.skuDesc}}</view>
+						<view class="g-width g-fs-12 g-c-orange" wx:if="{{item.regionLimit == 1}}">
+							该宝贝只在{{item.limitArea}}出售～
+						</view>
+					</block>
 					<block wx:if="{{is_edit}}">
 						<view 
 							class="g-width g-bg-f9f9f9 g-flex g-jc-sb g-pd-5" 

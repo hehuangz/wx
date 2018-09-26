@@ -1,7 +1,7 @@
 <!-- toast -->   
 <view class="c-goods {{classes}}" style="{{styles}}" bindtap="handleToDetail">
 	<image class="_img" mode="aspectFill" src="{{src}}"></image>	
-	<text class="_title g-twoline">{{title}}</text>
+	<view class="_title g-twoline">{{title}}</view>
 	<text class="g-c-orange g-fs-16">¥ {{price}}</text>
 	<text class="g-c-929292 g-m-l-20 g-td-lt">¥ {{oldPrice}}</text>	
 </view>

@@ -25,6 +25,10 @@
 		</view>
 		<view class="g-fs-16 g-c-212121 g-ls-0 g-weight-200 g-m-b-5">{{data.name}}</view>
 		<view class="g-fs-14 g-c-929292 g-weight-200" wx:if="{{data.goodDesc}}">{{data.goodDesc}}</view>
+		<!-- 区域限购商品显示 -->
+		<view class="g-fs-12 g-c-orange g-weight-200" wx:if="{{data.regionLimit == 1}}">
+			该宝贝只在{{data.limitArea}}出售～
+		</view>
 		<view 
 			class="_choose_sku g-m-t-10 g-bs-bb g-border-e5e5e5 g-bg-f9f9f9 g-c-929292 g-fs-16 g-flex g-jc-sb"
 			bindtap="handleChooseSku"
@@ -141,14 +145,14 @@
 				open-type="{{!userInfo.uid?'getPhoneNumber':''}}"
 				bindgetphonenumber="handleWxTel"
 				bindtap="handleToCart"
-				style="width:50%;border-radius:0;line-height:59px"
+				style="width:50%;border-radius:0;line-height:44px"
 			>加入购物车</button>
 			<button
 				class="g-bg-orange g-c-white g-fs-16 g-ls-0 g-weight-200"
 				open-type="{{!userInfo.uid?'getPhoneNumber':''}}"				
 				bindgetphonenumber="handleWxTel"
 				bindtap="handleBuy"
-				style="width:50%;border-radius:0;line-height:59px"
+				style="width:50%;border-radius:0;line-height:44px"
 			>立即购买</button>
 		</view>
 	</zan-popup>

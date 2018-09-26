@@ -1,46 +1,46 @@
 /* color */
 .g-c-orange {
-  color: #ff4b2d;
+  color: #ff4b2d!important;
 }
 .g-c-white {
-  color: #ffffff;
+  color: #ffffff!important;
 }
 .g-c-e6e6e6 {
-  color: #e6e6e6;
+  color: #e6e6e6!important;
 }
 .g-c-blue {
-  color: #4a90e2;
+  color: #4a90e2!important;
 }
 .g-c-pink {
-  color: pink;
+  color: pink!important;
 }
 .g-c-purple {
-  color: #fd527e;
+  color: #fd527e!important;
 }
 .g-c-yellow {
-  color: #ff972d;
+  color: #ff972d!important;
 }
 .g-c-929292 {
-  color: #929292;
+  color: #929292!important;
 }
 .g-c-9b9b9b {
-  color: #9b9b9b;
+  color: #9b9b9b!important;
 }
 .g-c-green {
-  color: green;
+  color: green!important;
 }
 .g-c-wxgreen {
-  color: #42ad31;
+  color: #42ad31!important;
 }
 .g-c-212121 {
-  color: #212121;
+  color: #212121!important;
 }
 .g-c-3e3e3e {
-  color: #3e3e3e;
+  color: #3e3e3e!important;
 }
 .g-c-c4c4c4 {
-  color: #c4c4c4;
+  color: #c4c4c4!important;
 }
 .g-c-afafaf {
-  color: #afafaf;
+  color: #afafaf!important;
 }

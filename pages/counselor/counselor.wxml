@@ -1,0 +1,23 @@
+<!-- adviser -->
+<!-- 未完成当前选中哪个，以及status改变 -->
+<toast id="toast"></toast>
+<lose wx:if="{{!list.length}}" id="lose" icon="icon-none" title="该店铺还没有配置顾问哦～"/>
+
+<view class="container">
+	<block wx:for="{{list}}" wx:key="index">
+		<card id="card"
+			uid="{{item.uid}}"
+			img="{{item.img}}"
+			name="{{item.name}}"
+			title="{{item}}" 
+			explain="{{item.sign}}"
+			sex="{{item.sex}}"
+			classes="g-m-t-15"
+			bind:relieveEvent="handleRelieve"
+			bind:chooseEvent="handleChoose"
+			data-current="{{item}}"
+			cid="{{cid}}"
+			isForce="{{isForce}}"
+		/>
+	</block>
+</view>

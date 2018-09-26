@@ -242,10 +242,16 @@ Page({
 	},
 	// 更换顾问
 	handleChangeAdviser: function(){
+		// 点顾问名字，进入顾问列表
+		// 如果是分享进入的，分享的顾问gid与本地已经存储的顾问id是同一个人，则用本地的isForce 
 		const {shopInfo,adviser} = this.data
-		const {id} = shopInfo
+		const wt_counselor=wx.getStorageSync('wt_counselor')?wx.getStorageSync('wt_counselor'):{}
+		let isForce = 0
+		if(wt_counselor.isForce && wt_counselor.uid == adviser.uid){
+			isForce = wt_counselor.isForce || 0
+		}
 		wx.navigateTo({
-			url: `/pages/adviser/adviser?shopId=${id}&cid=${adviser.uid}`
+			url: `/pages/counselor/counselor?shopId=${shopInfo.id}&cid=${adviser.uid}&isForce=${isForce}`
 		})
 	},
 	// 加入购物车
@@ -342,13 +348,15 @@ Page({
 			ordersGoods,
 			show:{
 				shopName: shopInfo.shopName,
-				counselorName:adviser.name,
-				image:skuInfo.image,
-				name:data.name,
+				counselorName: adviser.name,
+				image: skuInfo.image,
+				name: data.name,
 				skuDesc,
-				price:skuInfo.price,
-				marketPrice:data.marketPrice,
-				number:stepperValue
+				price: skuInfo.price,
+				marketPrice: data.marketPrice,
+				number:stepperValue,
+				regionLimit: data.regionLimit,
+				limitArea: data.limitArea
 			},
 			showArr:[{shopAddress: address}],
 			priceTotal: (Number(skuInfo.price)*stepperValue).toFixed(2),
@@ -419,10 +427,6 @@ Page({
 					return  _this.setData({
 						userInfo: data
 					},()=>{
-						data.wxuid && wx.setStorage({
-							key:'wt_counselor',
-							data:{uid:data.wxuid, name:data.wxname}
-						})
 						wx.setStorage({
 							key: "wt_user",
 							data,

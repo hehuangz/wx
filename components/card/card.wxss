@@ -3,6 +3,7 @@
 @import '../../assets/flex.wxss';
 @import '../../assets/color.wxss';
 @import '../../assets/fontsize.wxss';
+@import '../../assets/components.wxss';
 .c-card {
     margin: auto;
     margin-bottom: 15px;
@@ -10,9 +11,10 @@
     box-sizing: border-box;
 	border-radius: 10px;
 	background: #fff;
-    padding: 25px;
-    border: 1px solid #929292;
     border-radius: 8px;
+}
+.c-card ._container {
+	padding: 20px;
 }
 .c-card .__img {
 	background: #f0f0f0;

@@ -1,5 +1,4 @@
 /* components */
-
 /* button0-实心的固定宽度的按钮 */
 .g-bt-orange-s {
 	min-width: 102px;
@@ -112,9 +111,9 @@
 /* 空心的，宽度随内容撑开的 */
 .g-bt-hollow-orange {
 	display: inline-block;
-	min-width: 70px;
+	min-width: 94px;
 	box-sizing: border-box;
-	padding: 0 20px;
+	padding: 0 15px;
 	height: 30px;
 	border: 1px solid #ff4b2d;
 	color: #ff4b2d;
@@ -125,9 +124,9 @@
 }
 .g-bt-hollow-orange.active {
 	display: inline-block;
-	min-width: 70px;
+	min-width: 94px;
 	box-sizing: border-box;
-	padding: 0 20px;
+	padding: 0 15px;
 	height: 30px;
 	border: 1px solid #ff4b2d;
 	color: #fff;
@@ -253,4 +252,19 @@
 	font-weight: 200;
 	text-align: center;
 	line-height: 46px;
+}
+/* 顾问列表的文字按钮 */
+.g-bt-text-gray {
+	width: 50vw;
+	height: 46px;
+	background: #ffffff;
+	font-size: 14px;
+	color: #4a4a4a;
+	font-weight: 200;
+	text-align: center;
+	line-height: 46px;
+}
+.g-bt-text-gray:active {
+	/* opacity: 0.6; */
+	background: #f8f8f8;
 }

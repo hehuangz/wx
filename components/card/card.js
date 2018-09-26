@@ -36,14 +36,37 @@ Component({
         explain: {
             type: String,
             value: ''
+        },
+        isForce: {
+            type: Number,
+            value: 1
+        },
+        uid: {
+            type: String,
+            value: ''
+        },
+        cid: {
+            type: String,
+            value: ''
         }
     },
     data:{
         
     },
     methods:{
-        _cardEvent(){
+        _cardEvent () {
             this.triggerEvent("cardEvent")
+        },
+        _toLoadApp () {
+            wx.navigateTo({
+                url: '/pages/download/download'
+            })
+        },
+        _relieveEvent (e) { // 点击解除顾问按钮的事件
+            this.triggerEvent("relieveEvent")
+        },
+        _chooseEvent (counselorId) {
+            this.triggerEvent("chooseEvent")
         }
     }
 })

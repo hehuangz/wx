@@ -1,0 +1,8 @@
+{
+    "navigationBarTitleText": "顾问列表",
+	"usingComponents":{
+    	"lose": "/components/lose/lose",
+		"card": "/components/card/card",
+		"toast": "/components/toast/toast"
+	}
+}

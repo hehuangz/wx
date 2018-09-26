@@ -35,7 +35,7 @@ Page({
 							console.log(res.errMsg);//用户授权后执行方法
 						},
 						fail(res){
-						//用户拒绝授权后执行
+							//用户拒绝授权后执行
 						}
 					})
 				}
@@ -117,9 +117,17 @@ Page({
 			},
 			success: function (res) {
 				const {code='', data={}, message=''} = res.data
-				if( code===200 ){
+				if( code == 200 ){
 					return wx.navigateTo({
 						url:`/pages/pay/pay?orderPid=${data.orderPid}&price=${local_toBuy.priceTotal}&createTime=${data.createTime}`
+					})
+				}else if(code == 8021) {
+					// 超出限定区域
+					return wx.showModal({
+						title: '提示',
+						content: '该宝贝超出配送范围，请重新选择您的收货地址～',
+						success: function(res) {
+						}			
 					})
 				}
 				return _this.toast.warning(message)
@@ -132,7 +140,6 @@ Page({
 	handleGetAddress: function () {
 		const {userInfo} = this.data
 		const _this = this
-		// 拒绝后的方式,打开设置
 		wx.getSetting({
 			success(res) {
 				if (!res.authSetting['scope.address']) {
@@ -144,6 +151,7 @@ Page({
 							_this._onSaveWxAddress(wxres)
 						}
 					})
+					return
 				}
 			},
 			fail(res){
@@ -152,16 +160,17 @@ Page({
 		})	
 	},
 	_onSaveWxAddress: function (wxres) {
-		const {userInfo,address} = this.data
+		console.log('wxres',wxres)
+		const {userInfo,address={}} = this.data
 		const _this = this
-		let params
-		if(address.addressId){
+		let params={}
+		if(address && address.addressId){
 			params = {
 				"addressId": address.addressId,
 				"cityName": wxres.cityName,
 				"detailAddress": wxres.detailInfo,
 				"districtName": wxres.countyName,
-				// "mobile": 19957895517, // --TEMP--
+				// "mobile": 19957895997, // --TEMP--
 				"mobile": wxres.telNumber,
 				"provinceName": wxres.provinceName,
 				"uid": userInfo.uid || 1,
@@ -193,6 +202,7 @@ Page({
 						addressId: data,
 						...params
 					}
+					console.log('address',address)
 					return _this.setData({address},()=>{
 						wx.setStorage({
 							key: "wt_wxAddress",

@@ -1,6 +1,7 @@
 {
   "pages":[
     "pages/home/home",
+    "pages/counselor/counselor",
     "pages/order/order",
     "pages/orderDetail/orderDetail",
     "pages/logistics/logistics",

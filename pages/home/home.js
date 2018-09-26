@@ -10,7 +10,7 @@ Page({
 		currentTab: '',
 		canIUse: wx.canIUse('button.open-type.getUserInfo'),
 		shop: {},
-		adviserList: [], // 顾问列表
+		counselorData: {img:'',name:'网吧'}, // 顾问列表
 		categoryList: [], // 分类列表
 		goodsList: [],
 		errorPage: false,
@@ -18,7 +18,8 @@ Page({
 		pageNum: 1,
 		total: null,
 		userInfo: {},
-		counselorInfo: {}
+		counselorInfo: {},
+		isForce: 0
 	},
 	onLoad: function (){
 		this.dialog=this.selectComponent("#dialog")
@@ -41,21 +42,18 @@ Page({
 	 */
 	onShow: function () {
 		// 本地数据与现在data中不一致就本地覆盖data，以本地为准
-		const {shop} = this.data
 		let local_shop = wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{}
 		local_shop.id && wx.setNavigationBarTitle({
-			title: local_shop.shopName 
+			title: local_shop.shopName
 		})
-		if(local_shop.id && local_shop.id!=shop.id){
-			this.setData({
-				shop: local_shop,
-				userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{},
-				counselorInfo: wx.getStorageSync('wt_counselor')?wx.getStorageSync('wt_counselor'):{}
-			},()=>{
-				this._onGetCategory()
-				this._onGetAdviser()
-			})	
-		}
+		this.setData({
+			shop: local_shop,
+			userInfo: wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{},
+			counselorInfo: wx.getStorageSync('wt_counselor')?wx.getStorageSync('wt_counselor'):{}
+		},()=>{
+			this._onGetCategory()
+			this._onGetAdviser()
+		})	
 	},
 	_onLocation: function () {
 		const local_shop = wx.getStorageSync('wt_shop')?wx.getStorageSync('wt_shop'):{}
@@ -164,25 +162,32 @@ Page({
 	_onGetAdviser: function () {
 		const {shop={}} = this.data;
 		const _this = this;
+		const userInfo = wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{}
 		if(!shop.id){
 			return
 		}
 		wx.showLoading({title:'加载中'})		
 		wx.request({
-			url: API.HOME_ADVISER,
+			url: API.HOME_ADVISER_USER,
 			data: {
-				shopId: shop.id
+				shopId: shop.id,
+				uid: userInfo.uid
 			},
 			method: 'POST',
 			header: {
 			},
 			success: function (res) {
-				const {code='', data=[], message=''} = res.data
+				const {code='', data={}, message=''} = res.data
 				if( code===200 ){
-					return _this.setData({adviserList:data},()=>{
+					// __TEMP
+					return _this.setData({
+						counselorData:data,
+						isForce:data.isForce
+					},()=>{
 						wx.setStorageSync('wt_counselor',{
-							uid: data[0] && data[0].uid,
-							name: data[0] && data[0].name
+							uid: data.uid,
+							name: data.name,
+							isForce: data.isForce
 						})
 						//在扫顾问二维码跳转到商品详情时使用的primise
 						_this.resolve && _this.resolve() 
@@ -382,20 +387,13 @@ Page({
 			url: '/pages/download/download'
 		})
 	},
-	//滑动切换
-	handleSwiperGoods: function (e) {
-		this.setData({
-			currentTab: e.detail.current+1
-		});
-		// if (this.data.currentTab === e.currentTarget.dataset.current) {
-		// 	return false;
-		// } else {
-		// 	this.setData({
-		// 		currentTab: e.currentTarget.dataset.current,
-		// 		pageNum: 1
-		// 	},()=>{
-		// 		this._onGetGoods()
-		// 	})
-		// }
-	},
+	// 滑动切换
+	handleToList: function (e) {
+		const {shop={}} = this.data;
+		const counselorId=wx.getStorageSync('wt_counselor')?wx.getStorageSync('wt_counselor').uid:null
+		const isForce=wx.getStorageSync('wt_counselor')?wx.getStorageSync('wt_counselor').isForce:0
+		wx.navigateTo({
+			url: `/pages/counselor/counselor?shopId=${shop.id}&cid=${counselorId}&isForce=${isForce}`
+		})
+	}
 })

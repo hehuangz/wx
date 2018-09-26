@@ -34,7 +34,26 @@ App({
     //   }
     // })
   },
-  // globalData: {
-  //   userInfo: null
-  // }
+  globalData: {
+    tokenInvalid: ()=>{
+		const userInfo = wx.getStorageSync('wt_user')?wx.getStorageSync('wt_user'):{}
+		if(userInfo.uid && userInfo.token) {
+			return true	
+		} else {
+			wx.showModal({
+				title: '您未绑定',
+				content: '现在去点击“绑定手机号”吗？',
+				success: function(res) {
+					if (res.confirm) {
+						wx.switchTab({
+							url: '/pages/mine/mine'
+						})
+					} else if (res.cancel) {
+					}
+				}
+			})
+			return false
+		}
+    }
+  }
 })

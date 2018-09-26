@@ -45,7 +45,6 @@ Page({
 		/**
 		 * 重复点击无效
 		 * 点击后附上颜色，返回上一页
-		 * 把选择的顾问存本地，返回
 		 */
 		current.uid!=uid && this.setData({uid:current.uid},()=>{
 			setTimeout(() => {
