@@ -75,7 +75,7 @@ text,view {
   display: block
 }
 .g-inline {
-  display: inline-block
+  display: inline
 }
 .g-ib {
   display: inline-block

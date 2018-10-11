@@ -59,15 +59,9 @@
 		<view class="g-fs-12 g-c-afafaf g-tc g-m-t-10">————————<text class="g-m-lr-20">已经到底了啦</text>————————</view>		
 	</view>
 	<view class="bottom g-flex g-jc-sb" wx:if="{{data.status==2}}"><!-- status:0:下架,1:售罄,2:正常 -->
-		<view class="g-c-929292 g-fs-16" style="width:34%" bindtap="handleChangeAdviser">
-			<block wx:if="{{adviser.name.length<7}}">
-				<text class="icon-user g-fs-18" style="margin-right:1px"/>
-				<text class="g-fs-14">{{adviser.name}}</text>
-			</block>
-			<block wx:else>
-				<text class="g-fs-12">{{adviser.name}}</text>
-			</block>
-			<text class="g-fs-12 g-c-afafaf" style="margin-left:2px">顾问</text>
+		<view class="g-c-929292 g-flex g-ai-c g-fd-c g-jc-c" style="width:34%" bindtap="handleChangeAdviser">
+			<view class="g-fs-14 g-lh-24">{{adviser.name}}</view>
+			<view class="g-fs-12 g-c-afafaf g-lh-24">商品顾问</view>
 		</view>
 		<button
 			class="g-bg-yellow g-c-white g-fs-16 g-ls-0 g-weight-200"

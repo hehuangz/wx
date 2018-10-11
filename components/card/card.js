@@ -21,7 +21,7 @@ Component({
             type: String,
             value: ''
         },
-        name:{
+        name: {
             type: String,
             value: ''
         },

@@ -10,7 +10,7 @@ Page({
 		currentTab: '',
 		canIUse: wx.canIUse('button.open-type.getUserInfo'),
 		shop: {},
-		counselorData: {img:'',name:'网吧'}, // 顾问列表
+		counselorData: {img:'',name:''}, // 顾问列表
 		categoryList: [], // 分类列表
 		goodsList: [],
 		errorPage: false,

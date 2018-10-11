@@ -85,7 +85,7 @@
 						<view class="g-width g-fs-12 g-c-929292">{{item.skuDesc}}</view>
 						<view 
 							class="g-width g-fs-12 g-c-orange" 
-							wx:if="{{litem.regionLimit == 1}}">
+							wx:if="{{item.regionLimit == 1}}">
 							该宝贝只在{{item.limitArea}}出售～
 						</view>
 						<view class="g-width g-flex g-jc-sb g-ai-c">

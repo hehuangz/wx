@@ -91,6 +91,7 @@ Page({
 	// 获取数据
 	_onGetData: function(options){
 		const {goodId,uid,counselorId,shopId,userId} = options // 用于数据采集使用
+		const userInfo = wx.getStorageSync('wt_user') ? wx.getStorageSync('wt_user') : {}
 		wx.showLoading({
 			title: '加载中',
 		})
@@ -99,7 +100,7 @@ Page({
 			url: API.GOODS_DETAIL,
 			data: {
 				goodId,
-				uid:userId || 0, // uid/counselorId/shopId用于做数据统计
+				uid: userId || userInfo.uid ||  0, // uid/counselorId/shopId用于做数据统计
 				counselorId:counselorId || null,
 				shopId: shopId || 0
 			},
@@ -435,7 +436,6 @@ Page({
 							}
 						})
 					})
-					
 				}
 				return _this.toast.warning('绑定失败，请稍后重试')
 			},
