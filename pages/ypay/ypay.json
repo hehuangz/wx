@@ -1,0 +1,9 @@
+{
+    "navigationBarTitleText": "支付",
+	"usingComponents":{
+    	"lose": "/components/lose/lose",
+		"card": "/components/card/card",
+		"toast": "/components/toast/toast",
+		"time": "/components/time/time"
+	}
+}

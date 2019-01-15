@@ -4,7 +4,7 @@
 		"ignore": []
 	},
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
@@ -12,8 +12,8 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.2.1",
-	"appid": "wx1817eb9b85d97453",
-	"projectname": "wutong",
+	"appid": "wx5c25bc7b2ac211dd",
+	"projectname": "playpay7",
 	"isGameTourist": false,
 	"condition": {
 		"search": {
@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 8,
+			"current": 19,
 			"list": [
 				{
 					"id": -1,
@@ -142,6 +142,18 @@
 					"name": "counselor",
 					"pathName": "pages/counselor/counselor",
 					"query": "shopId=34&cid=18"
+				},
+				{
+					"id": 18,
+					"name": "pay",
+					"pathName": "pages/pay/pay",
+					"query": "orderPid=346&price=11"
+				},
+				{
+					"id": 19,
+					"name": "ypay",
+					"pathName": "pages/ypay/ypay",
+					"query": "orderId=1537443162259954&token=7c6dcf7ee6b7007da0f342e6cada44"
 				}
 			]
 		}

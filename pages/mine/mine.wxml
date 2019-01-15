@@ -57,8 +57,6 @@
 	</view> -->
 	<zan-cell-group border>
 		<zan-cell title="我的地址" is-link bindtap="handleAddress"></zan-cell>
-		<zan-cell title="关于我们" is-link bindtap="handleAboutUs"></zan-cell>	
-		<zan-cell title="在线反馈" label="工作日 9:30-17:30" value="{{tel}}" is-link bindtap="handleCall"></zan-cell>
 		<zan-cell wx:if="{{userInfo.uid}}" title="注销登录" is-link bindtap="handleLogout"></zan-cell>
 	</zan-cell-group>
 	<view style="height:100px"/>

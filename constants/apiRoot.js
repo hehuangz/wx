@@ -3,6 +3,7 @@ import login from './api/login';
 import home from './api/home';
 import adviser from './api/adviser';
 import pay from './api/pay';
+import ypay from './api/ypay';
 import category from './api/category';
 import search from './api/search';
 import mine from './api/mine';
@@ -25,7 +26,8 @@ const API = {
 	...cart,
 	...buy,
 	...order,
-	...counselor
+	...counselor,
+	...ypay
 };
 
 for (let i in API) {

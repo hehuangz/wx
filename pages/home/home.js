@@ -167,41 +167,41 @@ Page({
 			return
 		}
 		wx.showLoading({title:'加载中'})		
-		wx.request({
-			url: API.HOME_ADVISER_USER,
-			data: {
-				shopId: shop.id,
-				uid: userInfo.uid
-			},
-			method: 'POST',
-			header: {
-			},
-			success: function (res) {
-				const {code='', data={}, message=''} = res.data
-				if( code===200 ){
-					// __TEMP
-					return _this.setData({
-						counselorData:data,
-						isForce:data.isForce
-					},()=>{
-						wx.setStorageSync('wt_counselor',{
-							uid: data.uid,
-							name: data.name,
-							isForce: data.isForce
-						})
-						//在扫顾问二维码跳转到商品详情时使用的primise
-						_this.resolve && _this.resolve() 
-					})
-				}
-				return _this.toast.warn(message)
-			},
-			fail: function (res) {
-				return _this.toast.error('请求失败，请刷新重试')
-			},
-			complete: function () {
-				wx.hideLoading()
-			}
-		})
+		// wx.request({
+		// 	url: API.HOME_ADVISER_USER,
+		// 	data: {
+		// 		shopId: shop.id,
+		// 		uid: userInfo.uid
+		// 	},
+		// 	method: 'POST',
+		// 	header: {
+		// 	},
+		// 	success: function (res) {
+		// 		const {code='', data={}, message=''} = res.data
+		// 		if( code===200 ){
+		// 			// __TEMP
+		// 			return _this.setData({
+		// 				counselorData:data,
+		// 				isForce:data.isForce
+		// 			},()=>{
+		// 				wx.setStorageSync('wt_counselor',{
+		// 					uid: data.uid,
+		// 					name: data.name,
+		// 					isForce: data.isForce
+		// 				})
+		// 				//在扫顾问二维码跳转到商品详情时使用的primise
+		// 				_this.resolve && _this.resolve() 
+		// 			})
+		// 		}
+		// 		return _this.toast.warn(message)
+		// 	},
+		// 	fail: function (res) {
+		// 		return _this.toast.error('请求失败，请刷新重试')
+		// 	},
+		// 	complete: function () {
+		// 		wx.hideLoading()
+		// 	}
+		// })
 	},
 	/**
 	 * 获取一级分类
