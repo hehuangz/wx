@@ -4,7 +4,7 @@
 		"ignore": []
 	},
 	"setting": {
-		"urlCheck": false,
+		"urlCheck": true,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
@@ -153,7 +153,7 @@
 					"id": 19,
 					"name": "ypay",
 					"pathName": "pages/ypay/ypay",
-					"query": "orderId=1537443162259954&token=7c6dcf7ee6b7007da0f342e6cada44"
+					"query": "orderId=1521018769406864&token=3c8f1cfa36c63d0eaf729e047cb88e56"
 				}
 			]
 		}

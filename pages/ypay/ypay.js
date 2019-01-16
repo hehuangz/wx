@@ -1,10 +1,13 @@
 Page({
 	data: {
 		orderId: '',
-		price: '10'
+		result: null,
+		token: ''
 	},
 	onLoad: function (options) {
-		this.toast=this.selectComponent("#toast")
+		wx.showLoading({
+			title: '加载中'
+		})
 		const { orderId, token } = options
 		orderId && this.setData({orderId, token})
 		/**
@@ -17,9 +20,6 @@ Page({
 		wx.login({
 			success: function(res){
 				if(res.code){
-					wx.setClipboardData({
-						data: res.code
-					})
 					_this.toPay(res.code)
 				}
 			}
@@ -30,7 +30,7 @@ Page({
 		if(!orderId)return
 		const _this = this
 		wx.request({
-			url: 'http://testgamecatsdk.youximao.cn/web/trade/getWechatSmallPayInfo',
+			url: 'https://sdk-pre.youximao.com/web/trade/getWechatSmallPayInfo',
 			data: {
 				orderId,
 				codeNo
@@ -41,32 +41,64 @@ Page({
 			},
 			method: 'POST',
 			success: function (res) {
-				console.log(res)
 				const {code='', data={}, message=''} = res.data
-				if( code==='200' ){
+				if( code==='000' ){
 					return _this._onWxPay(data);
+				} else {
+					wx.showToast({
+						title: '请求数据失败',
+						icon: 'none',
+						duration: 2000
+					})
 				}
-				return _this.toast.warning(message)
 			},
 			fail: function (res) {
-				return _this.toast.error('请求失败，请刷新重试')
+				wx.showToast({
+					title: '请求失败，请刷新重试',
+					icon: 'none',
+					duration: 2000
+				})
 			}
 		})
 	},
 	_onWxPay: function (data = {}) {
 		const _this = this
+		wx.hideLoading()
 		wx.requestPayment({
 			"appId": data.appId,
 			"nonceStr": data.nonceStr,
-			"package": data.package,
+			"package": data.packages,
+			"paySign": data.sign,
 			"signType": data.signType,
 			"timeStamp": data.timeStamp,
 			success: function (res) {
-				_this.toast.success('支付成功')
+				_this.setData({
+					result: 1
+				})
+				wx.showToast({
+					title: '成功',
+					icon: 'success',
+					duration: 2000
+				})
 			},
 			fail: function (res) {
-				return _this.toast.error('支付失败')
+				_this.setData({
+					result: 2
+				})
+				console.log(res)
+				wx.showToast({
+					title: '支付失败',
+					icon: 'none',
+					duration: 2000
+				})
 			}
+		})
+	},
+	launchAppError: function () {
+		wx.showToast({
+			title: '返回App失败',
+			icon: 'none',
+			duration: 2000
 		})
 	}
 })

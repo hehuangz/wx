@@ -1,22 +1,31 @@
 <!-- pay -->
-<toast id="toast"></toast>
-<view class="container g-width">
-	<view class="g-flex g-fw-w g-ai-c g-pd-20">
-		<view class="g-fs-14 g-c-929292 g-width g-tc g-m-b-5">
-			请在15分钟内完成支付
-		</view>
-		<view class="g-fs-24 g-c-orange g-width g-tc">¥{{price}}</view>
+<view class="container g-width" wx:if="{{result === 1}}">
+	<view class="g-pd-20 g-bg-white g-width g-bs-bb g-flex g-jc-c g-fw-w g-m-t-10">
+		<text class='icon-correct g-c-wxgreen g-m-b-10 g-width g-block g-tc' style="font-size: 50px"/>
+		<text class="g-c-212121 g-fs-16 g-width g-tc">支付成功</text>
+	</view>	
+	<!-- 底部按钮区域 -->
+	<view class="g-pd-20 g-flex g-jc-c g-width g-bs-bb">
+		<button 
+			open-type="launchApp" 
+			app-parameter="wechat" 
+			class="g-bt-hollow-black g-bg-white"
+			binderror="launchAppError"
+		>返回APP</button>
 	</view>
-	<view class="g-line-gray"/>
-	<view class="g-flex g-jc-sb g-pd-20 g-width g-bs-bb g-ai-c">
-		<view class="g-flex g-ai-c">
-			<view class="icon-wxpay g-c-wxgreen g-fs-22 g-m-r-15"/>
-			<text class="g-fs-16 g-c-212121">微信支付</text>
-		</view>
-		<text class="icon-checkbox-after g-c-orange g-fs-18"/>		
+</view>
+<!-- 支付失败 -->
+<view class="container" wx:if="{{result === 2}}">
+	<view class="g-pd-20 g-bg-white g-width g-bs-bb g-flex g-jc-c g-fw-w g-m-t-10">
+		<text class='icon-error g-c-orange g-m-b-10 g-width g-block g-tc' style="font-size: 50px"/>
+		<text class="g-c-212121 g-fs-16 g-width g-tc">支付失败</text>
+	</view>	
+	<view class="g-pd-20 g-flex g-jc-c g-width g-bs-bb">
+		<button 
+			open-type="launchApp" 
+			app-parameter="wechat" 
+			class="g-bt-hollow-black g-bg-white"
+			binderror="launchAppError"
+		>返回APP</button>
 	</view>
-	<button 
-		class="g-bt-orange-square" 
-		style="position:fixed;bottom:0" 
-	>确认支付</button>
 </view>
